@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard | Wang'anga Senior School</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a5276">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><i class="fas fa-users"></i></div>
+            <h3>Parent Portal</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" onclick="showSection('grades', this)"><i class="fas fa-chart-bar"></i> My Child's Grades</a></li>
+                <li><a href="#" onclick="showSection('fees', this)"><i class="fas fa-money-bill-wave"></i> Fees & Payments</a></li>
+                <li><a href="#" onclick="showSection('discipline', this)"><i class="fas fa-gavel"></i> Discipline</a></li>
+                <li><a href="#" onclick="showSection('attendance', this)"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
+                <li><a href="#" onclick="showSection('timetable', this)"><i class="fas fa-calendar-alt"></i> Timetable</a></li>
+                <li><a href="#" onclick="showSection('announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                <li><a href="#" onclick="showSection('report-card', this)"><i class="fas fa-file-alt"></i> Report Card</a></li>
+                <li><a href="#" onclick="showSection('profile', this)"><i class="fas fa-user-circle"></i> My Profile</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-topbar">
+            <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+            <div class="topbar-right">
+                <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <div class="admin-profile"><i class="fas fa-user-circle"></i> <span id="parentDisplayName">Parent</span></div>
+            </div>
+        </div>
+
+        <!-- Dashboard Overview -->
+        <div class="content-section active" id="dashboard">
+            <div class="welcome-card">
+                <h2>Welcome, <span id="welcomeName">Parent</span>!</h2>
+                <p>Monitor your child's academic progress, fees, and school activities from one place.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                    <div class="stat-info"><h3 id="childName">-</h3><p>My Child</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-info"><h3 id="childAverage">-</h3><p>Average Points</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="stat-info"><h3 id="feesBalance">-</h3><p>Fees Balance</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clipboard-check"></i></div>
+                    <div class="stat-info"><h3 id="attendanceRate">-</h3><p>Attendance</p></div>
+                </div>
+            </div>
+
+            <div class="recent-grid">
+                <div class="activity-card">
+                    <h3><i class="fas fa-chart-bar"></i> Recent Grades</h3>
+                    <div id="recentGrades"><p class="no-data">No recent grades</p></div>
+                </div>
+                <div class="activity-card">
+                    <h3><i class="fas fa-bullhorn"></i> Latest Announcements</h3>
+                    <div id="recentAnnouncements"><p class="no-data">No announcements</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Child's Grades -->
+        <div class="content-section" id="grades">
+            <h2>My Child's Grades</h2>
+            <div class="gradebook-filters">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <select id="parentGradeSubject" onchange="loadParentGrades()"><option value="">All Subjects</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Exam/Term</label>
+                        <select id="parentGradeExam" onchange="loadParentGrades()">
+                            <option value="">All Exams</option>
+                            <option value="Term 1 Opening">Term 1 Opening</option>
+                            <option value="Term 1 Mid">Term 1 Mid</option>
+                            <option value="Term 1 End">Term 1 End</option>
+                            <option value="Term 2 Opening">Term 2 Opening</option>
+                            <option value="Term 2 Mid">Term 2 Mid</option>
+                            <option value="Term 2 End">Term 2 End</option>
+                            <option value="Term 3 Opening">Term 3 Opening</option>
+                            <option value="Term 3 Mid">Term 3 Mid</option>
+                            <option value="Term 3 End (KCSE Preps)">Term 3 End (KCSE Preps)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="grades-summary-cards" id="parentGradesSummary" style="display:none"></div>
+            <div class="table-container" style="margin-top:20px">
+                <table>
+                    <thead><tr><th>Subject</th><th>Exam</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th><th>Teacher</th></tr></thead>
+                    <tbody id="parentGradesBody"><tr class="no-data"><td colspan="7">No grades available yet</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Fees & Payments -->
+        <div class="content-section" id="fees">
+            <h2>Fees & Payments</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info"><h3 id="totalFeesPaid">KES 0</h3><p>Total Paid</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+                    <div class="stat-info"><h3 id="feesBalanceAmt">KES 86,000</h3><p>Balance Due</p></div>
+                </div>
+            </div>
+            <div class="table-container" style="margin-top:20px">
+                <h3>Payment History</h3>
+                <table>
+                    <thead><tr><th>Receipt No</th><th>Amount</th><th>Term</th><th>Method</th><th>Description</th><th>Date</th></tr></thead>
+                    <tbody id="feesBody"><tr class="no-data"><td colspan="6">No payments recorded</td></tr></tbody>
+                </table>
+            </div>
+            <div class="make-payment-section" style="margin-top:25px">
+                <h3><i class="fas fa-mobile-alt"></i> Record M-Pesa Payment</h3>
+                <div class="create-card-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>M-Pesa Confirmation Code <span class="required">*</span></label>
+                            <input type="text" id="mpesaCode" placeholder="e.g. QGH7X4Z8KL">
+                        </div>
+                        <div class="form-group">
+                            <label>Amount (KES) <span class="required">*</span></label>
+                            <input type="number" id="mpesaAmount" placeholder="Enter amount">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Term <span class="required">*</span></label>
+                            <select id="mpesaTerm">
+                                <option value="">Select Term</option>
+                                <option value="Term 1">Term 1</option>
+                                <option value="Term 2">Term 2</option>
+                                <option value="Term 3">Term 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="mpesaDesc" placeholder="e.g. School fees payment">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="recordPayment()"><i class="fas fa-paper-plane"></i> Submit Payment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discipline -->
+        <div class="content-section" id="discipline">
+            <h2>Discipline Records</h2>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Date</th><th>Incident</th><th>Action Taken</th><th>Teacher</th><th>Status</th></tr></thead>
+                    <tbody id="disciplineBody"><tr class="no-data"><td colspan="5">No discipline records found</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Attendance -->
+        <div class="content-section" id="attendance">
+            <h2>Attendance</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(39,174,96,0.15)"><i class="fas fa-check-circle" style="color:#27ae60"></i></div>
+                    <div class="stat-info"><h3 id="attPresent">0</h3><p>Days Present</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(231,76,60,0.15)"><i class="fas fa-times-circle" style="color:#e74c3c"></i></div>
+                    <div class="stat-info"><h3 id="attAbsent">0</h3><p>Days Absent</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(212,172,13,0.15)"><i class="fas fa-exclamation-circle" style="color:#d4ac0d"></i></div>
+                    <div class="stat-info"><h3 id="attLate">0</h3><p>Times Late</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-info"><h3 id="attRate">0%</h3><p>Rate</p></div>
+                </div>
+            </div>
+            <div class="table-container" style="margin-top:20px">
+                <table>
+                    <thead><tr><th>Date</th><th>Status</th><th>Marked By</th><th>Remarks</th></tr></thead>
+                    <tbody id="attendanceBody"><tr class="no-data"><td colspan="4">No attendance records</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Timetable -->
+        <div class="content-section" id="timetable">
+            <h2>Class Timetable</h2>
+            <div class="table-container">
+                <table id="timetableTable">
+                    <thead><tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead>
+                    <tbody id="timetableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Announcements -->
+        <div class="content-section" id="announcements">
+            <h2>Announcements</h2>
+            <div id="announcementsContainer"><p class="no-data">No announcements</p></div>
+        </div>
+
+        <!-- Report Card -->
+        <div class="content-section" id="report-card">
+            <h2>Report Card</h2>
+            <div id="reportCardContent"></div>
+            <button class="btn btn-primary" onclick="printReportCard()" style="margin-top:20px"><i class="fas fa-print"></i> Print Report Card</button>
+        </div>
+
+        <!-- Profile -->
+        <div class="content-section" id="profile">
+            <h2>My Profile</h2>
+            <div class="profile-card">
+                <div id="parentProfileInfo"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ===== DATA HELPERS =====
+        function getStudents() { return JSON.parse(localStorage.getItem('wanganga_students') || '[]'); }
+        function getParents() { return JSON.parse(localStorage.getItem('wanganga_parents') || '[]'); }
+        function getGrades() { return JSON.parse(localStorage.getItem('wanganga_grades') || '[]'); }
+        function getFees() { return JSON.parse(localStorage.getItem('wanganga_fees') || '[]'); }
+        function getDiscipline() { return JSON.parse(localStorage.getItem('wanganga_discipline') || '[]'); }
+        function getAttendance() { return JSON.parse(localStorage.getItem('wanganga_attendance') || '[]'); }
+        function getTimetable() { return JSON.parse(localStorage.getItem('wanganga_timetable') || '[]'); }
+        function getAnnouncements() { return JSON.parse(localStorage.getItem('wanganga_announcements') || '[]'); }
+        function getTeachers() { return JSON.parse(localStorage.getItem('wanganga_teachers') || '[]'); }
+
+        // ===== SESSION =====
+        const parentId = localStorage.getItem('wanganga_current_parent');
+        const parents = getParents();
+        const parent = parents.find(p => p.id === parentId) || parents.find(p => p.phone === parentId) || parents[0];
+
+        if (!parent) {
+            alert('No parent session found. Please login again.');
+            window.location.href = 'login.html';
+        }
+
+        const children = getStudents().filter(s => parent && (s.parent === parent.name || s.parentPhone === parent.phone));
+        const child = children[0];
+
+        // ===== SIDEBAR TOGGLE =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function showSection(id, el) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            if (el) el.classList.add('active');
+            if (id === 'grades') loadParentGrades();
+            if (id === 'fees') loadFees();
+            if (id === 'discipline') loadDiscipline();
+            if (id === 'attendance') loadAttendance();
+            if (id === 'timetable') loadTimetable();
+            if (id === 'announcements') loadAnnouncements();
+            if (id === 'report-card') loadReportCard();
+            if (id === 'profile') loadProfile();
+        }
+
+        // ===== DASHBOARD =====
+        function loadDashboard() {
+            if (!child) return;
+            document.getElementById('childName').textContent = child.name;
+
+            const grades = getGrades().filter(g => g.studentId === child.id);
+            if (grades.length) {
+                const avgPoints = (grades.reduce((s, g) => s + (g.points || 0), 0) / grades.length).toFixed(1);
+                document.getElementById('childAverage').textContent = avgPoints + ' pts';
+                document.getElementById('recentGrades').innerHTML = grades.slice(0, 5).map(g =>
+                    `<div class="activity-item"><i class="fas fa-graduation-cap" style="color:var(--primary)"></i><div><span>${g.subject}: <strong>${g.grade}</strong> (${g.mark}/${g.maxMarks || 100})</span><small>${g.exam}</small></div></div>`
+                ).join('');
+            }
+
+            const fees = getFees().filter(f => f.studentId === child.id);
+            const totalPaid = fees.reduce((s, f) => s + (Number(f.amount) || 0), 0);
+            const balance = 86000 - totalPaid;
+            document.getElementById('feesBalance').textContent = 'KES ' + Math.max(0, balance).toLocaleString();
+
+            const attendance = getAttendance().filter(a => a.studentId === child.id);
+            const present = attendance.filter(a => a.status === 'Present').length;
+            document.getElementById('attendanceRate').textContent = attendance.length ? Math.round(present / attendance.length * 100) + '%' : '-';
+
+            const announcements = getAnnouncements();
+            if (announcements.length) {
+                document.getElementById('recentAnnouncements').innerHTML = announcements.slice(0, 3).map(a =>
+                    `<div class="activity-item"><i class="fas fa-bullhorn" style="color:var(--secondary)"></i><div><span>${a.title}</span><small>${a.date} - ${a.message.substring(0, 80)}...</small></div></div>`
+                ).join('');
+            }
+        }
+
+        // ===== GRADES =====
+        function loadParentGrades() {
+            if (!child) return;
+            const grades = getGrades().filter(g => g.studentId === child.id);
+            const subjectFilter = document.getElementById('parentGradeSubject').value;
+            const examFilter = document.getElementById('parentGradeExam').value;
+            let filtered = grades;
+            if (subjectFilter) filtered = filtered.filter(g => g.subject === subjectFilter);
+            if (examFilter) filtered = filtered.filter(g => g.exam === examFilter);
+            filtered.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+            const tb = document.getElementById('parentGradesBody');
+            if (!filtered.length) { tb.innerHTML = '<tr class="no-data"><td colspan="7">No grades available</td></tr>'; }
+            else {
+                tb.innerHTML = filtered.map(g => `<tr>
+                    <td><strong>${g.subject}</strong></td><td>${g.exam}</td>
+                    <td>${g.mark}/${g.maxMarks || 100}</td>
+                    <td><span class="status-badge approved" style="font-weight:700">${g.grade}</span></td>
+                    <td>${g.points}</td><td>${g.remark || '-'}</td><td>${g.teacherName || '-'}</td>
+                </tr>`).join('');
+            }
+
+            if (grades.length) {
+                const totalPts = grades.reduce((s, g) => s + (g.points || 0), 0);
+                const avg = (totalPts / grades.length).toFixed(1);
+                const subjects = [...new Set(grades.map(g => g.subject))];
+                document.getElementById('parentGradesSummary').innerHTML = `
+                    <div class="grade-summary-card"><h4>${avg}</h4><p>Average Points</p></div>
+                    <div class="grade-summary-card"><h4>${subjects.length}</h4><p>Subjects Graded</p></div>
+                    <div class="grade-summary-card"><h4>${grades.length}</h4><p>Total Entries</p></div>`;
+                document.getElementById('parentGradesSummary').style.display = 'grid';
+            }
+        }
+
+        function populateParentGradeFilters() {
+            if (!child) return;
+            const grades = getGrades().filter(g => g.studentId === child.id);
+            const subjects = [...new Set(grades.map(g => g.subject))];
+            const sel = document.getElementById('parentGradeSubject');
+            subjects.forEach(s => { sel.innerHTML += '<option value="' + s + '">' + s + '</option>'; });
+        }
+
+        // ===== FEES =====
+        function loadFees() {
+            if (!child) return;
+            const fees = getFees().filter(f => f.studentId === child.id);
+            const totalPaid = fees.reduce((s, f) => s + (Number(f.amount) || 0), 0);
+            const balance = Math.max(0, 86000 - totalPaid);
+            document.getElementById('totalFeesPaid').textContent = 'KES ' + totalPaid.toLocaleString();
+            document.getElementById('feesBalanceAmt').textContent = 'KES ' + balance.toLocaleString();
+
+            const tb = document.getElementById('feesBody');
+            if (!fees.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No payments recorded</td></tr>'; return; }
+            tb.innerHTML = fees.map(f => `<tr>
+                <td>${f.receiptNo}</td><td><strong>KES ${Number(f.amount).toLocaleString()}</strong></td>
+                <td>${f.term}</td><td>${f.method}</td><td>${f.description || '-'}</td>
+                <td>${new Date(f.date).toLocaleDateString()}</td>
+            </tr>`).join('');
+        }
+
+        function recordPayment() {
+            const code = document.getElementById('mpesaCode').value.trim();
+            const amount = Number(document.getElementById('mpesaAmount').value);
+            const term = document.getElementById('mpesaTerm').value;
+            const desc = document.getElementById('mpesaDesc').value;
+
+            if (!code || !amount || !term) { alert('Please fill in M-Pesa code, amount and term'); return; }
+            if (amount <= 0) { alert('Amount must be positive'); return; }
+
+            const fees = getFees();
+            fees.push({
+                receiptNo: 'MPESA-' + code.toUpperCase(),
+                studentId: child.id,
+                studentName: child.name,
+                amount: amount,
+                term: term,
+                method: 'M-Pesa',
+                description: desc || 'M-Pesa Payment',
+                date: new Date().toISOString(),
+                recordedBy: parent.name
+            });
+            localStorage.setItem('wanganga_fees', JSON.stringify(fees));
+
+            // Log activity
+            const records = JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]');
+            records.unshift({ id: records.length + 1, timestamp: new Date().toISOString(), category: 'fees', action: 'create', details: parent.name + ' recorded payment KES ' + amount.toLocaleString() + ' for ' + child.name, user: parent.name, ip: 'Local Network' });
+            localStorage.setItem('wanganga_admin_center', JSON.stringify(records));
+
+            document.getElementById('mpesaCode').value = '';
+            document.getElementById('mpesaAmount').value = '';
+            document.getElementById('mpesaDesc').value = '';
+            alert('Payment recorded successfully!');
+            loadFees();
+        }
+
+        // ===== DISCIPLINE =====
+        function loadDiscipline() {
+            if (!child) return;
+            const all = getDiscipline();
+            const records = all.filter(d => d.studentId === child.id || d.studentName === child.name);
+            const tb = document.getElementById('disciplineBody');
+            if (!records.length) { tb.innerHTML = '<tr class="no-data"><td colspan="5">No discipline records found</td></tr>'; return; }
+            tb.innerHTML = records.map(d => `<tr>
+                <td>${d.date || '-'}</td><td>${d.incident || d.details || '-'}</td>
+                <td>${d.action || '-'}</td><td>${d.teacher || d.reportedBy || '-'}</td>
+                <td><span class="status-badge ${d.status === 'suspended' ? 'pending' : d.status === 'expelled' ? 'rejected' : 'approved'}">${d.status || 'Recorded'}</span></td>
+            </tr>`).join('');
+        }
+
+        // ===== ATTENDANCE =====
+        function loadAttendance() {
+            if (!child) return;
+            const attendance = getAttendance().filter(a => a.studentId === child.id);
+            const present = attendance.filter(a => a.status === 'Present').length;
+            const absent = attendance.filter(a => a.status === 'Absent').length;
+            const late = attendance.filter(a => a.status === 'Late').length;
+            const total = attendance.length;
+
+            document.getElementById('attPresent').textContent = present;
+            document.getElementById('attAbsent').textContent = absent;
+            document.getElementById('attLate').textContent = late;
+            document.getElementById('attRate').textContent = total ? Math.round(present / total * 100) + '%' : '0%';
+
+            const tb = document.getElementById('attendanceBody');
+            if (!attendance.length) { tb.innerHTML = '<tr class="no-data"><td colspan="4">No attendance records</td></tr>'; return; }
+            tb.innerHTML = attendance.sort((a, b) => new Date(b.date) - new Date(a.date)).map(a => `<tr>
+                <td>${a.date}</td>
+                <td><span class="status-badge ${a.status === 'Present' ? 'approved' : a.status === 'Absent' ? 'rejected' : 'pending'}">${a.status}</span></td>
+                <td>${a.markedBy || '-'}</td><td>${a.remarks || '-'}</td>
+            </tr>`).join('');
+        }
+
+        // ===== TIMETABLE =====
+        function loadTimetable() {
+            if (!child) return;
+            const all = getTimetable();
+            const timetable = all.filter(t => t.class === child.class);
+            const periods = ['7:30 - 8:00', '8:00 - 8:40', '8:40 - 9:20', '9:20 - 10:00', '10:00 - 10:20', '10:20 - 11:00', '11:00 - 11:40', '11:40 - 12:20', '12:20 - 1:00', '1:00 - 1:40', '1:40 - 2:20', '2:20 - 3:00', '3:00 - 3:30'];
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            const tb = document.getElementById('timetableBody');
+
+            if (!timetable.length) {
+                tb.innerHTML = '<tr class="no-data"><td colspan="6">No timetable set for ' + (child.class || 'your class') + '</td></tr>';
+                return;
+            }
+
+            tb.innerHTML = periods.map((p, i) => {
+                const isBreak = i === 4 || i === 12;
+                if (isBreak) return `<tr style="background:#f0f7fb"><td><strong>${p}</strong></td><td colspan="5" style="text-align:center;color:var(--primary);font-weight:600">${i === 4 ? 'MORNING BREAK' : 'AFTERNOON BREAK'}</td></tr>`;
+                return `<tr><td><strong>${p}</strong></td>${days.map(d => {
+                    const entry = timetable.find(t => t.day === d && t.period === i + 1);
+                    return `<td>${entry ? '<strong>' + entry.subject + '</strong>' + (entry.teacher ? '<br><small>' + entry.teacher + '</small>' : '') : '-'}</td>`;
+                }).join('')}</tr>`;
+            }).join('');
+        }
+
+        // ===== ANNOUNCEMENTS =====
+        function loadAnnouncements() {
+            const announcements = getAnnouncements();
+            const container = document.getElementById('announcementsContainer');
+            if (!announcements.length) { container.innerHTML = '<p class="no-data">No announcements</p>'; return; }
+            container.innerHTML = announcements.map(a => `
+                <div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)">
+                    <i class="fas fa-bullhorn" style="color:var(--secondary);font-size:20px;margin-right:12px"></i>
+                    <div>
+                        <strong style="font-size:15px">${a.title}</strong>
+                        <p style="margin:5px 0 0;color:var(--text)">${a.message}</p>
+                        <small style="color:var(--text-light)">${a.date} - Posted by ${a.author || 'Admin'}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== REPORT CARD =====
+        function loadReportCard() {
+            if (!child) return;
+            const grades = getGrades().filter(g => g.studentId === child.id);
+            const fees = getFees().filter(f => f.studentId === child.id);
+            const attendance = getAttendance().filter(a => a.studentId === child.id);
+            const totalPaid = fees.reduce((s, f) => s + (Number(f.amount) || 0), 0);
+            const present = attendance.filter(a => a.status === 'Present').length;
+
+            const examGroups = {};
+            grades.forEach(g => {
+                const key = g.exam;
+                if (!examGroups[key]) examGroups[key] = [];
+                examGroups[key].push(g);
+            });
+
+            let examSections = '';
+            Object.keys(examGroups).forEach(exam => {
+                const exGrades = examGroups[exam];
+                const avgPts = (exGrades.reduce((s, g) => s + (g.points || 0), 0) / exGrades.length).toFixed(1);
+                examSections += `<h3 style="margin-top:20px;color:var(--primary)">${exam}</h3>
+                <table><thead><tr><th>Subject</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th></tr></thead>
+                <tbody>${exGrades.map(g => `<tr><td>${g.subject}</td><td>${g.mark}/${g.maxMarks || 100}</td><td><strong>${g.grade}</strong></td><td>${g.points}</td><td>${g.remark || '-'}</td></tr>`).join('')}
+                <tr style="font-weight:700;background:#f0f7fb"><td>Average</td><td></td><td></td><td>${avgPts}</td><td></td></tr>
+                </tbody></table>`;
+            });
+
+            document.getElementById('reportCardContent').innerHTML = `
+                <div class="report-card" id="printableReport">
+                    <div style="text-align:center;margin-bottom:20px">
+                        <h2 style="color:var(--primary)">WANG'ANGA SENIOR SCHOOL</h2>
+                        <p>Phone: 0798394035 | Email: bencarsonodhiambo6@gmail.com</p>
+                        <h3 style="margin-top:10px">STUDENT REPORT CARD</h3>
+                    </div>
+                    <div class="form-row" style="margin-bottom:15px">
+                        <div><strong>Name:</strong> ${child.name}</div>
+                        <div><strong>Adm No:</strong> ${child.id}</div>
+                        <div><strong>Class:</strong> ${child.class}</div>
+                    </div>
+                    <div class="form-row" style="margin-bottom:20px">
+                        <div><strong>Fees Paid:</strong> KES ${totalPaid.toLocaleString()}</div>
+                        <div><strong>Attendance:</strong> ${attendance.length ? Math.round(present / attendance.length * 100) + '%' : 'N/A'}</div>
+                    </div>
+                    ${examSections || '<p>No grades available yet</p>'}
+                </div>`;
+        }
+
+        function printReportCard() {
+            const content = document.getElementById('printableReport').innerHTML;
+            const win = window.open('', '', 'height=800,width=900');
+            win.document.write('<html><head><title>Report Card - ' + (child ? child.name : '') + '</title>');
+            win.document.write('<style>body{font-family:Poppins,sans-serif;padding:30px;color:#333}table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#1a5276;color:white}tr:nth-child(even){background:#f9f9f9}.form-row{display:flex;gap:30px}h2{color:#1a5276}h3{color:#1a5276;margin-top:20px}@media print{body{padding:15px}}</style>');
+            win.document.write('</head><body>');
+            win.document.write(content);
+            win.document.write('</body></html>');
+            win.document.close();
+            win.print();
+        }
+
+        // ===== PROFILE =====
+        function loadProfile() {
+            document.getElementById('parentProfileInfo').innerHTML = `
+                <div class="form-row" style="margin-bottom:12px"><div><strong>Name:</strong> ${parent.name}</div><div><strong>Phone:</strong> ${parent.phone}</div></div>
+                <div class="form-row" style="margin-bottom:12px"><div><strong>Email:</strong> ${parent.email || '-'}</div><div><strong>Child:</strong> ${child ? child.name + ' (' + child.id + ')' : '-'}</div></div>
+                <div class="form-row"><div><strong>Child's Class:</strong> ${child ? child.class : '-'}</div></div>`;
+        }
+
+        // ===== INIT =====
+        function init() {
+            if (!parent) return;
+            document.getElementById('parentDisplayName').textContent = parent.name;
+            document.getElementById('welcomeName').textContent = parent.name;
+            loadDashboard();
+            populateParentGradeFilters();
+        }
+        init();
+        // Dark mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('wanganga_dark_mode', isDark);
+            document.getElementById('dmIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        if (localStorage.getItem('wanganga_dark_mode') === 'true') {
+            document.body.classList.add('dark-mode');
+            const icon = document.getElementById('dmIcon');
+            if (icon) icon.className = 'fas fa-sun';
+        }
+    </script>
+
+</body>
+</html>

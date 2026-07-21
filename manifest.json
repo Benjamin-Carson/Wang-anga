@@ -1,0 +1,24 @@
+{
+    "name": "Wang'anga Senior School",
+    "short_name": "Wang'anga",
+    "description": "Wang'anga Senior School Portal - View grades, fees, attendance, and more",
+    "start_url": "/wang`anga/index.html",
+    "display": "standalone",
+    "background_color": "#1a5276",
+    "theme_color": "#1a5276",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

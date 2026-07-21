@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Center | Wang'anga Senior School</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i></div>
+            <h3>Wang'anga Admin</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="admin.html#teachers"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                <li><a href="admin.html#students"><i class="fas fa-user-graduate"></i> Students</a></li>
+                <li><a href="admin.html#fees"><i class="fas fa-money-bill-wave"></i> Fees</a></li>
+                <li><a href="admin.html#parents"><i class="fas fa-users"></i> Parents</a></li>
+                <li><a href="admin.html#applicants"><i class="fas fa-file-alt"></i> Applicants</a></li>
+                <li><a href="admin.html#discipline"><i class="fas fa-gavel"></i> Discipline</a></li>
+                <li><a href="admin-center.html" class="active"><i class="fas fa-clipboard-list"></i> Admin Center</a></li>
+                <li><a href="admin.html#settings"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-topbar">
+            <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+            <div class="topbar-right">
+                <div class="admin-profile"><i class="fas fa-user-circle"></i> <span>Admin Center</span></div>
+            </div>
+        </div>
+
+        <div class="content-section active" id="adminCenter">
+            <h2><i class="fas fa-clipboard-list"></i> Admin Center - Activity Records</h2>
+
+            <!-- Summary Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#2980b9,#3498db)"><i class="fas fa-list"></i></div>
+                    <div class="stat-info"><h3 id="totalRecords">0</h3><p>Total Records</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#27ae60,#2ecc71)"><i class="fas fa-user-plus"></i></div>
+                    <div class="stat-info"><h3 id="todayRecords">0</h3><p>Today's Records</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#8e44ad,#9b59b6)"><i class="fas fa-users"></i></div>
+                    <div class="stat-info"><h3 id="loginsToday">0</h3><p>Logins Today</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#e74c3c,#c0392b)"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="stat-info"><h3 id="criticalRecords">0</h3><p>Critical Actions</p></div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="searchInput" placeholder="Search records..." oninput="filterRecords()">
+                </div>
+                <div class="filter-group">
+                    <label>Category</label>
+                    <select id="filterCategory" onchange="filterRecords()">
+                        <option value="all">All Categories</option>
+                        <option value="login">Logins</option>
+                        <option value="student">Students</option>
+                        <option value="teacher">Teachers</option>
+                        <option value="parent">Parents</option>
+                        <option value="applicant">Applicants</option>
+                        <option value="fee">Fees</option>
+                        <option value="discipline">Discipline</option>
+                        <option value="alumni">Alumni</option>
+                        <option value="system">System</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date Range</label>
+                    <select id="filterDate" onchange="filterRecords()">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Action Type</label>
+                    <select id="filterAction" onchange="filterRecords()">
+                        <option value="all">All Actions</option>
+                        <option value="create">Created</option>
+                        <option value="update">Updated</option>
+                        <option value="delete">Deleted</option>
+                        <option value="login">Login</option>
+                        <option value="suspend">Suspended</option>
+                        <option value="expel">Expelled</option>
+                        <option value="accept">Accepted</option>
+                        <option value="reject">Rejected</option>
+                    </select>
+                </div>
+                <div class="filter-group filter-actions">
+                    <button class="btn btn-primary" onclick="exportRecords()"><i class="fas fa-download"></i> Export</button>
+                    <button class="btn" style="background:#e74c3c;color:white" onclick="clearAllRecords()"><i class="fas fa-trash"></i> Clear All</button>
+                </div>
+            </div>
+
+            <!-- Records Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Timestamp</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                            <th>Details</th>
+                            <th>User</th>
+                            <th>IP/Location</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody">
+                        <tr class="no-data"><td colspan="7">No records found</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </main>
+
+    <script>
+        const RECORDS_PER_PAGE = 15;
+        let currentPage = 1;
+
+        function getRecords() { return JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]'); }
+        function setRecords(data) { localStorage.setItem('wanganga_admin_center', JSON.stringify(data)); }
+
+        // ===== LOGGING FUNCTION =====
+        // Call this from anywhere on the site to log an activity
+        function logActivity(category, action, details, user) {
+            const records = getRecords();
+            records.unshift({
+                id: records.length + 1,
+                timestamp: new Date().toISOString(),
+                category: category,
+                action: action,
+                details: details,
+                user: user || 'Admin',
+                ip: 'Local Network'
+            });
+            if (records.length > 500) records.pop();
+            setRecords(records);
+        }
+
+        // Make it global
+        window.logActivity = logActivity;
+
+        // ===== INITIAL SEED DATA =====
+        function seedSampleRecords() {
+            const records = getRecords();
+            if (records.length > 0) return;
+
+            const sampleData = [
+                { category: 'system', action: 'create', details: 'System initialized - Wang\'anga Senior School Portal', user: 'System', time: -7200000 },
+                { category: 'login', action: 'login', details: 'Admin logged into the system', user: 'Admin', time: -6000000 },
+                { category: 'system', action: 'create', details: 'School profile created - Wang\'anga Senior School', user: 'Admin', time: -5000000 },
+                { category: 'teacher', action: 'create', details: 'New teacher added: John Mwangi (Mathematics)', user: 'Admin', time: -4000000 },
+                { category: 'teacher', action: 'create', details: 'New teacher added: Grace Wanjiru (English)', user: 'Admin', time: -3500000 },
+                { category: 'student', action: 'create', details: 'New student added: Peter Odhiambo (Form 1 East)', user: 'Admin', time: -3000000 },
+                { category: 'student', action: 'create', details: 'New student added: Mary Akinyi (Form 1 West)', user: 'Admin', time: -2500000 },
+                { category: 'parent', action: 'create', details: 'New parent registered: James Odhiambo', user: 'Admin', time: -2000000 },
+                { category: 'applicant', action: 'accept', details: 'Application accepted: Sarah Wanjiku (REF12345678)', user: 'Admin', time: -1500000 },
+                { category: 'fee', action: 'create', details: 'Fee payment recorded: KES 45,000 from Peter Odhiambo (M-Pesa)', user: 'Admin', time: -1000000 },
+                { category: 'discipline', action: 'suspend', details: 'Student suspended: David Kiprop - Misconduct (2 weeks)', user: 'Admin', time: -500000 },
+                { category: 'login', action: 'login', details: 'Admin logged into the system', user: 'Admin', time: -200000 },
+            ];
+
+            const now = Date.now();
+            const seeded = sampleData.map((d, i) => ({
+                id: i + 1,
+                timestamp: new Date(now + d.time).toISOString(),
+                category: d.category,
+                action: d.action,
+                details: d.details,
+                user: d.user,
+                ip: 'Local Network'
+            }));
+
+            setRecords(seeded);
+        }
+
+        // ===== RENDER =====
+        function filterRecords() {
+            currentPage = 1;
+            renderRecords();
+        }
+
+        function getFilteredRecords() {
+            let records = getRecords();
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('filterCategory').value;
+            const dateFilter = document.getElementById('filterDate').value;
+            const actionFilter = document.getElementById('filterAction').value;
+
+            if (search) {
+                records = records.filter(r =>
+                    r.details.toLowerCase().includes(search) ||
+                    r.user.toLowerCase().includes(search) ||
+                    r.category.toLowerCase().includes(search) ||
+                    r.action.toLowerCase().includes(search)
+                );
+            }
+
+            if (category !== 'all') {
+                records = records.filter(r => r.category === category);
+            }
+
+            if (actionFilter !== 'all') {
+                records = records.filter(r => r.action === actionFilter);
+            }
+
+            if (dateFilter !== 'all') {
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const weekAgo = new Date(today - 7 * 86400000);
+                const monthAgo = new Date(today - 30 * 86400000);
+
+                records = records.filter(r => {
+                    const d = new Date(r.timestamp);
+                    if (dateFilter === 'today') return d >= today;
+                    if (dateFilter === 'week') return d >= weekAgo;
+                    if (dateFilter === 'month') return d >= monthAgo;
+                    return true;
+                });
+            }
+
+            return records;
+        }
+
+        function renderRecords() {
+            const records = getFilteredRecords();
+            const tbody = document.getElementById('recordsTableBody');
+            const total = records.length;
+            const totalPages = Math.ceil(total / RECORDS_PER_PAGE);
+            const start = (currentPage - 1) * RECORDS_PER_PAGE;
+            const pageRecords = records.slice(start, start + RECORDS_PER_PAGE);
+
+            if (!pageRecords.length) {
+                tbody.innerHTML = '<tr class="no-data"><td colspan="7">No records found</td></tr>';
+            } else {
+                tbody.innerHTML = pageRecords.map((r, i) => {
+                    const catClass = 'cat-' + r.category;
+                    const actClass = 'act-' + r.action;
+                    const date = new Date(r.timestamp);
+                    return `<tr>
+                        <td>${start + i + 1}</td>
+                        <td><small>${date.toLocaleDateString()} ${date.toLocaleTimeString()}</small></td>
+                        <td><span class="record-badge ${catClass}">${r.category}</span></td>
+                        <td><span class="action-badge ${actClass}">${r.action}</span></td>
+                        <td>${r.details}</td>
+                        <td>${r.user}</td>
+                        <td><small>${r.ip}</small></td>
+                    </tr>`;
+                }).join('');
+            }
+
+            renderPagination(totalPages);
+            updateSummary();
+        }
+
+        function renderPagination(totalPages) {
+            const el = document.getElementById('pagination');
+            if (totalPages <= 1) { el.innerHTML = ''; return; }
+            let html = '';
+            if (currentPage > 1) html += `<button onclick="goToPage(${currentPage - 1})"><i class="fas fa-chevron-left"></i></button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) html += `<button class="active">${i}</button>`;
+                else if (i <= 3 || i >= totalPages - 2 || Math.abs(i - currentPage) <= 1) {
+                    html += `<button onclick="goToPage(${i})">${i}</button>`;
+                } else if (i === 4 || i === totalPages - 3) {
+                    html += `<button disabled>...</button>`;
+                }
+            }
+            if (currentPage < totalPages) html += `<button onclick="goToPage(${currentPage + 1})"><i class="fas fa-chevron-right"></i></button>`;
+            el.innerHTML = html;
+        }
+
+        function goToPage(page) { currentPage = page; renderRecords(); }
+
+        function updateSummary() {
+            const records = getRecords();
+            const today = new Date(new Date().setHours(0,0,0,0));
+            const todayRecs = records.filter(r => new Date(r.timestamp) >= today);
+            const loginsToday = todayRecs.filter(r => r.action === 'login');
+            const critical = records.filter(r => r.action === 'suspend' || r.action === 'expel' || r.action === 'delete');
+
+            document.getElementById('totalRecords').textContent = records.length;
+            document.getElementById('todayRecords').textContent = todayRecs.length;
+            document.getElementById('loginsToday').textContent = loginsToday.length;
+            document.getElementById('criticalRecords').textContent = critical.length;
+        }
+
+        // ===== EXPORT =====
+        function exportRecords() {
+            const records = getFilteredRecords();
+            let csv = 'No,Timestamp,Category,Action,Details,User,IP\n';
+            records.forEach((r, i) => {
+                csv += `${i+1},${r.timestamp},${r.category},${r.action},"${r.details}",${r.user},${r.ip}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'wanganga_activity_records_' + new Date().toISOString().slice(0,10) + '.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function clearAllRecords() {
+            if (!confirm('Are you sure you want to clear ALL activity records? This cannot be undone.')) return;
+            if (!confirm('FINAL WARNING: This will permanently delete all records. Continue?')) return;
+            setRecords([]);
+            renderRecords();
+        }
+
+        // ===== SIDEBAR =====
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+
+        // ===== INIT =====
+        seedSampleRecords();
+        renderRecords();
+    </script>
+
+</body>
+</html>

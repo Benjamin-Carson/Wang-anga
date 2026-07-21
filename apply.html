@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Admission | Wang'anga Senior School</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="apply-body">
+
+    <div class="apply-container">
+        <div class="apply-header">
+            <div class="apply-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1>Wang'anga Senior School</h1>
+                <p>Online Admission Application</p>
+            </div>
+        </div>
+
+        <div class="apply-progress">
+            <div class="progress-step active" id="stepIndicator1">
+                <div class="step-circle">1</div>
+                <span>Student Info</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" id="stepIndicator2">
+                <div class="step-circle">2</div>
+                <span>Parent Info</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" id="stepIndicator3">
+                <div class="step-circle">3</div>
+                <span>Submit</span>
+            </div>
+        </div>
+
+        <!-- Step 1: Student Information -->
+        <div class="apply-form-section active" id="formStep1">
+            <div class="apply-form-card">
+                <h3><i class="fas fa-user-graduate"></i> Student Information</h3>
+                <form id="applyForm1">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Student Full Name <span class="required">*</span></label>
+                            <input type="text" id="appStudentName" placeholder="e.g. Sarah Wanjiku" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Birth <span class="required">*</span></label>
+                            <input type="date" id="appDOB" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Gender <span class="required">*</span></label>
+                            <select id="appGender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>KCPE Index Number <span class="required">*</span></label>
+                            <input type="text" id="appKCPE" placeholder="e.g. 12345678" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>KCPE Marks</label>
+                            <input type="number" id="appMarks" placeholder="e.g. 350" min="0" max="500">
+                        </div>
+                        <div class="form-group">
+                            <label>Previous School</label>
+                            <input type="text" id="appPrevSchool" placeholder="e.g. Wang'anga Primary">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Any Medical Conditions?</label>
+                        <textarea id="appMedical" rows="3" placeholder="Specify any allergies, conditions, or medications"></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Step 2: Parent/Guardian Information -->
+        <div class="apply-form-section" id="formStep2">
+            <div class="apply-form-card">
+                <h3><i class="fas fa-users"></i> Parent / Guardian Information</h3>
+                <form id="applyForm2">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Parent/Guardian Full Name <span class="required">*</span></label>
+                            <input type="text" id="appParentName" placeholder="e.g. Peter Odhiambo" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Relationship <span class="required">*</span></label>
+                            <select id="appRelationship" required>
+                                <option value="">Select Relationship</option>
+                                <option value="Father">Father</option>
+                                <option value="Mother">Mother</option>
+                                <option value="Guardian">Guardian</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="appParentPhone" placeholder="07XX XXX XXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address <span class="required">*</span></label>
+                            <input type="email" id="appParentEmail" placeholder="parent@email.com" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>National ID Number</label>
+                            <input type="text" id="appParentID" placeholder="ID Number">
+                        </div>
+                        <div class="form-group">
+                            <label>Occupation</label>
+                            <input type="text" id="appParentOccupation" placeholder="e.g. Teacher">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address <span class="required">*</span></label>
+                        <textarea id="appAddress" rows="3" placeholder="P.O. Box, Town, County" required></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Step 3: Review & Submit -->
+        <div class="apply-form-section" id="formStep3">
+            <div class="apply-form-card">
+                <h3><i class="fas fa-check-circle"></i> Review & Submit</h3>
+                <div class="review-section">
+                    <h4>Student Details</h4>
+                    <div class="review-grid" id="reviewStudent"></div>
+                </div>
+                <div class="review-section">
+                    <h4>Parent/Guardian Details</h4>
+                    <div class="review-grid" id="reviewParent"></div>
+                </div>
+                <div class="terms">
+                    <label>
+                        <input type="checkbox" id="agreeTerms" required>
+                        I confirm that all information provided is correct and I agree to the school's <a href="#">terms and conditions</a>.
+                    </label>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button type="button" class="btn btn-primary" onclick="submitApplication()"><i class="fas fa-paper-plane"></i> Submit Application</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div class="apply-form-section" id="formSuccess" style="display:none;">
+            <div class="success-card">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Application Submitted!</h2>
+                <p>Your application has been received. Your reference number is:</p>
+                <div class="ref-number" id="refNumber"></div>
+                <p class="success-note">Please save this reference number. You can check your application status by contacting the school office.</p>
+                <div class="success-buttons">
+                    <a href="login.html" class="btn btn-primary">Back to Login</a>
+                    <a href="index.html" class="btn btn-secondary">Back to Website</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="apply-footer">
+            <a href="login.html"><i class="fas fa-arrow-left"></i> Back to Login</a>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            if (step === 2) {
+                // Validate step 1
+                const name = document.getElementById('appStudentName').value;
+                const dob = document.getElementById('appDOB').value;
+                const gender = document.getElementById('appGender').value;
+                const kcpe = document.getElementById('appKCPE').value;
+                if (!name || !dob || !gender || !kcpe) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+            }
+            if (step === 3) {
+                // Validate step 2
+                const parentName = document.getElementById('appParentName').value;
+                const relationship = document.getElementById('appRelationship').value;
+                const phone = document.getElementById('appParentPhone').value;
+                const email = document.getElementById('appParentEmail').value;
+                const address = document.getElementById('appAddress').value;
+                if (!parentName || !relationship || !phone || !email || !address) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                // Populate review
+                populateReview();
+            }
+
+            document.querySelectorAll('.apply-form-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('formStep' + step).classList.add('active');
+            
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById('stepIndicator' + i).classList.remove('active');
+                if (i <= step) {
+                    document.getElementById('stepIndicator' + i).classList.add('active');
+                }
+            }
+            currentStep = step;
+        }
+
+        function prevStep(step) {
+            document.querySelectorAll('.apply-form-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('formStep' + step).classList.add('active');
+            
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById('stepIndicator' + i).classList.remove('active');
+                if (i <= step) {
+                    document.getElementById('stepIndicator' + i).classList.add('active');
+                }
+            }
+            currentStep = step;
+        }
+
+        function populateReview() {
+            document.getElementById('reviewStudent').innerHTML = `
+                <p><strong>Name:</strong> ${document.getElementById('appStudentName').value}</p>
+                <p><strong>Date of Birth:</strong> ${document.getElementById('appDOB').value}</p>
+                <p><strong>Gender:</strong> ${document.getElementById('appGender').value}</p>
+                <p><strong>KCPE Index:</strong> ${document.getElementById('appKCPE').value}</p>
+                <p><strong>KCPE Marks:</strong> ${document.getElementById('appMarks').value || 'N/A'}</p>
+                <p><strong>Previous School:</strong> ${document.getElementById('appPrevSchool').value || 'N/A'}</p>
+                <p><strong>Medical:</strong> ${document.getElementById('appMedical').value || 'None'}</p>
+            `;
+            document.getElementById('reviewParent').innerHTML = `
+                <p><strong>Name:</strong> ${document.getElementById('appParentName').value}</p>
+                <p><strong>Relationship:</strong> ${document.getElementById('appRelationship').value}</p>
+                <p><strong>Phone:</strong> ${document.getElementById('appParentPhone').value}</p>
+                <p><strong>Email:</strong> ${document.getElementById('appParentEmail').value}</p>
+                <p><strong>ID Number:</strong> ${document.getElementById('appParentID').value || 'N/A'}</p>
+                <p><strong>Occupation:</strong> ${document.getElementById('appParentOccupation').value || 'N/A'}</p>
+                <p><strong>Address:</strong> ${document.getElementById('appAddress').value}</p>
+            `;
+        }
+
+        function submitApplication() {
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('Please agree to the terms and conditions');
+                return;
+            }
+
+            const applicants = JSON.parse(localStorage.getItem('applicants') || '[]');
+            const refNo = 'REF' + Date.now().toString().slice(-8);
+
+            const application = {
+                refNo: refNo,
+                studentName: document.getElementById('appStudentName').value,
+                dob: document.getElementById('appDOB').value,
+                gender: document.getElementById('appGender').value,
+                kcpe: document.getElementById('appKCPE').value,
+                marks: document.getElementById('appMarks').value || '',
+                prevSchool: document.getElementById('appPrevSchool').value || '',
+                medical: document.getElementById('appMedical').value || '',
+                parentName: document.getElementById('appParentName').value,
+                relationship: document.getElementById('appRelationship').value,
+                parentPhone: document.getElementById('appParentPhone').value,
+                email: document.getElementById('appParentEmail').value,
+                parentID: document.getElementById('appParentID').value || '',
+                occupation: document.getElementById('appParentOccupation').value || '',
+                address: document.getElementById('appAddress').value,
+                dateApplied: new Date().toLocaleDateString(),
+                status: 'Pending'
+            };
+
+            applicants.push(application);
+            localStorage.setItem('applicants', JSON.stringify(applicants));
+
+            // Log to admin center
+            const records = JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]');
+            records.unshift({
+                id: records.length + 1,
+                timestamp: new Date().toISOString(),
+                category: 'applicant',
+                action: 'create',
+                details: 'New application submitted: ' + application.studentName + ' (Ref: ' + refNo + ')',
+                user: application.parentName,
+                ip: 'Local Network'
+            });
+            localStorage.setItem('wanganga_admin_center', JSON.stringify(records));
+
+            document.getElementById('refNumber').textContent = refNo;
+            document.querySelectorAll('.apply-form-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('formSuccess').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>

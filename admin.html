@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Wang'anga Senior School</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a5276">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i></div>
+            <h3>Wang'anga Admin</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" onclick="showSection('teachers', this)"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                <li><a href="#" onclick="showSection('students', this)"><i class="fas fa-user-graduate"></i> Students</a></li>
+                <li><a href="#" onclick="showSection('fees', this)"><i class="fas fa-money-bill-wave"></i> Fees</a></li>
+                <li><a href="#" onclick="showSection('parents', this)"><i class="fas fa-users"></i> Parents</a></li>
+                <li><a href="#" onclick="showSection('applicants', this)"><i class="fas fa-file-alt"></i> Applicants</a></li>
+                <li><a href="#" onclick="showSection('alumni', this)"><i class="fas fa-medal"></i> Alumni</a></li>
+                <li><a href="#" onclick="showSection('discipline', this)"><i class="fas fa-gavel"></i> Discipline</a></li>
+                <li><a href="#" onclick="showSection('timetable', this)"><i class="fas fa-calendar-alt"></i> Timetable</a></li>
+                <li><a href="#" onclick="showSection('attendance', this)"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
+                <li><a href="#" onclick="showSection('announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                <li><a href="#" onclick="showSection('calendar', this)"><i class="fas fa-calendar"></i> Calendar</a></li>
+                <li><a href="#" onclick="showSection('bulk-import', this)"><i class="fas fa-file-csv"></i> Bulk Import</a></li>
+                <li><a href="admin-center.html"><i class="fas fa-clipboard-list"></i> Admin Center</a></li>
+                <li><a href="#" onclick="showSection('settings', this)"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-topbar">
+            <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+            <div class="topbar-right">
+                <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <div class="admin-profile"><i class="fas fa-user-circle"></i> <span>Admin</span></div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="content-section active" id="dashboard">
+            <h2>Dashboard Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon teachers-bg"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div class="stat-info"><h3 id="teacherCount">0</h3><p>Teachers</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon students-bg"><i class="fas fa-user-graduate"></i></div>
+                    <div class="stat-info"><h3 id="studentCount">0</h3><p>Students</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon parents-bg"><i class="fas fa-users"></i></div>
+                    <div class="stat-info"><h3 id="parentCount">0</h3><p>Parents</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon applicants-bg"><i class="fas fa-file-alt"></i></div>
+                    <div class="stat-info"><h3 id="applicantCount">0</h3><p>Pending Applicants</p></div>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#e74c3c,#c0392b)"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="stat-info"><h3 id="totalFees">KES 0</h3><p>Total Fees Collected</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#e67e22,#d35400)"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-info"><h3 id="suspendedCount">0</h3><p>Suspended Users</p></div>
+                </div>
+            </div>
+            <div class="recent-section">
+                <h3>Recent Activities</h3>
+                <div class="activity-list" id="activityList"><p class="no-activity">No recent activities</p></div>
+            </div>
+        </div>
+
+        <!-- Teachers -->
+        <div class="content-section" id="teachers">
+            <div class="section-top">
+                <h2>Manage Teachers</h2>
+                <button class="btn btn-primary" onclick="openModal('addTeacher')"><i class="fas fa-plus"></i> Add Teacher</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Staff ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Subjects</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="teacherTableBody"><tr class="no-data"><td colspan="8">No teachers added yet</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Students -->
+        <div class="content-section" id="students">
+            <div class="section-top">
+                <h2>Manage Students</h2>
+                <button class="btn btn-primary" onclick="openModal('addStudent')"><i class="fas fa-plus"></i> Add Student</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Adm No</th><th>Name</th><th>Class</th><th>Parent</th><th>Phone</th><th>Credentials</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="studentTableBody"><tr class="no-data"><td colspan="8">No students added yet</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Fees -->
+        <div class="content-section" id="fees">
+            <div class="section-top">
+                <h2>Fee Management</h2>
+                <button class="btn btn-primary" onclick="openModal('addFee')"><i class="fas fa-plus"></i> Add Fee Record</button>
+            </div>
+            <div class="fee-summary">
+                <div class="fee-card">
+                    <h4>Total Expected</h4>
+                    <p id="totalExpected">KES 0</p>
+                </div>
+                <div class="fee-card paid">
+                    <h4>Total Paid</h4>
+                    <p id="totalPaid">KES 0</p>
+                </div>
+                <div class="fee-card unpaid">
+                    <h4>Total Unpaid</h4>
+                    <p id="totalUnpaid">KES 0</p>
+                </div>
+            </div>
+            <div class="table-container" style="margin-top:20px;">
+                <table>
+                    <thead><tr><th>Receipt No</th><th>Student</th><th>Adm No</th><th>Amount</th><th>Term</th><th>Method</th><th>Date</th><th>Actions</th></tr></thead>
+                    <tbody id="feeTableBody"><tr class="no-data"><td colspan="8">No fee records yet</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Parents -->
+        <div class="content-section" id="parents">
+            <div class="section-top">
+                <h2>Manage Parents</h2>
+                <button class="btn btn-primary" onclick="openModal('addParent')"><i class="fas fa-plus"></i> Add Parent</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Parent ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Child</th><th>Actions</th></tr></thead>
+                    <tbody id="parentTableBody"><tr class="no-data"><td colspan="6">No parents added yet</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Applicants -->
+        <div class="content-section" id="applicants">
+            <div class="section-top"><h2>Pending Applications</h2></div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Ref No</th><th>Student Name</th><th>Gender</th><th>KCPE Index</th><th>Parent Name</th><th>Phone</th><th>Actions</th></tr></thead>
+                    <tbody id="applicantTableBody"><tr class="no-data"><td colspan="7">No pending applications</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Alumni -->
+        <div class="content-section" id="alumni">
+            <div class="section-top"><h2>Alumni Management</h2></div>
+            <div class="discipline-tabs">
+                <button class="tab-btn active" onclick="showAlumniTab('pending-alumni', this)">Pending Approval</button>
+                <button class="tab-btn" onclick="showAlumniTab('approved-alumni', this)">Approved Alumni</button>
+                <button class="tab-btn" onclick="showAlumniTab('rejected-alumni', this)">Rejected</button>
+            </div>
+            <div class="discipline-content active" id="pending-alumni">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Alumni ID</th><th>Name</th><th>KCSE Year</th><th>Grade</th><th>Phone</th><th>Occupation</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="pendingAlumniBody"><tr class="no-data"><td colspan="8">No pending alumni applications</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="discipline-content" id="approved-alumni">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Alumni ID</th><th>Name</th><th>KCSE Year</th><th>Occupation</th><th>Phone</th><th>Email</th><th>Approved On</th><th>Actions</th></tr></thead>
+                        <tbody id="approvedAlumniBody"><tr class="no-data"><td colspan="8">No approved alumni</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="discipline-content" id="rejected-alumni">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Alumni ID</th><th>Name</th><th>KCSE Year</th><th>Reason</th><th>Rejected On</th></tr></thead>
+                        <tbody id="rejectedAlumniBody"><tr class="no-data"><td colspan="5">No rejected alumni</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discipline -->
+        <div class="content-section" id="discipline">
+            <div class="section-top">
+                <h2>Discipline Management</h2>
+            </div>
+            <div class="discipline-tabs">
+                <button class="tab-btn active" onclick="showDisciplineTab('suspended-students', this)">Suspended Students</button>
+                <button class="tab-btn" onclick="showDisciplineTab('expelled-students', this)">Expelled Students</button>
+                <button class="tab-btn" onclick="showDisciplineTab('suspended-teachers', this)">Suspended Teachers</button>
+            </div>
+            <div class="discipline-content active" id="suspended-students">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Adm No</th><th>Name</th><th>Class</th><th>Reason</th><th>Suspended On</th><th>Duration</th><th>Actions</th></tr></thead>
+                        <tbody id="suspendedStudentBody"><tr class="no-data"><td colspan="7">No suspended students</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="discipline-content" id="expelled-students">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Adm No</th><th>Name</th><th>Class</th><th>Reason</th><th>Expelled On</th></tr></thead>
+                        <tbody id="expelledStudentBody"><tr class="no-data"><td colspan="5">No expelled students</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="discipline-content" id="suspended-teachers">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Staff ID</th><th>Name</th><th>Subject</th><th>Reason</th><th>Suspended On</th><th>Duration</th><th>Actions</th></tr></thead>
+                        <tbody id="suspendedTeacherBody"><tr class="no-data"><td colspan="7">No suspended teachers</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timetable Management -->
+        <div class="content-section" id="timetable">
+            <h2>Timetable Management</h2>
+            <div class="create-card-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Class <span class="required">*</span></label>
+                        <select id="ttClass">
+                            <option value="">Select Class</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Day <span class="required">*</span></label>
+                        <select id="ttDay">
+                            <option value="">Select Day</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Period (1-12) <span class="required">*</span></label>
+                        <select id="ttPeriod">
+                            <option value="">Select Period</option>
+                            <option value="1">Period 1 (7:30-8:00)</option>
+                            <option value="2">Period 2 (8:00-8:40)</option>
+                            <option value="3">Period 3 (8:40-9:20)</option>
+                            <option value="4">Period 4 (9:20-10:00)</option>
+                            <option value="6">Period 5 (10:20-11:00)</option>
+                            <option value="7">Period 6 (11:00-11:40)</option>
+                            <option value="8">Period 7 (11:40-12:20)</option>
+                            <option value="9">Period 8 (12:20-1:00)</option>
+                            <option value="10">Period 9 (1:00-1:40)</option>
+                            <option value="11">Period 10 (1:40-2:20)</option>
+                            <option value="12">Period 11 (2:20-3:00)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject <span class="required">*</span></label>
+                        <input type="text" id="ttSubject" placeholder="e.g Mathematics">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Teacher</label>
+                        <select id="ttTeacher"><option value="">Select Teacher</option></select>
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:flex-end">
+                        <button class="btn btn-primary" onclick="addTimetableEntry()"><i class="fas fa-plus"></i> Add Entry</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top:15px">
+                <label>View Timetable for Class</label>
+                <select id="ttViewClass" onchange="renderTimetable()" style="width:250px">
+                    <option value="">Select Class</option>
+                </select>
+            </div>
+            <div class="table-container" style="margin-top:15px">
+                <table id="timetableDisplay">
+                    <thead><tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Actions</th></tr></thead>
+                    <tbody id="timetableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Attendance Management -->
+        <div class="content-section" id="attendance">
+            <h2>Attendance Management</h2>
+            <div class="create-card-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Class <span class="required">*</span></label>
+                        <select id="attClass" onchange="loadAttendanceStudents()"><option value="">Select Class</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date <span class="required">*</span></label>
+                        <input type="date" id="attDate">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="loadAttendanceStudents()" style="margin:15px 0"><i class="fas fa-search"></i> Load Students</button>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Adm No</th><th>Name</th><th>Status</th><th>Remarks</th></tr></thead>
+                    <tbody id="attendanceManageBody"><tr class="no-data"><td colspan="4">Select a class and date then click Load Students</td></tr></tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary" onclick="saveAttendance()" id="saveAttBtn" style="display:none;margin-top:15px"><i class="fas fa-save"></i> Save Attendance</button>
+
+            <h3 style="margin-top:30px">Attendance Records</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Filter by Class</label>
+                    <select id="attFilterClass" onchange="renderAttendanceRecords()"><option value="">All Classes</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Filter by Date</label>
+                    <input type="date" id="attFilterDate" onchange="renderAttendanceRecords()">
+                </div>
+            </div>
+            <div class="table-container" style="margin-top:15px">
+                <table>
+                    <thead><tr><th>Date</th><th>Student</th><th>Class</th><th>Status</th><th>Marked By</th><th>Remarks</th></tr></thead>
+                    <tbody id="attendanceRecordsBody"><tr class="no-data"><td colspan="6">No attendance records</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Announcements Management -->
+        <div class="content-section" id="announcements">
+            <h2>Announcements & Notices</h2>
+            <div class="create-card-form">
+                <div class="form-group">
+                    <label>Title <span class="required">*</span></label>
+                    <input type="text" id="annTitle" placeholder="Announcement title">
+                </div>
+                <div class="form-group">
+                    <label>Message <span class="required">*</span></label>
+                    <textarea id="annMessage" rows="4" placeholder="Type your announcement..." style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;resize:vertical"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Audience</label>
+                        <select id="annAudience">
+                            <option value="all">All</option>
+                            <option value="teachers">Teachers Only</option>
+                            <option value="students">Students Only</option>
+                            <option value="parents">Parents Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" onclick="postAnnouncement()" style="margin-top:22px"><i class="fas fa-paper-plane"></i> Post Announcement</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-container" style="margin-top:20px">
+                <table>
+                    <thead><tr><th>Title</th><th>Message</th><th>Audience</th><th>Posted By</th><th>Date</th><th>Actions</th></tr></thead>
+                    <tbody id="announcementsBody"><tr class="no-data"><td colspan="6">No announcements</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Calendar / Events -->
+        <div class="content-section" id="calendar">
+            <h2>School Calendar & Events</h2>
+            <div class="create-card-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Event Title <span class="required">*</span></label>
+                        <input type="text" id="evTitle" placeholder="e.g Open Day">
+                    </div>
+                    <div class="form-group">
+                        <label>Date <span class="required">*</span></label>
+                        <input type="date" id="evDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>End Date (optional)</label>
+                        <input type="date" id="evEndDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="evType">
+                            <option value="event">Event</option>
+                            <option value="exam">Exam Period</option>
+                            <option value="holiday">Holiday</option>
+                            <option value="deadline">Deadline</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="evDesc" placeholder="Brief description">
+                </div>
+                <button class="btn btn-primary" onclick="addEvent()"><i class="fas fa-plus"></i> Add Event</button>
+            </div>
+            <div class="table-container" style="margin-top:20px">
+                <table>
+                    <thead><tr><th>Title</th><th>Date</th><th>End Date</th><th>Type</th><th>Description</th><th>Actions</th></tr></thead>
+                    <tbody id="eventsBody"><tr class="no-data"><td colspan="6">No events</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bulk Import -->
+        <div class="content-section" id="bulk-import">
+            <h2>Bulk Import (CSV)</h2>
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Import Students</h3>
+                    <p>CSV format: id, name, gender, class, kcpe, parent, parentPhone, username, password, email</p>
+                    <div class="form-group">
+                        <input type="file" id="importStudentsFile" accept=".csv" style="margin:10px 0">
+                        <button class="btn btn-primary" onclick="bulkImportStudents()"><i class="fas fa-upload"></i> Import Students</button>
+                    </div>
+                </div>
+                <div class="settings-card">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>Import Teachers</h3>
+                    <p>CSV format: id, name, email, phone, subjects(comma-sep), password</p>
+                    <div class="form-group">
+                        <input type="file" id="importTeachersFile" accept=".csv" style="margin:10px 0">
+                        <button class="btn btn-primary" onclick="bulkImportTeachers()"><i class="fas fa-upload"></i> Import Teachers</button>
+                    </div>
+                </div>
+            </div>
+            <div class="activity-card" style="margin-top:20px">
+                <h3><i class="fas fa-download"></i> Download Sample CSV</h3>
+                <p>Download a sample CSV file to see the correct format before importing.</p>
+                <button class="btn btn-primary" onclick="downloadSampleCSV('students')" style="margin-right:10px"><i class="fas fa-file-csv"></i> Students Sample</button>
+                <button class="btn btn-primary" onclick="downloadSampleCSV('teachers')"><i class="fas fa-file-csv"></i> Teachers Sample</button>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="content-section" id="settings">
+            <h2>System Settings</h2>
+            <div class="settings-grid">
+                <div class="settings-card"><i class="fas fa-user-cog"></i><h3>Account Settings</h3><p>Change admin password and profile</p><button class="btn btn-primary">Edit Profile</button></div>
+                <div class="settings-card"><i class="fas fa-bell"></i><h3>Notifications</h3><p>Configure SMS and email notifications</p><button class="btn btn-primary">Configure</button></div>
+                <div class="settings-card"><i class="fas fa-database"></i><h3>Backup Data</h3><p>Export or backup school data</p><button class="btn btn-primary">Export</button></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- Add Teacher Modal -->
+    <div class="modal-overlay" id="addTeacherModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Add New Teacher</h3><span class="close-modal" onclick="closeModal('addTeacher')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="addTeacher(event)">
+                    <div class="photo-upload">
+                        <div class="photo-preview" id="teacherPhotoPreview" onclick="document.getElementById('teacherPhotoInput').click()">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <input type="file" id="teacherPhotoInput" accept="image/*" onchange="previewPhoto(this, 'teacherPhotoPreview')">
+                        <label onclick="document.getElementById('teacherPhotoInput').click()">Upload Photo</label>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="teacherName" required></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="teacherEmail" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Phone</label><input type="tel" id="teacherPhone" required></div>
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select id="teacherRole">
+                                <option value="Teacher">Teacher</option>
+                                <option value="HOD">HOD (Head of Department)</option>
+                                <option value="Dean">Dean of Students</option>
+                                <option value="Senior Teacher">Senior Teacher</option>
+                                <option value="Deputy Principal">Deputy Principal</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Subjects (hold Ctrl to select multiple)</label>
+                        <select id="teacherSubjects" multiple size="4">
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="English">English</option>
+                            <option value="Kiswahili">Kiswahili</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                            <option value="History">History</option>
+                            <option value="Geography">Geography</option>
+                            <option value="CRE">CRE</option>
+                            <option value="Computer Studies">Computer Studies</option>
+                            <option value="Business Studies">Business Studies</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Home Science">Home Science</option>
+                            <option value="French">French</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Password (Initial)</label><input type="password" id="teacherPassword" required></div>
+                    <button type="submit" class="btn btn-primary">Add Teacher</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Teacher Modal -->
+    <div class="modal-overlay" id="editTeacherModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Edit Teacher</h3><span class="close-modal" onclick="closeModal('editTeacher')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="saveTeacherEdit(event)">
+                    <input type="hidden" id="editTeacherIndex">
+                    <div class="form-row">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="editTeacherName" required></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="editTeacherEmail" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Phone</label><input type="tel" id="editTeacherPhone" required></div>
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select id="editTeacherRole">
+                                <option value="Teacher">Teacher</option>
+                                <option value="HOD">HOD</option>
+                                <option value="Dean">Dean</option>
+                                <option value="Senior Teacher">Senior Teacher</option>
+                                <option value="Deputy Principal">Deputy Principal</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Subjects</label>
+                        <select id="editTeacherSubjects" multiple size="4">
+                            <option value="Mathematics">Mathematics</option><option value="English">English</option><option value="Kiswahili">Kiswahili</option>
+                            <option value="Physics">Physics</option><option value="Chemistry">Chemistry</option><option value="Biology">Biology</option>
+                            <option value="History">History</option><option value="Geography">Geography</option><option value="CRE">CRE</option>
+                            <option value="Computer Studies">Computer Studies</option><option value="Business Studies">Business Studies</option>
+                            <option value="Agriculture">Agriculture</option><option value="Home Science">Home Science</option><option value="French">French</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>New Password (leave blank to keep)</label><input type="password" id="editTeacherPassword"></div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal-overlay" id="addStudentModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Add New Student</h3><span class="close-modal" onclick="closeModal('addStudent')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="addStudent(event)">
+                    <div class="photo-upload">
+                        <div class="photo-preview" id="studentPhotoPreview" onclick="document.getElementById('studentPhotoInput').click()">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <input type="file" id="studentPhotoInput" accept="image/*" onchange="previewPhoto(this, 'studentPhotoPreview')">
+                        <label onclick="document.getElementById('studentPhotoInput').click()">Upload Photo</label>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="studentName" required></div>
+                        <div class="form-group"><label>Gender</label><select id="studentGender"><option value="">Select</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Class</label>
+                            <select id="studentClass" required>
+                                <option value="">Select</option>
+                                <option value="Form 1 East">Form 1 East</option><option value="Form 1 West">Form 1 West</option>
+                                <option value="Form 2 East">Form 2 East</option><option value="Form 2 West">Form 2 West</option>
+                                <option value="Form 3 East">Form 3 East</option><option value="Form 3 West">Form 3 West</option>
+                                <option value="Form 4 East">Form 4 East</option><option value="Form 4 West">Form 4 West</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>KCPE Index</label><input type="text" id="studentKCPE" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Parent/Guardian Name</label><input type="text" id="studentParent" required></div>
+                        <div class="form-group"><label>Parent Phone</label><input type="tel" id="studentParentPhone" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Login Username</label><input type="text" id="studentUsername" placeholder="For student portal login" required></div>
+                        <div class="form-group"><label>Login Password</label><input type="password" id="studentPassword" required></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Student</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div class="modal-overlay" id="editStudentModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Edit Student</h3><span class="close-modal" onclick="closeModal('editStudent')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="saveStudentEdit(event)">
+                    <input type="hidden" id="editStudentIndex">
+                    <div class="form-row">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="editStudentName" required></div>
+                        <div class="form-group"><label>Gender</label><select id="editStudentGender"><option value="Male">Male</option><option value="Female">Female</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Class</label>
+                            <select id="editStudentClass">
+                                <option value="Form 1 East">Form 1 East</option><option value="Form 1 West">Form 1 West</option>
+                                <option value="Form 2 East">Form 2 East</option><option value="Form 2 West">Form 2 West</option>
+                                <option value="Form 3 East">Form 3 East</option><option value="Form 3 West">Form 3 West</option>
+                                <option value="Form 4 East">Form 4 East</option><option value="Form 4 West">Form 4 West</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Parent Name</label><input type="text" id="editStudentParent" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Parent Phone</label><input type="tel" id="editStudentParentPhone" required></div>
+                        <div class="form-group"><label>Parent Email</label><input type="email" id="editStudentEmail"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>New Username</label><input type="text" id="editStudentUsername"></div>
+                        <div class="form-group"><label>New Password (blank = keep)</label><input type="password" id="editStudentPassword"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="editStudentStatus">
+                            <option value="Active">Active</option><option value="Suspended">Suspended</option><option value="Expelled">Expelled</option><option value="Graduated">Graduated</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Fee Modal -->
+    <div class="modal-overlay" id="addFeeModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Add Fee Payment</h3><span class="close-modal" onclick="closeModal('addFee')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="addFee(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Student</label>
+                            <select id="feeStudent" required></select>
+                        </div>
+                        <div class="form-group"><label>Amount (KES)</label><input type="number" id="feeAmount" min="0" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Term</label>
+                            <select id="feeTerm" required>
+                                <option value="">Select</option>
+                                <option value="Term 1 2026">Term 1 2026</option><option value="Term 2 2026">Term 2 2026</option><option value="Term 3 2026">Term 3 2026</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <select id="feeMethod" required>
+                                <option value="">Select</option>
+                                <option value="Cash">Cash</option><option value="M-Pesa">M-Pesa</option><option value="Bank Transfer">Bank Transfer</option><option value="Cheque">Cheque</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Description</label><input type="text" id="feeDescription" placeholder="e.g. Tuition fees"></div>
+                    <button type="submit" class="btn btn-primary">Record Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Parent Modal -->
+    <div class="modal-overlay" id="addParentModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Add New Parent</h3><span class="close-modal" onclick="closeModal('addParent')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="addParent(event)">
+                    <div class="form-row">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="parentName" required></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="parentEmail" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Phone</label><input type="tel" id="parentPhone" required></div>
+                        <div class="form-group"><label>Child (Student Name)</label><input type="text" id="parentChild" required></div>
+                    </div>
+                    <div class="form-group"><label>Password (Initial)</label><input type="password" id="parentPassword" required></div>
+                    <button type="submit" class="btn btn-primary">Add Parent</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Applicant Modal -->
+    <div class="modal-overlay" id="viewApplicantModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Application Details</h3><span class="close-modal" onclick="closeModal('viewApplicant')">&times;</span></div>
+            <div class="modal-body" id="applicantDetails"></div>
+        </div>
+    </div>
+
+    <!-- Suspend Student Modal -->
+    <div class="modal-overlay" id="suspendStudentModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Suspend Student</h3><span class="close-modal" onclick="closeModal('suspendStudent')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="confirmSuspendStudent(event)">
+                    <input type="hidden" id="suspendStudentIndex">
+                    <p id="suspendStudentName" style="font-weight:600;margin-bottom:15px;color:var(--primary)"></p>
+                    <div class="form-group"><label>Reason for Suspension</label><textarea id="suspendStudentReason" rows="3" required></textarea></div>
+                    <div class="form-group"><label>Duration</label>
+                        <select id="suspendStudentDuration" required>
+                            <option value="1 Week">1 Week</option><option value="2 Weeks">2 Weeks</option><option value="1 Month">1 Month</option><option value="Rest of Term">Rest of Term</option><option value="Indefinite">Indefinite</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="background:#e67e22">Confirm Suspension</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expel Student Modal -->
+    <div class="modal-overlay" id="expelStudentModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Expel Student</h3><span class="close-modal" onclick="closeModal('expelStudent')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="confirmExpelStudent(event)">
+                    <input type="hidden" id="expelStudentIndex">
+                    <p id="expelStudentName" style="font-weight:600;margin-bottom:15px;color:#e74c3c"></p>
+                    <div class="form-group"><label>Reason for Expulsion</label><textarea id="expelStudentReason" rows="3" required></textarea></div>
+                    <button type="submit" class="btn btn-primary" style="background:#e74c3c">Confirm Expulsion</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suspend Teacher Modal -->
+    <div class="modal-overlay" id="suspendTeacherModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Suspend Teacher</h3><span class="close-modal" onclick="closeModal('suspendTeacher')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="confirmSuspendTeacher(event)">
+                    <input type="hidden" id="suspendTeacherIndex">
+                    <p id="suspendTeacherName" style="font-weight:600;margin-bottom:15px;color:var(--primary)"></p>
+                    <div class="form-group"><label>Reason for Suspension</label><textarea id="suspendTeacherReason" rows="3" required></textarea></div>
+                    <div class="form-group"><label>Duration</label>
+                        <select id="suspendTeacherDuration" required>
+                            <option value="1 Week">1 Week</option><option value="2 Weeks">2 Weeks</option><option value="1 Month">1 Month</option><option value="Rest of Term">Rest of Term</option><option value="Indefinite">Indefinite</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="background:#e67e22">Confirm Suspension</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Alumni Modal -->
+    <div class="modal-overlay" id="viewAlumniModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Alumni Details</h3><span class="close-modal" onclick="closeModal('viewAlumni')">&times;</span></div>
+            <div class="modal-body" id="alumniDetails"></div>
+        </div>
+    </div>
+
+    <!-- Reject Alumni Modal -->
+    <div class="modal-overlay" id="rejectAlumniModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Reject Alumni Application</h3><span class="close-modal" onclick="closeModal('rejectAlumni')">&times;</span></div>
+            <div class="modal-body">
+                <form onsubmit="confirmRejectAlumni(event)">
+                    <input type="hidden" id="rejectAlumniIndex">
+                    <p id="rejectAlumniName" style="font-weight:600;margin-bottom:15px;color:#e74c3c"></p>
+                    <div class="form-group"><label>Reason for Rejection</label><textarea id="rejectAlumniReason" rows="3" required></textarea></div>
+                    <button type="submit" class="btn btn-primary" style="background:#e74c3c">Confirm Rejection</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Activity Modal -->
+    <div class="modal-overlay" id="studentActivityModal">
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header"><h3>Student Activity</h3><span class="close-modal" onclick="closeModal('studentActivity')">&times;</span></div>
+            <div class="modal-body" id="studentActivityContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== DATA HELPERS =====
+        function getData(key) { return JSON.parse(localStorage.getItem('wanganga_' + key) || '[]'); }
+        function setData(key, data) { localStorage.setItem('wanganga_' + key, JSON.stringify(data)); }
+
+        // ===== ACTIVITY LOGGING =====
+        function logActivity(category, action, details, user) {
+            const records = JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]');
+            records.unshift({
+                id: records.length + 1,
+                timestamp: new Date().toISOString(),
+                category: category,
+                action: action,
+                details: details,
+                user: user || 'Admin',
+                ip: 'Local Network'
+            });
+            if (records.length > 500) records.pop();
+            localStorage.setItem('wanganga_admin_center', JSON.stringify(records));
+        }
+
+        // ===== SIDEBAR =====
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+        function showSection(id, link) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+            if (id === 'timetable') renderTimetable();
+            if (id === 'attendance') renderAttendanceRecords();
+            if (id === 'announcements') renderAnnouncements();
+            if (id === 'calendar') renderEvents();
+        }
+        function openModal(name) { document.getElementById(name + 'Modal').classList.add('active'); }
+        function closeModal(name) { document.getElementById(name + 'Modal').classList.remove('active'); }
+
+        // ===== DISCIPLINE TABS =====
+        function showDisciplineTab(tabId, btn) {
+            document.querySelectorAll('.discipline-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // ===== ACTIVITIES =====
+        function addActivity(msg) {
+            let category = 'system';
+            let action = 'create';
+            if (msg.toLowerCase().includes('teacher')) category = 'teacher';
+            else if (msg.toLowerCase().includes('student')) category = 'student';
+            else if (msg.toLowerCase().includes('parent')) category = 'parent';
+            else if (msg.toLowerCase().includes('application') || msg.toLowerCase().includes('applicant')) category = 'applicant';
+            else if (msg.toLowerCase().includes('fee') || msg.toLowerCase().includes('payment')) category = 'fee';
+            else if (msg.toLowerCase().includes('suspend') || msg.toLowerCase().includes('expel') || msg.toLowerCase().includes('discipline')) category = 'discipline';
+
+            if (msg.toLowerCase().includes('added') || msg.toLowerCase().includes('registered')) action = 'create';
+            else if (msg.toLowerCase().includes('updated')) action = 'update';
+            else if (msg.toLowerCase().includes('deleted') || msg.toLowerCase().includes('removed')) action = 'delete';
+            else if (msg.toLowerCase().includes('suspended')) action = 'suspend';
+            else if (msg.toLowerCase().includes('expelled')) action = 'expel';
+            else if (msg.toLowerCase().includes('accepted')) action = 'accept';
+            else if (msg.toLowerCase().includes('rejected')) action = 'reject';
+            else if (msg.toLowerCase().includes('reactivated')) action = 'update';
+
+            logActivity(category, action, msg, 'Admin');
+
+            const a = getData('activities');
+            a.unshift({ message: msg, time: new Date().toLocaleString() });
+            if (a.length > 50) a.pop();
+            setData('activities', a);
+            renderActivities();
+        }
+        function renderActivities() {
+            const a = getData('activities');
+            const el = document.getElementById('activityList');
+            if (!a.length) { el.innerHTML = '<p class="no-activity">No recent activities</p>'; return; }
+            el.innerHTML = a.slice(0, 10).map(x => `<div class="activity-item"><i class="fas fa-circle"></i><span>${x.message}</span><small>${x.time}</small></div>`).join('');
+        }
+
+        // ===== TEACHERS =====
+        function addTeacher(e) {
+            e.preventDefault();
+            const teachers = getData('teachers');
+            const subjectSelect = document.getElementById('teacherSubjects');
+            const selectedSubjects = Array.from(subjectSelect.selectedOptions).map(o => o.value);
+            if (!selectedSubjects.length) { alert('Select at least one subject'); return; }
+            teachers.push({
+                id: 'TCH' + (teachers.length + 1).toString().padStart(3, '0'),
+                name: document.getElementById('teacherName').value,
+                email: document.getElementById('teacherEmail').value,
+                phone: document.getElementById('teacherPhone').value,
+                role: document.getElementById('teacherRole').value,
+                subjects: selectedSubjects,
+                password: document.getElementById('teacherPassword').value,
+                status: 'Active',
+                dateAdded: new Date().toLocaleDateString()
+            });
+            setData('teachers', teachers);
+            addActivity('Added teacher: ' + document.getElementById('teacherName').value);
+            renderTeachers(); updateCounts(); e.target.reset(); closeModal('addTeacher');
+        }
+
+        function renderTeachers() {
+            const t = getData('teachers');
+            const tb = document.getElementById('teacherTableBody');
+            if (!t.length) { tb.innerHTML = '<tr class="no-data"><td colspan="8">No teachers added yet</td></tr>'; return; }
+            tb.innerHTML = t.map((x, i) => `<tr>
+                <td>${x.id}</td><td>${x.name}</td><td>${x.email}</td><td>${x.phone}</td>
+                <td>${x.subjects.join(', ')}</td>
+                <td><span class="role-badge">${x.role}</span></td>
+                <td><span class="status-badge ${x.status === 'Active' ? 'active' : 'suspended'}">${x.status}</span></td>
+                <td>
+                    <button class="action-btn edit" onclick="editTeacher(${i})" title="Edit"><i class="fas fa-edit"></i></button>
+                    ${x.status === 'Active' ? `<button class="action-btn suspend" onclick="suspendTeacher(${i})" title="Suspend"><i class="fas fa-ban"></i></button>` : `<button class="action-btn accept" onclick="unsuspendTeacher(${i})" title="Reactivate"><i class="fas fa-check"></i></button>`}
+                    <button class="action-btn delete" onclick="deleteTeacher(${i})" title="Delete"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`).join('');
+        }
+
+        function editTeacher(i) {
+            const t = getData('teachers')[i];
+            document.getElementById('editTeacherIndex').value = i;
+            document.getElementById('editTeacherName').value = t.name;
+            document.getElementById('editTeacherEmail').value = t.email;
+            document.getElementById('editTeacherPhone').value = t.phone;
+            document.getElementById('editTeacherRole').value = t.role;
+            Array.from(document.getElementById('editTeacherSubjects').options).forEach(o => { o.selected = t.subjects.includes(o.value); });
+            document.getElementById('editTeacherPassword').value = '';
+            openModal('editTeacher');
+        }
+
+        function saveTeacherEdit(e) {
+            e.preventDefault();
+            const i = document.getElementById('editTeacherIndex').value;
+            const teachers = getData('teachers');
+            const subjectSelect = document.getElementById('editTeacherSubjects');
+            teachers[i].name = document.getElementById('editTeacherName').value;
+            teachers[i].email = document.getElementById('editTeacherEmail').value;
+            teachers[i].phone = document.getElementById('editTeacherPhone').value;
+            teachers[i].role = document.getElementById('editTeacherRole').value;
+            teachers[i].subjects = Array.from(subjectSelect.selectedOptions).map(o => o.value);
+            const newPass = document.getElementById('editTeacherPassword').value;
+            if (newPass) teachers[i].password = newPass;
+            setData('teachers', teachers);
+            addActivity('Updated teacher: ' + teachers[i].name);
+            renderTeachers(); closeModal('editTeacher');
+        }
+
+        function deleteTeacher(i) {
+            if (!confirm('Delete this teacher?')) return;
+            const t = getData('teachers');
+            addActivity('Deleted teacher: ' + t[i].name);
+            t.splice(i, 1); setData('teachers', t);
+            renderTeachers(); updateCounts();
+        }
+
+        function suspendTeacher(i) {
+            document.getElementById('suspendTeacherIndex').value = i;
+            document.getElementById('suspendTeacherName').textContent = 'Teacher: ' + getData('teachers')[i].name;
+            openModal('suspendTeacher');
+        }
+
+        function confirmSuspendTeacher(e) {
+            e.preventDefault();
+            const i = document.getElementById('suspendTeacherIndex').value;
+            const teachers = getData('teachers');
+            const suspended = getData('suspended_teachers');
+            const reason = document.getElementById('suspendTeacherReason').value;
+            const duration = document.getElementById('suspendTeacherDuration').value;
+            suspended.push({ ...teachers[i], reason, duration, suspendedOn: new Date().toLocaleDateString() });
+            setData('suspended_teachers', suspended);
+            teachers[i].status = 'Suspended';
+            setData('teachers', teachers);
+            addActivity('Suspended teacher: ' + teachers[i].name + ' (' + reason + ')');
+            renderTeachers(); renderSuspendedTeachers(); updateCounts();
+            e.target.reset(); closeModal('suspendTeacher');
+        }
+
+        function unsuspendTeacher(i) {
+            const teachers = getData('teachers');
+            teachers[i].status = 'Active';
+            setData('teachers', teachers);
+            const suspended = getData('suspended_teachers').filter(x => x.id !== teachers[i].id);
+            setData('suspended_teachers', suspended);
+            addActivity('Reactivated teacher: ' + teachers[i].name);
+            renderTeachers(); renderSuspendedTeachers(); updateCounts();
+        }
+
+        function renderSuspendedTeachers() {
+            const s = getData('suspended_teachers');
+            const tb = document.getElementById('suspendedTeacherBody');
+            if (!s.length) { tb.innerHTML = '<tr class="no-data"><td colspan="7">No suspended teachers</td></tr>'; return; }
+            tb.innerHTML = s.map((x, i) => `<tr>
+                <td>${x.id}</td><td>${x.name}</td><td>${x.subjects ? x.subjects.join(', ') : ''}</td>
+                <td>${x.reason}</td><td>${x.suspendedOn}</td><td>${x.duration}</td>
+                <td><button class="action-btn accept" onclick="reactivateTeacher('${x.id}')" title="Reactivate"><i class="fas fa-check"></i></button></td>
+            </tr>`).join('');
+        }
+
+        function reactivateTeacher(id) {
+            if (!confirm('Reactivate this teacher?')) return;
+            const teachers = getData('teachers');
+            const t = teachers.find(x => x.id === id);
+            if (t) t.status = 'Active';
+            setData('teachers', teachers);
+            setData('suspended_teachers', getData('suspended_teachers').filter(x => x.id !== id));
+            addActivity('Reactivated teacher: ' + (t ? t.name : id));
+            renderTeachers(); renderSuspendedTeachers(); updateCounts();
+        }
+
+        // ===== STUDENTS =====
+        function addStudent(e) {
+            e.preventDefault();
+            const students = getData('students');
+            students.push({
+                id: 'ADM' + (students.length + 1001).toString(),
+                name: document.getElementById('studentName').value,
+                gender: document.getElementById('studentGender').value,
+                class: document.getElementById('studentClass').value,
+                kcpe: document.getElementById('studentKCPE').value,
+                parent: document.getElementById('studentParent').value,
+                parentPhone: document.getElementById('studentParentPhone').value,
+                username: document.getElementById('studentUsername').value,
+                password: document.getElementById('studentPassword').value,
+                email: '',
+                status: 'Active',
+                dateAdded: new Date().toLocaleDateString()
+            });
+            setData('students', students);
+            addActivity('Added student: ' + document.getElementById('studentName').value);
+            renderStudents(); updateCounts(); e.target.reset(); closeModal('addStudent');
+        }
+
+        function renderStudents() {
+            const s = getData('students');
+            const tb = document.getElementById('studentTableBody');
+            if (!s.length) { tb.innerHTML = '<tr class="no-data"><td colspan="8">No students added yet</td></tr>'; return; }
+            tb.innerHTML = s.map((x, i) => `<tr>
+                <td>${x.id}</td><td>${x.name}</td><td>${x.class}</td>
+                <td>${x.parent}</td><td>${x.parentPhone}</td>
+                <td><small>U: ${x.username || '-'}<br>P: ${x.password ? '***' : '-'}</small></td>
+                <td><span class="status-badge ${x.status === 'Active' ? 'active' : x.status === 'Suspended' ? 'suspended' : 'expelled'}">${x.status}</span></td>
+                <td>
+                    <button class="action-btn edit" onclick="editStudent(${i})" title="Edit/Credentials"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn view" onclick="viewStudentActivity(${i})" title="Activity"><i class="fas fa-history"></i></button>
+                    ${x.status === 'Active' ? `
+                        <button class="action-btn suspend" onclick="suspendStudent(${i})" title="Suspend"><i class="fas fa-ban"></i></button>
+                        <button class="action-btn delete" onclick="expelStudent(${i})" title="Expel"><i class="fas fa-user-slash"></i></button>
+                    ` : `
+                        <button class="action-btn accept" onclick="reactivateStudent(${i})" title="Reactivate"><i class="fas fa-check"></i></button>
+                    `}
+                </td>
+            </tr>`).join('');
+        }
+
+        function editStudent(i) {
+            const s = getData('students')[i];
+            document.getElementById('editStudentIndex').value = i;
+            document.getElementById('editStudentName').value = s.name;
+            document.getElementById('editStudentGender').value = s.gender;
+            document.getElementById('editStudentClass').value = s.class;
+            document.getElementById('editStudentParent').value = s.parent;
+            document.getElementById('editStudentParentPhone').value = s.parentPhone;
+            document.getElementById('editStudentEmail').value = s.email || '';
+            document.getElementById('editStudentUsername').value = s.username || '';
+            document.getElementById('editStudentPassword').value = '';
+            document.getElementById('editStudentStatus').value = s.status;
+            openModal('editStudent');
+        }
+
+        function saveStudentEdit(e) {
+            e.preventDefault();
+            const i = document.getElementById('editStudentIndex').value;
+            const students = getData('students');
+            students[i].name = document.getElementById('editStudentName').value;
+            students[i].gender = document.getElementById('editStudentGender').value;
+            students[i].class = document.getElementById('editStudentClass').value;
+            students[i].parent = document.getElementById('editStudentParent').value;
+            students[i].parentPhone = document.getElementById('editStudentParentPhone').value;
+            students[i].email = document.getElementById('editStudentEmail').value;
+            const newUsername = document.getElementById('editStudentUsername').value;
+            if (newUsername) students[i].username = newUsername;
+            const newPass = document.getElementById('editStudentPassword').value;
+            if (newPass) students[i].password = newPass;
+            students[i].status = document.getElementById('editStudentStatus').value;
+            setData('students', students);
+            addActivity('Updated student: ' + students[i].name);
+            renderStudents(); closeModal('editStudent');
+        }
+
+        function deleteStudent(i) {
+            if (!confirm('Delete this student?')) return;
+            const s = getData('students');
+            addActivity('Deleted student: ' + s[i].name);
+            s.splice(i, 1); setData('students', s);
+            renderStudents(); updateCounts();
+        }
+
+        function viewStudentActivity(i) {
+            const s = getData('students')[i];
+            const fees = getData('fees').filter(f => f.studentId === s.id);
+            const allActivities = getData('activities');
+            const studentActs = allActivities.filter(a => a.message.toLowerCase().includes(s.name.toLowerCase()));
+            document.getElementById('studentActivityContent').innerHTML = `
+                <div class="student-activity-header">
+                    <h4>${s.name} (${s.id})</h4>
+                    <p>Class: ${s.class} | Status: ${s.status}</p>
+                </div>
+                <div class="activity-section">
+                    <h5><i class="fas fa-money-bill-wave"></i> Fee History</h5>
+                    ${fees.length ? fees.map(f => `<div class="mini-activity"><span>KES ${f.amount.toLocaleString()} - ${f.term} (${f.method})</span><small>${f.date}</small></div>`).join('') : '<p class="no-activity">No payments yet</p>'}
+                </div>
+                <div class="activity-section">
+                    <h5><i class="fas fa-history"></i> Activity Log</h5>
+                    ${studentActs.length ? studentActs.slice(0, 10).map(a => `<div class="mini-activity"><span>${a.message}</span><small>${a.time}</small></div>`).join('') : '<p class="no-activity">No activities recorded</p>'}
+                </div>
+            `;
+            openModal('studentActivity');
+        }
+
+        function suspendStudent(i) {
+            document.getElementById('suspendStudentIndex').value = i;
+            document.getElementById('suspendStudentName').textContent = 'Student: ' + getData('students')[i].name;
+            openModal('suspendStudent');
+        }
+
+        function confirmSuspendStudent(e) {
+            e.preventDefault();
+            const i = document.getElementById('suspendStudentIndex').value;
+            const students = getData('students');
+            const suspended = getData('suspended_students');
+            const reason = document.getElementById('suspendStudentReason').value;
+            const duration = document.getElementById('suspendStudentDuration').value;
+            suspended.push({ ...students[i], reason, duration, suspendedOn: new Date().toLocaleDateString() });
+            setData('suspended_students', suspended);
+            students[i].status = 'Suspended';
+            setData('students', students);
+            addActivity('Suspended student: ' + students[i].name + ' (' + reason + ')');
+            renderStudents(); renderSuspendedStudents(); updateCounts();
+            e.target.reset(); closeModal('suspendStudent');
+        }
+
+        function expelStudent(i) {
+            document.getElementById('expelStudentIndex').value = i;
+            document.getElementById('expelStudentName').textContent = 'WARNING: This will permanently expel ' + getData('students')[i].name;
+            openModal('expelStudent');
+        }
+
+        function confirmExpelStudent(e) {
+            e.preventDefault();
+            const i = document.getElementById('expelStudentIndex').value;
+            const students = getData('students');
+            const expelled = getData('expelled_students');
+            expelled.push({ ...students[i], reason: document.getElementById('expelStudentReason').value, expelledOn: new Date().toLocaleDateString() });
+            setData('expelled_students', expelled);
+            addActivity('EXPELLED student: ' + students[i].name);
+            students.splice(i, 1);
+            setData('students', students);
+            renderStudents(); renderExpelledStudents(); updateCounts();
+            e.target.reset(); closeModal('expelStudent');
+        }
+
+        function reactivateStudent(i) {
+            const students = getData('students');
+            students[i].status = 'Active';
+            setData('students', students);
+            setData('suspended_students', getData('suspended_students').filter(x => x.id !== students[i].id));
+            addActivity('Reactivated student: ' + students[i].name);
+            renderStudents(); renderSuspendedStudents(); renderExpelledStudents(); updateCounts();
+        }
+
+        function renderSuspendedStudents() {
+            const s = getData('suspended_students');
+            const tb = document.getElementById('suspendedStudentBody');
+            if (!s.length) { tb.innerHTML = '<tr class="no-data"><td colspan="7">No suspended students</td></tr>'; return; }
+            tb.innerHTML = s.map((x, i) => `<tr>
+                <td>${x.id}</td><td>${x.name}</td><td>${x.class}</td>
+                <td>${x.reason}</td><td>${x.suspendedOn}</td><td>${x.duration}</td>
+                <td><button class="action-btn accept" onclick="reactivateStudentFromList('${x.id}')" title="Reactivate"><i class="fas fa-check"></i></button></td>
+            </tr>`).join('');
+        }
+
+        function renderExpelledStudents() {
+            const s = getData('expelled_students');
+            const tb = document.getElementById('expelledStudentBody');
+            if (!s.length) { tb.innerHTML = '<tr class="no-data"><td colspan="5">No expelled students</td></tr>'; return; }
+            tb.innerHTML = s.map(x => `<tr>
+                <td>${x.id}</td><td>${x.name}</td><td>${x.class}</td>
+                <td>${x.reason}</td><td>${x.expelledOn}</td>
+            </tr>`).join('');
+        }
+
+        function reactivateStudentFromList(id) {
+            if (!confirm('Reactivate this student?')) return;
+            const students = getData('students');
+            const s = students.find(x => x.id === id);
+            if (s) s.status = 'Active';
+            setData('students', students);
+            setData('suspended_students', getData('suspended_students').filter(x => x.id !== id));
+            addActivity('Reactivated student: ' + (s ? s.name : id));
+            renderStudents(); renderSuspendedStudents(); updateCounts();
+        }
+
+        // ===== FEES =====
+        function addFee(e) {
+            e.preventDefault();
+            const fees = getData('fees');
+            const students = getData('students');
+            const studentId = document.getElementById('feeStudent').value;
+            const student = students.find(s => s.id === studentId);
+            fees.push({
+                receiptNo: 'RCT' + Date.now().toString().slice(-8),
+                studentId: studentId,
+                studentName: student ? student.name : '',
+                amount: Number(document.getElementById('feeAmount').value),
+                term: document.getElementById('feeTerm').value,
+                method: document.getElementById('feeMethod').value,
+                description: document.getElementById('feeDescription').value,
+                date: new Date().toLocaleDateString()
+            });
+            setData('fees', fees);
+            addActivity('Fee payment: KES ' + document.getElementById('feeAmount').value + ' from ' + (student ? student.name : ''));
+            renderFees(); updateCounts(); e.target.reset(); closeModal('addFee');
+        }
+
+        function renderFees() {
+            const f = getData('fees');
+            const tb = document.getElementById('feeTableBody');
+            const feePerTerm = 86000;
+            const students = getData('students');
+            const totalExpected = students.length * feePerTerm;
+            const totalPaid = f.reduce((sum, x) => sum + x.amount, 0);
+            document.getElementById('totalExpected').textContent = 'KES ' + totalExpected.toLocaleString();
+            document.getElementById('totalPaid').textContent = 'KES ' + totalPaid.toLocaleString();
+            document.getElementById('totalUnpaid').textContent = 'KES ' + (totalExpected - totalPaid).toLocaleString();
+            if (!f.length) { tb.innerHTML = '<tr class="no-data"><td colspan="8">No fee records yet</td></tr>'; return; }
+            tb.innerHTML = f.map((x, i) => `<tr>
+                <td>${x.receiptNo}</td><td>${x.studentName}</td><td>${x.studentId}</td>
+                <td>KES ${x.amount.toLocaleString()}</td><td>${x.term}</td><td>${x.method}</td><td>${x.date}</td>
+                <td><button class="action-btn delete" onclick="deleteFee(${i})" title="Delete"><i class="fas fa-trash"></i></button></td>
+            </tr>`).join('');
+        }
+
+        function deleteFee(i) {
+            if (!confirm('Delete this fee record?')) return;
+            const f = getData('fees');
+            addActivity('Deleted fee record: ' + f[i].receiptNo);
+            f.splice(i, 1); setData('fees', f);
+            renderFees(); updateCounts();
+        }
+
+        function populateFeeStudentDropdown() {
+            const students = getData('students');
+            const sel = document.getElementById('feeStudent');
+            sel.innerHTML = '<option value="">Select Student</option>' + students.map(s => `<option value="${s.id}">${s.name} (${s.id})</option>`).join('');
+        }
+
+        // ===== PARENTS =====
+        function addParent(e) {
+            e.preventDefault();
+            const parents = getData('parents');
+            parents.push({
+                id: 'PAR' + (parents.length + 1001).toString(),
+                name: document.getElementById('parentName').value,
+                email: document.getElementById('parentEmail').value,
+                phone: document.getElementById('parentPhone').value,
+                child: document.getElementById('parentChild').value,
+                password: document.getElementById('parentPassword').value,
+                dateAdded: new Date().toLocaleDateString()
+            });
+            setData('parents', parents);
+            addActivity('Added parent: ' + document.getElementById('parentName').value);
+            renderParents(); updateCounts(); e.target.reset(); closeModal('addParent');
+        }
+
+        function renderParents() {
+            const p = getData('parents');
+            const tb = document.getElementById('parentTableBody');
+            if (!p.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No parents added yet</td></tr>'; return; }
+            tb.innerHTML = p.map((x, i) => `<tr>
+                <td>${x.id}</td><td>${x.name}</td><td>${x.email}</td><td>${x.phone}</td><td>${x.child}</td>
+                <td><button class="action-btn edit" onclick="editParent(${i})" title="Edit"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete" onclick="deleteParent(${i})" title="Delete"><i class="fas fa-trash"></i></button></td>
+            </tr>`).join('');
+        }
+
+        function editParent(i) { alert('Edit parent - Coming soon!'); }
+
+        function deleteParent(i) {
+            if (!confirm('Delete this parent?')) return;
+            const p = getData('parents');
+            addActivity('Deleted parent: ' + p[i].name);
+            p.splice(i, 1); setData('parents', p);
+            renderParents(); updateCounts();
+        }
+
+        // ===== APPLICANTS =====
+        function renderApplicants() {
+            const a = getData('applicants');
+            const tb = document.getElementById('applicantTableBody');
+            if (!a.length) { tb.innerHTML = '<tr class="no-data"><td colspan="7">No pending applications</td></tr>'; return; }
+            tb.innerHTML = a.map((x, i) => `<tr>
+                <td>${x.refNo}</td><td>${x.studentName}</td><td>${x.gender}</td>
+                <td>${x.kcpe}</td><td>${x.parentName}</td><td>${x.parentPhone}</td>
+                <td><button class="action-btn view" onclick="viewApplicant(${i})"><i class="fas fa-eye"></i></button>
+                <button class="action-btn accept" onclick="acceptApplicant(${i})"><i class="fas fa-check"></i></button>
+                <button class="action-btn delete" onclick="rejectApplicant(${i})"><i class="fas fa-times"></i></button></td>
+            </tr>`).join('');
+        }
+
+        function viewApplicant(i) {
+            const a = getData('applicants')[i];
+            document.getElementById('applicantDetails').innerHTML = `<div class="applicant-info">
+                <p><strong>Ref No:</strong> ${a.refNo}</p><p><strong>Student:</strong> ${a.studentName}</p>
+                <p><strong>DOB:</strong> ${a.dob}</p><p><strong>Gender:</strong> ${a.gender}</p>
+                <p><strong>KCPE Index:</strong> ${a.kcpe}</p><p><strong>Marks:</strong> ${a.marks || 'N/A'}</p>
+                <p><strong>Parent:</strong> ${a.parentName}</p><p><strong>Phone:</strong> ${a.parentPhone}</p>
+                <p><strong>Email:</strong> ${a.email}</p><p><strong>Address:</strong> ${a.address}</p>
+                <p><strong>Applied:</strong> ${a.dateApplied}</p>
+            </div>`;
+            openModal('viewApplicant');
+        }
+
+        function acceptApplicant(i) {
+            if (!confirm('Accept and add as student?')) return;
+            const applicants = getData('applicants');
+            const a = applicants[i];
+            const students = getData('students');
+            students.push({
+                id: 'ADM' + (students.length + 1001).toString(),
+                name: a.studentName, gender: a.gender, class: 'Form 1 East',
+                kcpe: a.kcpe, parent: a.parentName, parentPhone: a.parentPhone,
+                username: a.studentName.split(' ')[0].toLowerCase() + students.length,
+                password: 'password123',
+                email: a.email || '', status: 'Active', dateAdded: new Date().toLocaleDateString()
+            });
+            setData('students', students);
+            addActivity('Accepted application: ' + a.studentName);
+            applicants.splice(i, 1); setData('applicants', applicants);
+            renderApplicants(); renderStudents(); updateCounts();
+        }
+
+        function rejectApplicant(i) {
+            if (!confirm('Reject this application?')) return;
+            const applicants = getData('applicants');
+            addActivity('Rejected application: ' + applicants[i].studentName);
+            applicants.splice(i, 1); setData('applicants', applicants);
+            renderApplicants(); updateCounts();
+        }
+
+        // ===== COUNTS =====
+        function updateCounts() {
+            document.getElementById('teacherCount').textContent = getData('teachers').length;
+            document.getElementById('studentCount').textContent = getData('students').length;
+            document.getElementById('parentCount').textContent = getData('parents').length;
+            document.getElementById('applicantCount').textContent = getData('applicants').length;
+            const fees = getData('fees');
+            const totalPaid = fees.reduce((sum, x) => sum + x.amount, 0);
+            document.getElementById('totalFees').textContent = 'KES ' + totalPaid.toLocaleString();
+            const suspendedS = getData('suspended_students').length;
+            const suspendedT = getData('suspended_teachers').length;
+            document.getElementById('suspendedCount').textContent = suspendedS + suspendedT;
+            populateFeeStudentDropdown();
+        }
+
+        // ===== ALUMNI =====
+        function showAlumniTab(tabId, btn) {
+            document.querySelectorAll('#alumni .discipline-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('#alumni .tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function renderAlumni() {
+            const alumni = getData('alumni');
+            const pending = alumni.filter(a => a.status === 'Pending');
+            const approved = alumni.filter(a => a.status === 'Approved');
+            const rejected = alumni.filter(a => a.status === 'Rejected');
+
+            // Pending
+            const ptb = document.getElementById('pendingAlumniBody');
+            if (!pending.length) { ptb.innerHTML = '<tr class="no-data"><td colspan="8">No pending alumni applications</td></tr>'; }
+            else {
+                ptb.innerHTML = pending.map((a, i) => {
+                    const origIdx = alumni.indexOf(a);
+                    return `<tr>
+                        <td>${a.alumniId}</td><td>${a.name}</td><td>${a.kcseYear}</td>
+                        <td>${a.grade || '-'}</td><td>${a.phone}</td><td>${a.occupation || '-'}</td>
+                        <td><span class="status-badge" style="background:#fdebd0;color:#e67e22">${a.status}</span></td>
+                        <td>
+                            <button class="action-btn view" onclick="viewAlumni(${origIdx})" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn accept" onclick="approveAlumni(${origIdx})" title="Approve"><i class="fas fa-check"></i></button>
+                            <button class="action-btn delete" onclick="rejectAlumni(${origIdx})" title="Reject"><i class="fas fa-times"></i></button>
+                        </td>
+                    </tr>`;
+                }).join('');
+            }
+
+            // Approved
+            const atb = document.getElementById('approvedAlumniBody');
+            if (!approved.length) { atb.innerHTML = '<tr class="no-data"><td colspan="8">No approved alumni</td></tr>'; }
+            else {
+                atb.innerHTML = approved.map((a, i) => `<tr>
+                    <td>${a.alumniId}</td><td>${a.currentName || a.name}</td><td>${a.kcseYear}</td>
+                    <td>${a.occupation || '-'}</td><td>${a.phone}</td><td>${a.email}</td>
+                    <td>${a.approvedOn || '-'}</td>
+                    <td><button class="action-btn delete" onclick="removeApprovedAlumni(${alumni.indexOf(a)})" title="Remove"><i class="fas fa-trash"></i></button></td>
+                </tr>`).join('');
+            }
+
+            // Rejected
+            const rtb = document.getElementById('rejectedAlumniBody');
+            if (!rejected.length) { rtb.innerHTML = '<tr class="no-data"><td colspan="5">No rejected alumni</td></tr>'; }
+            else {
+                rtb.innerHTML = rejected.map((a, i) => `<tr>
+                    <td>${a.alumniId}</td><td>${a.name}</td><td>${a.kcseYear}</td>
+                    <td>${a.rejectionReason || '-'}</td><td>${a.rejectedOn || '-'}</td>
+                </tr>`).join('');
+            }
+        }
+
+        function viewAlumni(i) {
+            const a = getData('alumni')[i];
+            document.getElementById('alumniDetails').innerHTML = `
+                <div class="applicant-info">
+                    <p><strong>Alumni ID:</strong> ${a.alumniId}</p>
+                    <p><strong>Name:</strong> ${a.name}</p>
+                    ${a.currentName ? `<p><strong>Current Name:</strong> ${a.currentName}</p>` : ''}
+                    <p><strong>KCSE Year:</strong> ${a.kcseYear}</p>
+                    <p><strong>Index Number:</strong> ${a.index}</p>
+                    <p><strong>Class/Stream:</strong> ${a.classStream || 'N/A'}</p>
+                    <p><strong>KCSE Grade:</strong> ${a.grade || 'N/A'}</p>
+                    <p><strong>Phone:</strong> ${a.phone}</p>
+                    <p><strong>Email:</strong> ${a.email}</p>
+                    <p><strong>Gender:</strong> ${a.gender}</p>
+                    <p><strong>Location:</strong> ${a.location}</p>
+                    <p><strong>Occupation:</strong> ${a.occupation}</p>
+                    <p><strong>Company:</strong> ${a.company || 'N/A'}</p>
+                    <p><strong>Industry:</strong> ${a.industry || 'N/A'}</p>
+                    <p><strong>Skills:</strong> ${a.skills || 'N/A'}</p>
+                    <p><strong>Contribution:</strong> ${a.contribution || 'None specified'}</p>
+                    <p><strong>Message:</strong> ${a.message || 'None'}</p>
+                    <p><strong>Date Applied:</strong> ${a.dateApplied}</p>
+                </div>
+            `;
+            openModal('viewAlumni');
+        }
+
+        function approveAlumni(i) {
+            if (!confirm('Approve this alumni application?')) return;
+            const alumni = getData('alumni');
+            alumni[i].status = 'Approved';
+            alumni[i].approvedOn = new Date().toLocaleDateString();
+            setData('alumni', alumni);
+            addActivity('Approved alumni: ' + alumni[i].name + ' (' + alumni[i].alumniId + ')');
+            renderAlumni();
+        }
+
+        function rejectAlumni(i) {
+            document.getElementById('rejectAlumniIndex').value = i;
+            document.getElementById('rejectAlumniName').textContent = 'Reject: ' + getData('alumni')[i].name;
+            openModal('rejectAlumni');
+        }
+
+        function confirmRejectAlumni(e) {
+            e.preventDefault();
+            const i = document.getElementById('rejectAlumniIndex').value;
+            const alumni = getData('alumni');
+            alumni[i].status = 'Rejected';
+            alumni[i].rejectionReason = document.getElementById('rejectAlumniReason').value;
+            alumni[i].rejectedOn = new Date().toLocaleDateString();
+            setData('alumni', alumni);
+            addActivity('Rejected alumni: ' + alumni[i].name);
+            renderAlumni();
+            e.target.reset(); closeModal('rejectAlumni');
+        }
+
+        function removeApprovedAlumni(i) {
+            if (!confirm('Remove this approved alumni?')) return;
+            const alumni = getData('alumni');
+            addActivity('Removed alumni: ' + alumni[i].name);
+            alumni.splice(i, 1);
+            setData('alumni', alumni);
+            renderAlumni();
+        }
+
+        // ===== TIMETABLE =====
+
+        function populateTimetableDropdowns() {
+            const classes = ['Form 1 East', 'Form 1 West', 'Form 2 East', 'Form 2 West', 'Form 3 East', 'Form 3 West', 'Form 4 East', 'Form 4 West'];
+            ['ttClass', 'ttViewClass'].forEach(id => {
+                const sel = document.getElementById(id);
+                if (!sel) return;
+                classes.forEach(c => { sel.innerHTML += '<option value="' + c + '">' + c + '</option>'; });
+            });
+            const teachers = getData('teachers');
+            const ttSel = document.getElementById('ttTeacher');
+            teachers.forEach(t => { ttSel.innerHTML += '<option value="' + t.name + '">' + t.name + '</option>'; });
+        }
+
+        function addTimetableEntry() {
+            const cls = document.getElementById('ttClass').value;
+            const day = document.getElementById('ttDay').value;
+            const period = document.getElementById('ttPeriod').value;
+            const subject = document.getElementById('ttSubject').value.trim();
+            const teacher = document.getElementById('ttTeacher').value;
+            if (!cls || !day || !period || !subject) { alert('Fill in class, day, period and subject'); return; }
+            const timetable = getData('timetable');
+            const existing = timetable.findIndex(t => t.class === cls && t.day === day && t.period === Number(period));
+            if (existing >= 0) {
+                timetable[existing] = { class: cls, day, period: Number(period), subject, teacher };
+            } else {
+                timetable.push({ class: cls, day, period: Number(period), subject, teacher });
+            }
+            setData('timetable', timetable);
+            document.getElementById('ttSubject').value = '';
+            renderTimetable();
+        }
+
+        function renderTimetable() {
+            const cls = document.getElementById('ttViewClass').value;
+            const timetable = getData('timetable').filter(t => t.class === cls);
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            const periods = [1,2,3,4,6,7,8,9,10,11,12];
+            const timeMap = {1:'7:30-8:00',2:'8:00-8:40',3:'8:40-9:20',4:'9:20-10:00',6:'10:20-11:00',7:'11:00-11:40',8:'11:40-12:20',9:'12:20-1:00',10:'1:00-1:40',11:'1:40-2:20',12:'2:20-3:00'};
+            const tb = document.getElementById('timetableBody');
+            if (!cls) { tb.innerHTML = '<tr class="no-data"><td colspan="7">Select a class to view timetable</td></tr>'; return; }
+            tb.innerHTML = periods.map(p => {
+                if (p === 4) return `<tr style="background:#f0f7fb"><td><strong>${timeMap[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">MORNING BREAK</td><td></td></tr>`;
+                if (p === 12) return `<tr style="background:#f0f7fb"><td><strong>${timeMap[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">AFTERNOON BREAK</td><td></td></tr>`;
+                return `<tr><td><strong>${timeMap[p]}</strong></td>${days.map(d => {
+                    const e = timetable.find(t => t.day === d && t.period === p);
+                    return `<td>${e ? '<strong>'+e.subject+'</strong>'+(e.teacher?'<br><small>'+e.teacher+'</small>':'') : '-'}</td>`;
+                }).join('')}<td></td></tr>`;
+            }).join('');
+        }
+
+        function renderTimetables() {
+            if (document.getElementById('ttViewClass')) renderTimetable();
+        }
+
+        // ===== ATTENDANCE =====
+        function populateAttendanceDropdowns() {
+            const classes = ['Form 1 East', 'Form 1 West', 'Form 2 East', 'Form 2 West', 'Form 3 East', 'Form 3 West', 'Form 4 East', 'Form 4 West'];
+            ['attClass', 'attFilterClass'].forEach(id => {
+                const sel = document.getElementById(id);
+                if (!sel) return;
+                classes.forEach(c => { sel.innerHTML += '<option value="' + c + '">' + c + '</option>'; });
+            });
+            document.getElementById('attDate').value = new Date().toISOString().split('T')[0];
+        }
+
+        function loadAttendanceStudents() {
+            const cls = document.getElementById('attClass').value;
+            const date = document.getElementById('attDate').value;
+            if (!cls || !date) { alert('Select class and date'); return; }
+            const students = getData('students').filter(s => s.class === cls && s.status !== 'expelled');
+            const existing = getData('attendance').filter(a => a.date === date && a.class === cls);
+            const tb = document.getElementById('attendanceManageBody');
+            if (!students.length) { tb.innerHTML = '<tr class="no-data"><td colspan="4">No students in this class</td></tr>'; return; }
+            tb.innerHTML = students.map(s => {
+                const ex = existing.find(a => a.studentId === s.id);
+                return `<tr>
+                    <td>${s.id}</td><td>${s.name}</td>
+                    <td><select class="att-status" data-id="${s.id}">
+                        <option value="Present" ${ex && ex.status === 'Present' ? 'selected' : ''}>Present</option>
+                        <option value="Absent" ${ex && ex.status === 'Absent' ? 'selected' : ''}>Absent</option>
+                        <option value="Late" ${ex && ex.status === 'Late' ? 'selected' : ''}>Late</option>
+                        <option value="Excused" ${ex && ex.status === 'Excused' ? 'selected' : ''}>Excused</option>
+                    </select></td>
+                    <td><input type="text" class="att-remarks" data-id="${s.id}" value="${ex ? ex.remarks || '' : ''}" placeholder="Optional" style="width:120px;padding:6px;border:1px solid var(--border);border-radius:4px"></td>
+                </tr>`;
+            }).join('');
+            document.getElementById('saveAttBtn').style.display = 'inline-block';
+        }
+
+        function saveAttendance() {
+            const cls = document.getElementById('attClass').value;
+            const date = document.getElementById('attDate').value;
+            if (!cls || !date) return;
+            const attendance = getData('attendance');
+            document.querySelectorAll('.att-status').forEach(sel => {
+                const sid = sel.dataset.id;
+                const status = sel.value;
+                const remarks = document.querySelector('.att-remarks[data-id="' + sid + '"]')?.value || '';
+                const student = getData('students').find(s => s.id === sid);
+                const existing = attendance.findIndex(a => a.studentId === sid && a.date === date && a.class === cls);
+                const record = { studentId: sid, studentName: student ? student.name : '', class: cls, date, status, remarks, markedBy: 'Admin', markedAt: new Date().toISOString() };
+                if (existing >= 0) attendance[existing] = record;
+                else attendance.push(record);
+            });
+            setData('attendance', attendance);
+            alert('Attendance saved!');
+            renderAttendanceRecords();
+        }
+
+        function renderAttendanceRecords() {
+            const clsFilter = document.getElementById('attFilterClass').value;
+            const dateFilter = document.getElementById('attFilterDate').value;
+            let records = getData('attendance');
+            if (clsFilter) records = records.filter(a => a.class === clsFilter);
+            if (dateFilter) records = records.filter(a => a.date === dateFilter);
+            records.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const tb = document.getElementById('attendanceRecordsBody');
+            if (!records.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No attendance records</td></tr>'; return; }
+            tb.innerHTML = records.map(a => `<tr>
+                <td>${a.date}</td><td>${a.studentName}</td><td>${a.class}</td>
+                <td><span class="status-badge ${a.status==='Present'?'approved':a.status==='Absent'?'rejected':'pending'}">${a.status}</span></td>
+                <td>${a.markedBy || '-'}</td><td>${a.remarks || '-'}</td>
+            </tr>`).join('');
+        }
+
+        // ===== ANNOUNCEMENTS =====
+        function postAnnouncement() {
+            const title = document.getElementById('annTitle').value.trim();
+            const message = document.getElementById('annMessage').value.trim();
+            const audience = document.getElementById('annAudience').value;
+            if (!title || !message) { alert('Enter title and message'); return; }
+            const announcements = getData('announcements');
+            announcements.unshift({ id: Date.now(), title, message, audience, author: 'Admin', date: new Date().toLocaleDateString() });
+            setData('announcements', announcements);
+            document.getElementById('annTitle').value = '';
+            document.getElementById('annMessage').value = '';
+            alert('Announcement posted!');
+            renderAnnouncements();
+        }
+
+        function renderAnnouncements() {
+            const announcements = getData('announcements');
+            const tb = document.getElementById('announcementsBody');
+            if (!announcements.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No announcements</td></tr>'; return; }
+            tb.innerHTML = announcements.map(a => `<tr>
+                <td><strong>${a.title}</strong></td><td>${a.message.substring(0, 60)}${a.message.length > 60 ? '...' : ''}</td>
+                <td><span class="status-badge approved">${a.audience}</span></td><td>${a.author}</td><td>${a.date}</td>
+                <td><button class="action-btn delete" onclick="deleteAnnouncement(${a.id})" title="Delete"><i class="fas fa-trash"></i></button></td>
+            </tr>`).join('');
+        }
+
+        function deleteAnnouncement(id) {
+            if (!confirm('Delete this announcement?')) return;
+            let announcements = getData('announcements');
+            announcements = announcements.filter(a => a.id !== id);
+            setData('announcements', announcements);
+            renderAnnouncements();
+        }
+
+        // ===== CALENDAR / EVENTS =====
+        function addEvent() {
+            const title = document.getElementById('evTitle').value.trim();
+            const date = document.getElementById('evDate').value;
+            const endDate = document.getElementById('evEndDate').value;
+            const type = document.getElementById('evType').value;
+            const desc = document.getElementById('evDesc').value.trim();
+            if (!title || !date) { alert('Enter title and date'); return; }
+            const events = getData('events');
+            events.push({ id: Date.now(), title, date, endDate: endDate || '', type, description: desc });
+            setData('events', events);
+            document.getElementById('evTitle').value = '';
+            document.getElementById('evDesc').value = '';
+            alert('Event added!');
+            renderEvents();
+        }
+
+        function renderEvents() {
+            const events = getData('events').sort((a, b) => new Date(a.date) - new Date(b.date));
+            const tb = document.getElementById('eventsBody');
+            if (!events.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No events</td></tr>'; return; }
+            tb.innerHTML = events.map(e => `<tr>
+                <td><strong>${e.title}</strong></td><td>${e.date}</td><td>${e.endDate || '-'}</td>
+                <td><span class="status-badge ${e.type==='exam'?'pending':e.type==='holiday'?'approved':e.type==='deadline'?'rejected':'approved'}">${e.type}</span></td>
+                <td>${e.description || '-'}</td>
+                <td><button class="action-btn delete" onclick="deleteEvent(${e.id})" title="Delete"><i class="fas fa-trash"></i></button></td>
+            </tr>`).join('');
+        }
+
+        function deleteEvent(id) {
+            if (!confirm('Delete this event?')) return;
+            let events = getData('events');
+            events = events.filter(e => e.id !== id);
+            setData('events', events);
+            renderEvents();
+        }
+
+        // ===== BULK IMPORT =====
+        function bulkImportStudents() {
+            const file = document.getElementById('importStudentsFile').files[0];
+            if (!file) { alert('Select a CSV file'); return; }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const lines = e.target.result.split('\n').filter(l => l.trim());
+                const students = getData('students');
+                let imported = 0;
+                lines.forEach((line, i) => {
+                    if (i === 0 && line.toLowerCase().includes('id')) return; // skip header
+                    const parts = line.split(',').map(p => p.trim());
+                    if (parts.length < 6) return;
+                    const existing = students.find(s => s.id === parts[0]);
+                    if (!existing) {
+                        students.push({
+                            id: parts[0], name: parts[1], gender: parts[2] || '', class: parts[3] || '',
+                            kcpe: parts[4] || '', parent: parts[5] || '', parentPhone: parts[6] || '',
+                            username: parts[7] || parts[0], password: parts[8] || 'student123',
+                            email: parts[9] || '', status: 'active', dateAdded: new Date().toISOString()
+                        });
+                        imported++;
+                    }
+                });
+                setData('students', students);
+                renderStudents();
+                alert('Imported ' + imported + ' students successfully!');
+            };
+            reader.readAsText(file);
+        }
+
+        function bulkImportTeachers() {
+            const file = document.getElementById('importTeachersFile').files[0];
+            if (!file) { alert('Select a CSV file'); return; }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const lines = e.target.result.split('\n').filter(l => l.trim());
+                const teachers = getData('teachers');
+                let imported = 0;
+                lines.forEach((line, i) => {
+                    if (i === 0 && line.toLowerCase().includes('id')) return;
+                    const parts = line.split(',').map(p => p.trim());
+                    if (parts.length < 4) return;
+                    const existing = teachers.find(t => t.id === parts[0]);
+                    if (!existing) {
+                        teachers.push({
+                            id: parts[0], name: parts[1], email: parts[2] || '', phone: parts[3] || '',
+                            subjects: (parts[4] || '').split(';').map(s => s.trim()).filter(Boolean),
+                            password: parts[5] || 'teacher123', role: 'Teacher', status: 'active', dateAdded: new Date().toISOString()
+                        });
+                        imported++;
+                    }
+                });
+                setData('teachers', teachers);
+                renderTeachers();
+                alert('Imported ' + imported + ' teachers successfully!');
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadSampleCSV(type) {
+            let csv = '';
+            if (type === 'students') {
+                csv = 'id,name,gender,class,kcpe,parent,parentPhone,username,password,email\n';
+                csv += 'S001,John Doe,Male,Form 1 East,320,James Doe,0712345678,S001,student123,john@email.com\n';
+                csv += 'S002,Jane Doe,Female,Form 2 West,350,James Doe,0712345678,S002,student123,jane@email.com';
+            } else {
+                csv = 'id,name,email,phone,subjects(semicolon-separated),password\n';
+                csv += 'T001,Mary Smith,mary@email.com,0723456789,Mathematics;Physics,teacher123\n';
+                csv += 'T002,Peter Jones,peter@email.com,0734567890,English;Kiswahili,teacher123';
+            }
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = type + '_sample.csv';
+            a.click();
+        }
+
+        // ===== INIT =====
+        function init() {
+            renderTeachers(); renderStudents(); renderParents();
+            renderApplicants(); renderActivities(); renderFees();
+            renderSuspendedStudents(); renderExpelledStudents(); renderSuspendedTeachers();
+            renderAlumni();
+            updateCounts();
+            renderTimetables();
+            renderAttendanceRecords();
+            renderAnnouncements();
+            renderEvents();
+            populateTimetableDropdowns();
+            populateAttendanceDropdowns();
+        }
+        init();
+        // Dark mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('wanganga_dark_mode', isDark);
+            document.getElementById('dmIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        if (localStorage.getItem('wanganga_dark_mode') === 'true') {
+            document.body.classList.add('dark-mode');
+            const icon = document.getElementById('dmIcon');
+            if (icon) icon.className = 'fas fa-sun';
+        }
+    </script>
+
+</body>
+</html>

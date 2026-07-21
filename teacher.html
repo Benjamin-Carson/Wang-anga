@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard | Wang'anga Senior School</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a5276">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><i class="fas fa-chalkboard-teacher"></i></div>
+            <h3>Teacher Portal</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" onclick="showSection('cards', this)"><i class="fas fa-clipboard-list"></i> Online Cards</a></li>
+                <li><a href="#" onclick="showSection('create-card', this)"><i class="fas fa-plus-circle"></i> Create Card</a></li>
+                <li><a href="#" onclick="showSection('gradebook', this)"><i class="fas fa-book"></i> Grade Book</a></li>
+                <li><a href="#" onclick="showSection('enter-grades', this)"><i class="fas fa-pen"></i> Enter Grades</a></li>
+                <li><a href="#" onclick="showSection('my-students', this)"><i class="fas fa-user-graduate"></i> My Students</a></li>
+                <li><a href="#" onclick="showSection('teacher-attendance', this)"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
+                <li><a href="#" onclick="showSection('teacher-timetable', this)"><i class="fas fa-calendar-alt"></i> My Timetable</a></li>
+                <li><a href="#" onclick="showSection('profile', this)"><i class="fas fa-user-circle"></i> My Profile</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-topbar">
+            <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+            <div class="topbar-right">
+                <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <div class="admin-profile"><i class="fas fa-user-circle"></i> <span id="teacherDisplayName">Teacher</span></div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="content-section active" id="dashboard">
+            <h2>Welcome, <span id="welcomeName">Teacher</span></h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon teachers-bg"><i class="fas fa-clipboard-list"></i></div>
+                    <div class="stat-info"><h3 id="myCardsCount">0</h3><p>My Cards</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon students-bg"><i class="fas fa-user-graduate"></i></div>
+                    <div class="stat-info"><h3 id="myStudentsCount">0</h3><p>My Students</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#27ae60,#2ecc71)"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info"><h3 id="completedCount">0</h3><p>Completed</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#e74c3c,#c0392b)"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info"><h3 id="pendingCount">0</h3><p>Pending Review</p></div>
+                </div>
+            </div>
+            <div class="recent-section">
+                <h3>Recent Submissions</h3>
+                <div id="recentSubmissions"><p class="no-activity">No recent submissions</p></div>
+            </div>
+        </div>
+
+        <!-- Online Cards -->
+        <div class="content-section" id="cards">
+            <div class="section-top">
+                <h2>My Online Cards</h2>
+                <button class="btn btn-primary" onclick="showSection('create-card', document.querySelector('[onclick*=create-card]'))"><i class="fas fa-plus"></i> Create New Card</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Card ID</th><th>Title</th><th>Subject</th><th>Class</th><th>Deadline</th><th>Time Left</th><th>Submissions</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="myCardsBody"><tr class="no-data"><td colspan="9">No cards created yet</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Create Card -->
+        <div class="content-section" id="create-card">
+            <h2>Create Online Card</h2>
+            <div class="create-card-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Card Title <span class="required">*</span></label>
+                        <input type="text" id="cardTitle" placeholder="e.g. Mathematics Assignment 1">
+                    </div>
+                    <div class="form-group">
+                        <label>Subject <span class="required">*</span></label>
+                        <select id="cardSubject">
+                            <option value="">Select Subject</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Target Class <span class="required">*</span></label>
+                        <select id="cardClass">
+                            <option value="">Select Class</option>
+                            <option value="Form 1 East">Form 1 East</option><option value="Form 1 West">Form 1 West</option>
+                            <option value="Form 2 East">Form 2 East</option><option value="Form 2 West">Form 2 West</option>
+                            <option value="Form 3 East">Form 3 East</option><option value="Form 3 West">Form 3 West</option>
+                            <option value="Form 4 East">Form 4 East</option><option value="Form 4 West">Form 4 West</option>
+                            <option value="All Classes">All Classes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Card Type</label>
+                        <select id="cardType">
+                            <option value="Assignment">Assignment</option>
+                            <option value="Quiz">Quiz</option>
+                            <option value="Project">Project</option>
+                            <option value="Research">Research</option>
+                            <option value="Reading">Reading Task</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Deadline Date <span class="required">*</span></label>
+                        <input type="date" id="cardDeadlineDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Deadline Time <span class="required">*</span></label>
+                        <input type="time" id="cardDeadlineTime" value="23:59">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration (Auto-calculate)</label>
+                        <input type="text" id="cardDuration" readonly placeholder="Will be calculated">
+                    </div>
+                    <div class="form-group">
+                        <label>Max Score</label>
+                        <input type="number" id="cardMaxScore" value="100" min="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description / Instructions <span class="required">*</span></label>
+                    <textarea id="cardDescription" rows="6" placeholder="Write the assignment instructions here..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Attach File (optional)</label>
+                    <input type="text" id="cardAttachment" placeholder="File URL or description">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="cardAllowLate"> Allow late submissions
+                    </label>
+                </div>
+                <button class="btn btn-primary" onclick="createCard()"><i class="fas fa-paper-plane"></i> Create Card</button>
+            </div>
+        </div>
+
+        <!-- Card Submissions View -->
+        <div class="content-section" id="card-submissions">
+            <div class="section-top">
+                <h2 id="submissionsTitle">Card Submissions</h2>
+                <button class="btn btn-secondary" onclick="showSection('cards', document.querySelector('[onclick*=cards]'))"><i class="fas fa-arrow-left"></i> Back to Cards</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Student</th><th>Adm No</th><th>Submitted</th><th>Answer</th><th>Score</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="submissionsBody"><tr class="no-data"><td colspan="7">No submissions yet</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Grade Book -->
+        <div class="content-section" id="gradebook">
+            <h2>Grade Book</h2>
+            <div class="gradebook-filters">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Select Class</label>
+                        <select id="gbClass" onchange="loadGradeBook()">
+                            <option value="">Select Class</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Subject</label>
+                        <select id="gbSubject" onchange="loadGradeBook()">
+                            <option value="">Select Subject</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Exam/Term</label>
+                        <select id="gbExam" onchange="loadGradeBook()">
+                            <option value="">Select Exam</option>
+                            <option value="Term 1 Opening">Term 1 Opening</option>
+                            <option value="Term 1 Mid">Term 1 Mid</option>
+                            <option value="Term 1 End">Term 1 End</option>
+                            <option value="Term 2 Opening">Term 2 Opening</option>
+                            <option value="Term 2 Mid">Term 2 Mid</option>
+                            <option value="Term 2 End">Term 2 End</option>
+                            <option value="Term 3 Opening">Term 3 Opening</option>
+                            <option value="Term 3 Mid">Term 3 Mid</option>
+                            <option value="Term 3 End (KCSE Preps)">Term 3 End (KCSE Preps)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="table-container" style="margin-top:20px;">
+                <table>
+                    <thead><tr><th>Adm No</th><th>Student Name</th><th>Mark (100)</th><th>Grade</th><th>Points</th><th>Remarks</th><th>Actions</th></tr></thead>
+                    <tbody id="gradeBookBody"><tr class="no-data"><td colspan="7">Select class, subject and exam to view grades</td></tr></tbody>
+                </table>
+            </div>
+            <div class="gradebook-summary" id="gradeBookSummary" style="display:none;">
+                <div class="summary-item"><strong>Class Average:</strong> <span id="gbAvg">0</span></div>
+                <div class="summary-item"><strong>Highest:</strong> <span id="gbHighest">0</span></div>
+                <div class="summary-item"><strong>Lowest:</strong> <span id="gbLowest">0</span></div>
+                <div class="summary-item"><strong>Students Graded:</strong> <span id="gbGraded">0</span></div>
+            </div>
+        </div>
+
+        <!-- Enter Grades -->
+        <div class="content-section" id="enter-grades">
+            <h2>Enter Grades</h2>
+            <div class="create-card-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Select Class <span class="required">*</span></label>
+                        <select id="egClass" onchange="loadStudentsForGrading()">
+                            <option value="">Select Class</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Subject <span class="required">*</span></label>
+                        <select id="egSubject">
+                            <option value="">Select Subject</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Exam / Term <span class="required">*</span></label>
+                        <select id="egExam">
+                            <option value="">Select Exam</option>
+                            <option value="Term 1 Opening">Term 1 Opening</option>
+                            <option value="Term 1 Mid">Term 1 Mid</option>
+                            <option value="Term 1 End">Term 1 End</option>
+                            <option value="Term 2 Opening">Term 2 Opening</option>
+                            <option value="Term 2 Mid">Term 2 Mid</option>
+                            <option value="Term 2 End">Term 2 End</option>
+                            <option value="Term 3 Opening">Term 3 Opening</option>
+                            <option value="Term 3 Mid">Term 3 Mid</option>
+                            <option value="Term 3 End (KCSE Preps)">Term 3 End (KCSE Preps)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Max Marks</label>
+                        <input type="number" id="egMaxMarks" value="100" min="1">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="loadStudentsForGrading()" style="margin-bottom:20px"><i class="fas fa-search"></i> Load Students</button>
+            </div>
+            <div class="table-container" style="margin-top:10px;">
+                <table>
+                    <thead><tr><th>Adm No</th><th>Student Name</th><th>Marks (out of 100)</th><th>Grade</th><th>Points</th><th>Remarks</th></tr></thead>
+                    <tbody id="enterGradesBody"><tr class="no-data"><td colspan="6">Select class, subject and exam then click Load Students</td></tr></tbody>
+                </table>
+            </div>
+            <div style="margin-top:20px;text-align:right;">
+                <button class="btn btn-primary" onclick="saveAllGrades()" id="saveGradesBtn" style="display:none"><i class="fas fa-save"></i> Save All Grades</button>
+            </div>
+        </div>
+
+        <!-- My Students -->
+        <div class="content-section" id="my-students">
+            <h2>My Students</h2>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Photo</th><th>Adm No</th><th>Name</th><th>Class</th><th>Parent Phone</th><th>Cards Completed</th></tr></thead>
+                    <tbody id="myStudentsBody"><tr class="no-data"><td colspan="6">No students found</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Teacher Attendance -->
+        <div class="content-section" id="teacher-attendance">
+            <h2>Mark Attendance</h2>
+            <div class="create-card-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Class <span class="required">*</span></label>
+                        <select id="taClass"><option value="">Select Class</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date <span class="required">*</span></label>
+                        <input type="date" id="taDate">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="loadTeacherAttendanceStudents()"><i class="fas fa-search"></i> Load Students</button>
+            </div>
+            <div class="table-container" style="margin-top:15px">
+                <table>
+                    <thead><tr><th>Adm No</th><th>Name</th><th>Status</th><th>Remarks</th></tr></thead>
+                    <tbody id="taBody"><tr class="no-data"><td colspan="4">Select class and date, then load students</td></tr></tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary" onclick="saveTeacherAttendance()" id="saveTaBtn" style="display:none;margin-top:15px"><i class="fas fa-save"></i> Save Attendance</button>
+        </div>
+
+        <!-- Teacher Timetable -->
+        <div class="content-section" id="teacher-timetable">
+            <h2>My Timetable</h2>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead>
+                    <tbody id="teacherTimetableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Profile -->
+        <div class="content-section" id="profile">
+            <h2>My Profile</h2>
+            <div class="profile-card">
+                <div class="photo-upload">
+                    <div class="photo-preview profile-photo-lg" id="myProfilePreview" onclick="document.getElementById('myProfileInput').click()">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <input type="file" id="myProfileInput" accept="image/*" onchange="updateMyProfilePhoto(this)">
+                    <label onclick="document.getElementById('myProfileInput').click()">Change Photo</label>
+                </div>
+                <div id="profileInfo"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const TEACHER_ID = localStorage.getItem('wanganga_current_teacher') || 'TCH001';
+        const TEACHERS = JSON.parse(localStorage.getItem('wanganga_teachers') || '[]');
+        const teacher = TEACHERS.find(t => t.id === TEACHER_ID) || { name: 'Teacher', subjects: ['Mathematics'], id: TEACHER_ID };
+
+        function getCards() { return JSON.parse(localStorage.getItem('wanganga_cards') || '[]'); }
+        function setCards(d) { localStorage.setItem('wanganga_cards', JSON.stringify(d)); }
+        function getSubmissions() { return JSON.parse(localStorage.getItem('wanganga_submissions') || '[]'); }
+        function setSubmissions(d) { localStorage.setItem('wanganga_submissions', JSON.stringify(d)); }
+        function getStudents() { return JSON.parse(localStorage.getItem('wanganga_students') || '[]'); }
+
+        // ===== SIDEBAR =====
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+        function showSection(id, link) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            if (link) link.classList.add('active');
+            if (id === 'my-students') renderMyStudents();
+            if (id === 'cards') renderMyCards();
+            if (id === 'profile') renderProfile();
+            if (id === 'teacher-attendance') loadTeacherAttendanceStudents();
+            if (id === 'teacher-timetable') renderTeacherTimetable();
+        }
+
+        // ===== PHOTO =====
+        function previewPhoto(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById(previewId);
+                    preview.innerHTML = '<img src="' + e.target.result + '">';
+                    preview.classList.add('has-photo');
+                    preview.dataset.photo = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ===== CALCULATE DURATION =====
+        document.getElementById('cardDeadlineDate').addEventListener('change', calcDuration);
+        document.getElementById('cardDeadlineTime').addEventListener('change', calcDuration);
+        function calcDuration() {
+            const d = document.getElementById('cardDeadlineDate').value;
+            const t = document.getElementById('cardDeadlineTime').value;
+            if (!d) return;
+            const deadline = new Date(d + 'T' + (t || '23:59'));
+            const now = new Date();
+            const diff = deadline - now;
+            if (diff <= 0) { document.getElementById('cardDuration').value = 'Deadline passed'; return; }
+            const days = Math.floor(diff / 86400000);
+            const hours = Math.floor((diff % 86400000) / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            let dur = '';
+            if (days > 0) dur += days + ' day(s) ';
+            if (hours > 0) dur += hours + ' hour(s) ';
+            dur += mins + ' min(s)';
+            document.getElementById('cardDuration').value = dur;
+        }
+
+        // ===== CREATE CARD =====
+        function createCard() {
+            const title = document.getElementById('cardTitle').value;
+            const subject = document.getElementById('cardSubject').value;
+            const cls = document.getElementById('cardClass').value;
+            const deadlineDate = document.getElementById('cardDeadlineDate').value;
+            const deadlineTime = document.getElementById('cardDeadlineTime').value;
+            const description = document.getElementById('cardDescription').value;
+
+            if (!title || !subject || !cls || !deadlineDate || !description) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const deadline = new Date(deadlineDate + 'T' + (deadlineTime || '23:59'));
+            if (deadline <= new Date()) {
+                alert('Deadline must be in the future');
+                return;
+            }
+
+            const cards = getCards();
+            const card = {
+                id: 'CARD' + Date.now().toString().slice(-8),
+                title: title,
+                subject: subject,
+                class: cls,
+                type: document.getElementById('cardType').value,
+                deadline: deadline.toISOString(),
+                maxScore: Number(document.getElementById('cardMaxScore').value) || 100,
+                description: description,
+                attachment: document.getElementById('cardAttachment').value || '',
+                allowLate: document.getElementById('cardAllowLate').checked,
+                teacherId: teacher.id,
+                teacherName: teacher.name,
+                status: 'Active',
+                dateCreated: new Date().toISOString()
+            };
+
+            cards.push(card);
+            setCards(cards);
+
+            // Log activity
+            const records = JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]');
+            records.unshift({ id: records.length + 1, timestamp: new Date().toISOString(), category: 'teacher', action: 'create', details: 'New online card created: ' + title + ' (' + subject + ', ' + cls + ')', user: teacher.name, ip: 'Local Network' });
+            localStorage.setItem('wanganga_admin_center', JSON.stringify(records));
+
+            alert('Card created successfully!');
+            // Reset form
+            document.getElementById('cardTitle').value = '';
+            document.getElementById('cardDescription').value = '';
+            document.getElementById('cardDeadlineDate').value = '';
+            document.getElementById('cardDuration').value = '';
+            document.getElementById('cardAttachment').value = '';
+            document.getElementById('cardAllowLate').checked = false;
+            showSection('cards', document.querySelector('[onclick*=cards]'));
+        }
+
+        // ===== RENDER MY CARDS =====
+        function renderMyCards() {
+            const cards = getCards().filter(c => c.teacherId === teacher.id);
+            const submissions = getSubmissions();
+            const tbody = document.getElementById('myCardsBody');
+            document.getElementById('myCardsCount').textContent = cards.length;
+
+            if (!cards.length) { tbody.innerHTML = '<tr class="no-data"><td colspan="9">No cards created yet</td></tr>'; return; }
+
+            tbody.innerHTML = cards.map((c, i) => {
+                const deadline = new Date(c.deadline);
+                const now = new Date();
+                const diff = deadline - now;
+                let timeLeft = '';
+                let statusClass = 'active';
+
+                if (diff <= 0) {
+                    timeLeft = 'Expired';
+                    statusClass = 'suspended';
+                } else {
+                    const days = Math.floor(diff / 86400000);
+                    const hours = Math.floor((diff % 86400000) / 3600000);
+                    if (days > 0) timeLeft = days + 'd ' + hours + 'h';
+                    else timeLeft = hours + 'h ' + Math.floor((diff % 3600000) / 60000) + 'm';
+                    if (days < 1) statusClass = '';
+                }
+
+                const cardSubs = submissions.filter(s => s.cardId === c.id);
+                const completed = cardSubs.filter(s => s.status === 'Graded' || s.status === 'Submitted').length;
+
+                return `<tr>
+                    <td><small>${c.id}</small></td>
+                    <td>${c.title}</td>
+                    <td>${c.subject}</td>
+                    <td>${c.class}</td>
+                    <td><small>${deadline.toLocaleDateString()} ${deadline.toLocaleTimeString()}</small></td>
+                    <td><span class="status-badge ${statusClass}">${timeLeft}</span></td>
+                    <td>${completed}</td>
+                    <td><span class="status-badge ${statusClass}">${diff > 0 ? 'Active' : 'Closed'}</span></td>
+                    <td>
+                        <button class="action-btn view" onclick="viewSubmissions('${c.id}')" title="View Submissions"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn delete" onclick="deleteCard(${getCards().indexOf(c)})" title="Delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ===== VIEW SUBMISSIONS =====
+        function viewSubmissions(cardId) {
+            const cards = getCards();
+            const card = cards.find(c => c.id === cardId);
+            if (!card) return;
+            document.getElementById('submissionsTitle').textContent = 'Submissions: ' + card.title;
+
+            const submissions = getSubmissions().filter(s => s.cardId === cardId);
+            const students = getStudents();
+            const tbody = document.getElementById('submissionsBody');
+
+            // Get all students for this class
+            const classStudents = card.class === 'All Classes' ? students : students.filter(s => s.class === card.class);
+
+            if (!classStudents.length) { tbody.innerHTML = '<tr class="no-data"><td colspan="7">No students in this class</td></tr>'; return; }
+
+            tbody.innerHTML = classStudents.map(s => {
+                const sub = submissions.find(x => x.studentId === s.id);
+                return `<tr>
+                    <td>${s.photo ? '<img src="' + s.photo + '" class="table-photo">' : '<div class="table-photo-placeholder">' + s.name.charAt(0) + '</div>'}</td>
+                    <td>${s.id}</td>
+                    <td>${s.name}</td>
+                    <td>${sub ? '<small>' + new Date(sub.submittedAt).toLocaleString() + '</small>' : '-'}</td>
+                    <td>${sub ? (sub.answer || '-').substring(0, 50) + '...' : '-'}</td>
+                    <td>${sub ? (sub.score !== undefined ? sub.score + '/' + card.maxScore : 'Pending') : 'Not submitted'}</td>
+                    <td>${sub ? `<span class="status-badge ${sub.status === 'Graded' ? 'active' : ''}">${sub.status}</span>` : '<span class="status-badge suspended">Missing</span>'}</td>
+                    <td>
+                        ${sub && sub.status !== 'Graded' ? `<button class="action-btn accept" onclick="gradeSubmission('${sub.id}')" title="Grade"><i class="fas fa-check"></i></button>` : ''}
+                    </td>
+                </tr>`;
+            }).join('');
+
+            showSection('card-submissions', null);
+        }
+
+        function gradeSubmission(subId) {
+            const score = prompt('Enter score:');
+            if (score === null) return;
+            const submissions = getSubmissions();
+            const sub = submissions.find(s => s.id === subId);
+            if (sub) {
+                sub.score = Number(score);
+                sub.status = 'Graded';
+                sub.gradedAt = new Date().toISOString();
+                setSubmissions(submissions);
+                alert('Score saved!');
+                // Re-render
+                const card = getCards().find(c => c.id === sub.cardId);
+                if (card) viewSubmissions(card.id);
+            }
+        }
+
+        function deleteCard(i) {
+            if (!confirm('Delete this card?')) return;
+            const cards = getCards();
+            cards.splice(i, 1);
+            setCards(cards);
+            renderMyCards();
+        }
+
+        // ===== MY STUDENTS =====
+        function renderMyStudents() {
+            const students = getStudents();
+            const submissions = getSubmissions();
+            const myCards = getCards().filter(c => c.teacherId === teacher.id);
+            const myStudentIds = [...new Set(myCards.map(c => c.class))];
+
+            const filtered = myStudentIds.includes('All Classes') ? students :
+                students.filter(s => myStudentIds.includes(s.class));
+
+            document.getElementById('myStudentsCount').textContent = filtered.length;
+            const tbody = document.getElementById('myStudentsBody');
+
+            if (!filtered.length) { tbody.innerHTML = '<tr class="no-data"><td colspan="6">No students found</td></tr>'; return; }
+
+            tbody.innerHTML = filtered.map(s => {
+                const completed = submissions.filter(x => x.studentId === s.id && myCards.some(c => c.id === x.cardId)).length;
+                return `<tr>
+                    <td>${s.photo ? '<img src="' + s.photo + '" class="table-photo">' : '<div class="table-photo-placeholder">' + s.name.charAt(0) + '</div>'}</td>
+                    <td>${s.id}</td><td>${s.name}</td><td>${s.class}</td><td>${s.parentPhone}</td>
+                    <td>${completed} / ${myCards.length}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ===== PROFILE =====
+        function renderProfile() {
+            const photo = localStorage.getItem('wanganga_teacher_photo_' + teacher.id);
+            if (photo) {
+                document.getElementById('myProfilePreview').innerHTML = '<img src="' + photo + '">';
+                document.getElementById('myProfilePreview').classList.add('has-photo');
+            }
+            document.getElementById('profileInfo').innerHTML = `
+                <div class="applicant-info">
+                    <p><strong>Staff ID:</strong> ${teacher.id}</p>
+                    <p><strong>Name:</strong> ${teacher.name}</p>
+                    <p><strong>Email:</strong> ${teacher.email || '-'}</p>
+                    <p><strong>Phone:</strong> ${teacher.phone || '-'}</p>
+                    <p><strong>Role:</strong> ${teacher.role || 'Teacher'}</p>
+                    <p><strong>Subjects:</strong> ${(teacher.subjects || []).join(', ')}</p>
+                    <p><strong>Status:</strong> ${teacher.status || 'Active'}</p>
+                </div>
+            `;
+        }
+
+        function updateMyProfilePhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem('wanganga_teacher_photo_' + teacher.id, e.target.result);
+                    document.getElementById('myProfilePreview').innerHTML = '<img src="' + e.target.result + '">';
+                    document.getElementById('myProfilePreview').classList.add('has-photo');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ===== RENDER SUBMISSIONS SUMMARY =====
+        function renderSubmissionsSummary() {
+            const subs = getSubmissions();
+            const myCards = getCards().filter(c => c.teacherId === teacher.id);
+            const mySubs = subs.filter(s => myCards.some(c => c.id === s.cardId));
+            const completed = mySubs.filter(s => s.status === 'Graded').length;
+            const pending = mySubs.filter(s => s.status !== 'Graded').length;
+
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('pendingCount').textContent = pending;
+
+            const recent = document.getElementById('recentSubmissions');
+            if (!mySubs.length) { recent.innerHTML = '<p class="no-activity">No recent submissions</p>'; return; }
+            recent.innerHTML = mySubs.slice(0, 5).map(s => {
+                const card = myCards.find(c => c.id === s.cardId);
+                const student = getStudents().find(st => st.id === s.studentId);
+                return `<div class="activity-item">
+                    <i class="fas fa-circle"></i>
+                    <span>${student ? student.name : 'Student'} submitted "${card ? card.title : 'Card'}"</span>
+                    <small>${new Date(s.submittedAt).toLocaleString()}</small>
+                </div>`;
+            }).join('');
+        }
+
+        // ===== TEACHER ATTENDANCE =====
+        function loadTeacherAttendanceStudents() {
+            const cls = document.getElementById('taClass').value;
+            const date = document.getElementById('taDate').value;
+            if (!cls || !date) return;
+            const students = JSON.parse(localStorage.getItem('wanganga_students') || '[]').filter(s => s.class === cls && s.status !== 'expelled');
+            const existing = JSON.parse(localStorage.getItem('wanganga_attendance') || '[]').filter(a => a.date === date && a.class === cls);
+            const tb = document.getElementById('taBody');
+            if (!students.length) { tb.innerHTML = '<tr class="no-data"><td colspan="4">No students in this class</td></tr>'; return; }
+            tb.innerHTML = students.map(s => {
+                const ex = existing.find(a => a.studentId === s.id);
+                return `<tr>
+                    <td>${s.id}</td><td>${s.name}</td>
+                    <td><select class="ta-status" data-id="${s.id}">
+                        <option value="Present" ${ex && ex.status === 'Present' ? 'selected' : ''}>Present</option>
+                        <option value="Absent" ${ex && ex.status === 'Absent' ? 'selected' : ''}>Absent</option>
+                        <option value="Late" ${ex && ex.status === 'Late' ? 'selected' : ''}>Late</option>
+                        <option value="Excused" ${ex && ex.status === 'Excused' ? 'selected' : ''}>Excused</option>
+                    </select></td>
+                    <td><input type="text" class="ta-remarks" data-id="${s.id}" value="${ex ? ex.remarks || '' : ''}" placeholder="Optional" style="width:120px;padding:6px;border:1px solid var(--border);border-radius:4px"></td>
+                </tr>`;
+            }).join('');
+            document.getElementById('saveTaBtn').style.display = 'inline-block';
+        }
+
+        function saveTeacherAttendance() {
+            const cls = document.getElementById('taClass').value;
+            const date = document.getElementById('taDate').value;
+            if (!cls || !date) return;
+            const attendance = JSON.parse(localStorage.getItem('wanganga_attendance') || '[]');
+            document.querySelectorAll('.ta-status').forEach(sel => {
+                const sid = sel.dataset.id;
+                const status = sel.value;
+                const remarks = document.querySelector('.ta-remarks[data-id="' + sid + '"]')?.value || '';
+                const student = JSON.parse(localStorage.getItem('wanganga_students') || '[]').find(s => s.id === sid);
+                const existing = attendance.findIndex(a => a.studentId === sid && a.date === date && a.class === cls);
+                const record = { studentId: sid, studentName: student ? student.name : '', class: cls, date, status, remarks, markedBy: teacher.name, markedAt: new Date().toISOString() };
+                if (existing >= 0) attendance[existing] = record; else attendance.push(record);
+            });
+            localStorage.setItem('wanganga_attendance', JSON.stringify(attendance));
+            alert('Attendance saved!');
+        }
+
+        // ===== TEACHER TIMETABLE =====
+        function renderTeacherTimetable() {
+            const timetable = JSON.parse(localStorage.getItem('wanganga_timetable') || '[]');
+            const teacherEntries = timetable.filter(t => t.teacher === teacher.name);
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            const periods = [1,2,3,4,6,7,8,9,10,11,12];
+            const timeMap = {1:'7:30-8:00',2:'8:00-8:40',3:'8:40-9:20',4:'9:20-10:00',6:'10:20-11:00',7:'11:00-11:40',8:'11:40-12:20',9:'12:20-1:00',10:'1:00-1:40',11:'1:40-2:20',12:'2:20-3:00'};
+            const tb = document.getElementById('teacherTimetableBody');
+            tb.innerHTML = periods.map(p => {
+                if (p === 4) return `<tr style="background:#f0f7fb"><td><strong>${timeMap[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">BREAK</td></tr>`;
+                if (p === 12) return `<tr style="background:#f0f7fb"><td><strong>${timeMap[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">BREAK</td></tr>`;
+                return `<tr><td><strong>${timeMap[p]}</strong></td>${days.map(d => {
+                    const e = teacherEntries.find(t => t.day === d && t.period === p);
+                    return `<td>${e ? '<strong>'+e.subject+'</strong><br><small>'+e.class+'</small>' : '-'}</td>`;
+                }).join('')}</tr>`;
+            }).join('');
+        }
+
+        // ===== GRADE BOOK =====
+        function getGrades() { return JSON.parse(localStorage.getItem('wanganga_grades') || '[]'); }
+        function setGrades(d) { localStorage.setItem('wanganga_grades', JSON.stringify(d)); }
+
+        function calculateGrade(mark) {
+            if (mark >= 80) return { grade: 'A', points: 12, remark: 'Excellent' };
+            if (mark >= 75) return { grade: 'A-', points: 11, remark: 'Very Good' };
+            if (mark >= 70) return { grade: 'B+', points: 10, remark: 'Good' };
+            if (mark >= 65) return { grade: 'B', points: 9, remark: 'Good' };
+            if (mark >= 60) return { grade: 'B-', points: 8, remark: 'Above Average' };
+            if (mark >= 55) return { grade: 'C+', points: 7, remark: 'Average' };
+            if (mark >= 50) return { grade: 'C', points: 6, remark: 'Average' };
+            if (mark >= 45) return { grade: 'C-', points: 5, remark: 'Below Average' };
+            if (mark >= 40) return { grade: 'D+', points: 4, remark: 'Below Average' };
+            if (mark >= 35) return { grade: 'D', points: 3, remark: 'Poor' };
+            if (mark >= 30) return { grade: 'D-', points: 2, remark: 'Poor' };
+            return { grade: 'E', points: 1, remark: 'Very Poor' };
+        }
+
+        function loadGradeBook() {
+            const cls = document.getElementById('gbClass').value;
+            const subject = document.getElementById('gbSubject').value;
+            const exam = document.getElementById('gbExam').value;
+            if (!cls || !subject || !exam) return;
+
+            const grades = getGrades();
+            const students = getStudents();
+            const classStudents = cls === 'All Classes' ? students : students.filter(s => s.class === cls);
+            const tb = document.getElementById('gradeBookBody');
+
+            if (!classStudents.length) { tb.innerHTML = '<tr class="no-data"><td colspan="7">No students in this class</td></tr>'; return; }
+
+            const marks = [];
+            tb.innerHTML = classStudents.map(s => {
+                const g = grades.find(x => x.studentId === s.id && x.subject === subject && x.exam === exam);
+                if (g) marks.push(g.mark);
+                return `<tr>
+                    <td>${s.id}</td>
+                    <td>${s.name}</td>
+                    <td>${g ? g.mark : '<span style="color:#999">Not graded</span>'}</td>
+                    <td>${g ? g.grade : '-'}</td>
+                    <td>${g ? g.points : '-'}</td>
+                    <td>${g ? g.remark : '-'}</td>
+                    <td>${g ? `<button class="action-btn edit" onclick="editGrade('${s.id}','${subject}','${exam}')" title="Edit"><i class="fas fa-edit"></i></button>` : ''}</td>
+                </tr>`;
+            }).join('');
+
+            // Summary
+            if (marks.length) {
+                const avg = (marks.reduce((a, b) => a + b, 0) / marks.length).toFixed(1);
+                document.getElementById('gbAvg').textContent = avg;
+                document.getElementById('gbHighest').textContent = Math.max(...marks);
+                document.getElementById('gbLowest').textContent = Math.min(...marks);
+                document.getElementById('gbGraded').textContent = marks.length + ' / ' + classStudents.length;
+                document.getElementById('gradeBookSummary').style.display = 'flex';
+            }
+        }
+
+        function editGrade(studentId, subject, exam) {
+            const newMark = prompt('Enter new mark (0-100):');
+            if (newMark === null) return;
+            const mark = Number(newMark);
+            if (isNaN(mark) || mark < 0 || mark > 100) { alert('Invalid mark'); return; }
+            const g = calculateGrade(mark);
+            const grades = getGrades();
+            const idx = grades.findIndex(x => x.studentId === studentId && x.subject === subject && x.exam === exam);
+            if (idx >= 0) {
+                grades[idx].mark = mark;
+                grades[idx].grade = g.grade;
+                grades[idx].points = g.points;
+                grades[idx].remark = g.remark;
+                grades[idx].updatedAt = new Date().toISOString();
+            }
+            setGrades(grades);
+            loadGradeBook();
+        }
+
+        // ===== ENTER GRADES =====
+        function loadStudentsForGrading() {
+            const cls = document.getElementById('egClass').value;
+            if (!cls) return;
+            const students = getStudents();
+            const classStudents = cls === 'All Classes' ? students : students.filter(s => s.class === cls);
+            const grades = getGrades();
+            const subject = document.getElementById('egSubject').value;
+            const exam = document.getElementById('egExam').value;
+            const maxMarks = Number(document.getElementById('egMaxMarks').value) || 100;
+            const tb = document.getElementById('enterGradesBody');
+
+            if (!classStudents.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No students in this class</td></tr>'; return; }
+
+            tb.innerHTML = classStudents.map((s, i) => {
+                const existing = (subject && exam) ? grades.find(x => x.studentId === s.id && x.subject === subject && x.exam === exam) : null;
+                const currentMark = existing ? existing.mark : '';
+                const g = currentMark !== '' ? calculateGrade(currentMark) : { grade: '-', points: '-', remark: '-' };
+                return `<tr>
+                    <td>${s.id}</td>
+                    <td>${s.name}</td>
+                    <td><input type="number" min="0" max="${maxMarks}" value="${currentMark}" class="grade-input" data-student="${s.id}" placeholder="0-${maxMarks}"></td>
+                    <td class="grade-display" data-student="${s.id}">${g.grade}</td>
+                    <td class="points-display" data-student="${s.id}">${g.points}</td>
+                    <td><input type="text" value="${existing ? existing.remark : ''}" class="remark-input" data-student="${s.id}" placeholder="Optional remark"></td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('saveGradesBtn').style.display = 'inline-block';
+
+            // Add live grade calculation
+            document.querySelectorAll('.grade-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    const mark = Number(this.value);
+                    const sid = this.dataset.student;
+                    if (!isNaN(mark) && mark >= 0 && mark <= maxMarks) {
+                        const g = calculateGrade(mark);
+                        document.querySelector(`.grade-display[data-student="${sid}"]`).textContent = g.grade;
+                        document.querySelector(`.points-display[data-student="${sid}"]`).textContent = g.points;
+                    } else {
+                        document.querySelector(`.grade-display[data-student="${sid}"]`).textContent = '-';
+                        document.querySelector(`.points-display[data-student="${sid}"]`).textContent = '-';
+                    }
+                });
+            });
+        }
+
+        function saveAllGrades() {
+            const cls = document.getElementById('egClass').value;
+            const subject = document.getElementById('egSubject').value;
+            const exam = document.getElementById('egExam').value;
+            const maxMarks = Number(document.getElementById('egMaxMarks').value) || 100;
+
+            if (!cls || !subject || !exam) { alert('Please select class, subject and exam'); return; }
+
+            const grades = getGrades();
+            const inputs = document.querySelectorAll('.grade-input');
+            let saved = 0;
+
+            inputs.forEach(input => {
+                const mark = Number(input.value);
+                if (isNaN(mark) || input.value === '') return;
+
+                const studentId = input.dataset.student;
+                const student = getStudents().find(s => s.id === studentId);
+                const g = calculateGrade(mark);
+                const remark = document.querySelector(`.remark-input[data-student="${studentId}"]`)?.value || '';
+
+                const idx = grades.findIndex(x => x.studentId === studentId && x.subject === subject && x.exam === exam);
+                const gradeData = {
+                    studentId: studentId,
+                    studentName: student ? student.name : '',
+                    class: cls,
+                    subject: subject,
+                    exam: exam,
+                    mark: mark,
+                    maxMarks: maxMarks,
+                    grade: g.grade,
+                    points: g.points,
+                    remark: remark,
+                    teacherId: teacher.id,
+                    teacherName: teacher.name,
+                    updatedAt: new Date().toISOString()
+                };
+
+                if (idx >= 0) {
+                    grades[idx] = gradeData;
+                } else {
+                    grades.push(gradeData);
+                }
+                saved++;
+            });
+
+            setGrades(grades);
+
+            // Log activity
+            const records = JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]');
+            records.unshift({ id: records.length + 1, timestamp: new Date().toISOString(), category: 'teacher', action: 'create', details: teacher.name + ' saved grades: ' + subject + ' (' + exam + ') - ' + cls + ' - ' + saved + ' students', user: teacher.name, ip: 'Local Network' });
+            localStorage.setItem('wanganga_admin_center', JSON.stringify(records));
+
+            alert('Grades saved successfully! ' + saved + ' students graded.');
+        }
+
+        // ===== INIT =====
+        function init() {
+            // Populate subjects dropdown
+            const subjectSel = document.getElementById('cardSubject');
+            const gbSubjectSel = document.getElementById('gbSubject');
+            const egSubjectSel = document.getElementById('egSubject');
+            (teacher.subjects || []).forEach(s => {
+                subjectSel.innerHTML += '<option value="' + s + '">' + s + '</option>';
+                gbSubjectSel.innerHTML += '<option value="' + s + '">' + s + '</option>';
+                egSubjectSel.innerHTML += '<option value="' + s + '">' + s + '</option>';
+            });
+
+            // Populate class dropdowns
+            const classes = ['Form 1 East', 'Form 1 West', 'Form 2 East', 'Form 2 West', 'Form 3 East', 'Form 3 West', 'Form 4 East', 'Form 4 West', 'All Classes'];
+            const gbClassSel = document.getElementById('gbClass');
+            const egClassSel = document.getElementById('egClass');
+            classes.forEach(c => {
+                gbClassSel.innerHTML += '<option value="' + c + '">' + c + '</option>';
+                egClassSel.innerHTML += '<option value="' + c + '">' + c + '</option>';
+            });
+
+            document.getElementById('teacherDisplayName').textContent = teacher.name;
+            document.getElementById('welcomeName').textContent = teacher.name;
+            renderMyCards();
+            renderSubmissionsSummary();
+            renderMyStudents();
+
+            // Populate teacher attendance class dropdown
+            const taClassSel = document.getElementById('taClass');
+            const teacherClasses = [...new Set(getStudents().filter(s => teacher.subjects && teacher.subjects.length).map(s => s.class))];
+            const allClasses = ['Form 1 East', 'Form 1 West', 'Form 2 East', 'Form 2 West', 'Form 3 East', 'Form 3 West', 'Form 4 East', 'Form 4 West'];
+            allClasses.forEach(c => { taClassSel.innerHTML += '<option value="' + c + '">' + c + '</option>'; });
+            document.getElementById('taDate').value = new Date().toISOString().split('T')[0];
+        }
+        init();
+        // Dark mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('wanganga_dark_mode', isDark);
+            document.getElementById('dmIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        if (localStorage.getItem('wanganga_dark_mode') === 'true') {
+            document.body.classList.add('dark-mode');
+            const icon = document.getElementById('dmIcon');
+            if (icon) icon.className = 'fas fa-sun';
+        }
+    </script>
+
+</body>
+</html>
