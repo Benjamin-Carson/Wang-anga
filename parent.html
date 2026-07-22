@@ -11,580 +11,211 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body class="dashboard-body">
-
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-logo"><i class="fas fa-users"></i></div>
-            <h3>Parent Portal</h3>
-        </div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="#" onclick="showSection('grades', this)"><i class="fas fa-chart-bar"></i> My Child's Grades</a></li>
-                <li><a href="#" onclick="showSection('fees', this)"><i class="fas fa-money-bill-wave"></i> Fees & Payments</a></li>
-                <li><a href="#" onclick="showSection('discipline', this)"><i class="fas fa-gavel"></i> Discipline</a></li>
-                <li><a href="#" onclick="showSection('attendance', this)"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
-                <li><a href="#" onclick="showSection('timetable', this)"><i class="fas fa-calendar-alt"></i> Timetable</a></li>
-                <li><a href="#" onclick="showSection('announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
-                <li><a href="#" onclick="showSection('report-card', this)"><i class="fas fa-file-alt"></i> Report Card</a></li>
-                <li><a href="#" onclick="showSection('profile', this)"><i class="fas fa-user-circle"></i> My Profile</a></li>
-            </ul>
-        </nav>
-        <div class="sidebar-footer">
-            <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        </div>
+        <div class="sidebar-header"><div class="sidebar-logo"><i class="fas fa-users"></i></div><h3>Parent Portal</h3></div>
+        <nav class="sidebar-nav"><ul>
+            <li><a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-divider">Academics</li>
+            <li><a href="#" onclick="showSection('grades', this)"><i class="fas fa-chart-bar"></i> Grades</a></li>
+            <li><a href="#" onclick="showSection('p-analytics', this)"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="#" onclick="showSection('p-kcse', this)"><i class="fas fa-trophy"></i> KCSE Prediction</a></li>
+            <li><a href="#" onclick="showSection('p-career', this)"><i class="fas fa-briefcase"></i> Career Guidance</a></li>
+            <li><a href="#" onclick="showSection('report-card', this)"><i class="fas fa-file-alt"></i> Report Card</a></li>
+            <li class="nav-divider">School Life</li>
+            <li><a href="#" onclick="showSection('fees', this)"><i class="fas fa-money-bill-wave"></i> Fees</a></li>
+            <li><a href="#" onclick="showSection('discipline', this)"><i class="fas fa-gavel"></i> Discipline</a></li>
+            <li><a href="#" onclick="showSection('attendance', this)"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
+            <li><a href="#" onclick="showSection('timetable', this)"><i class="fas fa-calendar-alt"></i> Timetable</a></li>
+            <li><a href="#" onclick="showSection('exam-timetable', this)"><i class="fas fa-pen-fancy"></i> Exam Timetable</a></li>
+            <li><a href="#" onclick="showSection('library', this)"><i class="fas fa-book"></i> Library</a></li>
+            <li><a href="#" onclick="showSection('clubs', this)"><i class="fas fa-futbol"></i> Clubs & Sports</a></li>
+            <li><a href="#" onclick="showSection('lunch', this)"><i class="fas fa-utensils"></i> Lunch Menu</a></li>
+            <li><a href="#" onclick="showSection('bus', this)"><i class="fas fa-bus"></i> Bus Routes</a></li>
+            <li><a href="#" onclick="showSection('health', this)"><i class="fas fa-heartbeat"></i> Health</a></li>
+            <li class="nav-divider">Communication</li>
+            <li><a href="#" onclick="showSection('announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+            <li><a href="#" onclick="showSection('gallery', this)"><i class="fas fa-images"></i> Gallery</a></li>
+            <li><a href="#" onclick="showSection('messaging', this)"><i class="fas fa-comments"></i> Message Teacher</a></li>
+            <li><a href="#" onclick="showSection('p-id', this)"><i class="fas fa-id-card"></i> Child's ID</a></li>
+            <li class="nav-divider">Account</li>
+            <li><a href="#" onclick="showSection('profile', this)"><i class="fas fa-user-circle"></i> My Profile</a></li>
+        </ul></nav>
+        <div class="sidebar-footer"><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></div>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="dashboard-topbar">
             <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
             <div class="topbar-right">
-                <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <a href="https://wa.me/254798394035" target="_blank" class="whatsapp-topbar"><i class="fab fa-whatsapp"></i></a>
                 <div class="admin-profile"><i class="fas fa-user-circle"></i> <span id="parentDisplayName">Parent</span></div>
             </div>
         </div>
 
-        <!-- Dashboard Overview -->
+        <!-- Dashboard -->
         <div class="content-section active" id="dashboard">
-            <div class="welcome-card">
-                <h2>Welcome, <span id="welcomeName">Parent</span>!</h2>
-                <p>Monitor your child's academic progress, fees, and school activities from one place.</p>
-            </div>
-
+            <div class="welcome-card"><h2>Welcome, <span id="welcomeName">Parent</span>!</h2><p>Monitor your child's progress from one place.</p></div>
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
-                    <div class="stat-info"><h3 id="childName">-</h3><p>My Child</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-                    <div class="stat-info"><h3 id="childAverage">-</h3><p>Average Points</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
-                    <div class="stat-info"><h3 id="feesBalance">-</h3><p>Fees Balance</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-clipboard-check"></i></div>
-                    <div class="stat-info"><h3 id="attendanceRate">-</h3><p>Attendance</p></div>
-                </div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-user-graduate"></i></div><div class="stat-info"><h3 id="childName">-</h3><p>My Child</p></div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-info"><h3 id="childAverage">-</h3><p>Average Points</p></div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div><div class="stat-info"><h3 id="feesBalance">-</h3><p>Fees Balance</p></div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-clipboard-check"></i></div><div class="stat-info"><h3 id="attendanceRate">-</h3><p>Attendance</p></div></div>
             </div>
-
             <div class="recent-grid">
-                <div class="activity-card">
-                    <h3><i class="fas fa-chart-bar"></i> Recent Grades</h3>
-                    <div id="recentGrades"><p class="no-data">No recent grades</p></div>
-                </div>
-                <div class="activity-card">
-                    <h3><i class="fas fa-bullhorn"></i> Latest Announcements</h3>
-                    <div id="recentAnnouncements"><p class="no-data">No announcements</p></div>
-                </div>
+                <div class="activity-card"><h3><i class="fas fa-chart-bar"></i> Recent Grades</h3><div id="recentGrades"><p class="no-data">No grades</p></div></div>
+                <div class="activity-card"><h3><i class="fas fa-bullhorn"></i> Latest Announcements</h3><div id="recentAnnouncements"><p class="no-data">No announcements</p></div></div>
             </div>
         </div>
 
-        <!-- My Child's Grades -->
-        <div class="content-section" id="grades">
-            <h2>My Child's Grades</h2>
-            <div class="gradebook-filters">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Subject</label>
-                        <select id="parentGradeSubject" onchange="loadParentGrades()"><option value="">All Subjects</option></select>
-                    </div>
-                    <div class="form-group">
-                        <label>Exam/Term</label>
-                        <select id="parentGradeExam" onchange="loadParentGrades()">
-                            <option value="">All Exams</option>
-                            <option value="Term 1 Opening">Term 1 Opening</option>
-                            <option value="Term 1 Mid">Term 1 Mid</option>
-                            <option value="Term 1 End">Term 1 End</option>
-                            <option value="Term 2 Opening">Term 2 Opening</option>
-                            <option value="Term 2 Mid">Term 2 Mid</option>
-                            <option value="Term 2 End">Term 2 End</option>
-                            <option value="Term 3 Opening">Term 3 Opening</option>
-                            <option value="Term 3 Mid">Term 3 Mid</option>
-                            <option value="Term 3 End (KCSE Preps)">Term 3 End (KCSE Preps)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="grades-summary-cards" id="parentGradesSummary" style="display:none"></div>
-            <div class="table-container" style="margin-top:20px">
-                <table>
-                    <thead><tr><th>Subject</th><th>Exam</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th><th>Teacher</th></tr></thead>
-                    <tbody id="parentGradesBody"><tr class="no-data"><td colspan="7">No grades available yet</td></tr></tbody>
-                </table>
-            </div>
-        </div>
+        <!-- Grades -->
+        <div class="content-section" id="grades"><h2>My Child's Grades</h2><div class="gradebook-filters"><div class="form-row"><div class="form-group"><label>Subject</label><select id="pgSubject" onchange="loadPG()"><option value="">All</option></select></div><div class="form-group"><label>Exam</label><select id="pgExam" onchange="loadPG()"><option value="">All</option><option value="Term 1 Opening">T1 Opening</option><option value="Term 1 Mid">T1 Mid</option><option value="Term 1 End">T1 End</option><option value="Term 2 Opening">T2 Opening</option><option value="Term 2 Mid">T2 Mid</option><option value="Term 2 End">T2 End</option><option value="Term 3 Opening">T3 Opening</option><option value="Term 3 Mid">T3 Mid</option><option value="Term 3 End (KCSE Preps)">T3 End</option></select></div></div></div><div class="grades-summary-cards" id="pgSummary" style="display:none"></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Subject</th><th>Exam</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th><th>Teacher</th></tr></thead><tbody id="pgBody"><tr class="no-data"><td colspan="7">No grades</td></tr></tbody></table></div></div>
 
-        <!-- Fees & Payments -->
-        <div class="content-section" id="fees">
-            <h2>Fees & Payments</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                    <div class="stat-info"><h3 id="totalFeesPaid">KES 0</h3><p>Total Paid</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-receipt"></i></div>
-                    <div class="stat-info"><h3 id="feesBalanceAmt">KES 86,000</h3><p>Balance Due</p></div>
-                </div>
-            </div>
-            <div class="table-container" style="margin-top:20px">
-                <h3>Payment History</h3>
-                <table>
-                    <thead><tr><th>Receipt No</th><th>Amount</th><th>Term</th><th>Method</th><th>Description</th><th>Date</th></tr></thead>
-                    <tbody id="feesBody"><tr class="no-data"><td colspan="6">No payments recorded</td></tr></tbody>
-                </table>
-            </div>
-            <div class="make-payment-section" style="margin-top:25px">
-                <h3><i class="fas fa-mobile-alt"></i> Record M-Pesa Payment</h3>
-                <div class="create-card-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>M-Pesa Confirmation Code <span class="required">*</span></label>
-                            <input type="text" id="mpesaCode" placeholder="e.g. QGH7X4Z8KL">
-                        </div>
-                        <div class="form-group">
-                            <label>Amount (KES) <span class="required">*</span></label>
-                            <input type="number" id="mpesaAmount" placeholder="Enter amount">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Term <span class="required">*</span></label>
-                            <select id="mpesaTerm">
-                                <option value="">Select Term</option>
-                                <option value="Term 1">Term 1</option>
-                                <option value="Term 2">Term 2</option>
-                                <option value="Term 3">Term 3</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <input type="text" id="mpesaDesc" placeholder="e.g. School fees payment">
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="recordPayment()"><i class="fas fa-paper-plane"></i> Submit Payment</button>
-                </div>
-            </div>
-        </div>
+        <!-- Analytics -->
+        <div class="content-section" id="p-analytics"><h2>Performance Analytics</h2><div class="analytics-grid"><div class="chart-card"><h3>Subject Performance</h3><canvas id="pSubjectChart"></canvas></div><div class="chart-card"><h3>Term Progress</h3><canvas id="pTermChart"></canvas></div><div class="chart-card"><h3>Grade Distribution</h3><canvas id="pGradeChart"></canvas></div><div class="chart-card"><h3>Performance Trend</h3><canvas id="pTrendChart"></canvas></div></div></div>
 
-        <!-- Discipline -->
-        <div class="content-section" id="discipline">
-            <h2>Discipline Records</h2>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Date</th><th>Incident</th><th>Action Taken</th><th>Teacher</th><th>Status</th></tr></thead>
-                    <tbody id="disciplineBody"><tr class="no-data"><td colspan="5">No discipline records found</td></tr></tbody>
-                </table>
-            </div>
-        </div>
+        <!-- KCSE Prediction -->
+        <div class="content-section" id="p-kcse"><h2>KCSE Prediction</h2><div id="pKCSEContent"></div></div>
 
-        <!-- Attendance -->
-        <div class="content-section" id="attendance">
-            <h2>Attendance</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:rgba(39,174,96,0.15)"><i class="fas fa-check-circle" style="color:#27ae60"></i></div>
-                    <div class="stat-info"><h3 id="attPresent">0</h3><p>Days Present</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:rgba(231,76,60,0.15)"><i class="fas fa-times-circle" style="color:#e74c3c"></i></div>
-                    <div class="stat-info"><h3 id="attAbsent">0</h3><p>Days Absent</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:rgba(212,172,13,0.15)"><i class="fas fa-exclamation-circle" style="color:#d4ac0d"></i></div>
-                    <div class="stat-info"><h3 id="attLate">0</h3><p>Times Late</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
-                    <div class="stat-info"><h3 id="attRate">0%</h3><p>Rate</p></div>
-                </div>
-            </div>
-            <div class="table-container" style="margin-top:20px">
-                <table>
-                    <thead><tr><th>Date</th><th>Status</th><th>Marked By</th><th>Remarks</th></tr></thead>
-                    <tbody id="attendanceBody"><tr class="no-data"><td colspan="4">No attendance records</td></tr></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Timetable -->
-        <div class="content-section" id="timetable">
-            <h2>Class Timetable</h2>
-            <div class="table-container">
-                <table id="timetableTable">
-                    <thead><tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead>
-                    <tbody id="timetableBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Announcements -->
-        <div class="content-section" id="announcements">
-            <h2>Announcements</h2>
-            <div id="announcementsContainer"><p class="no-data">No announcements</p></div>
-        </div>
+        <!-- Career Guidance -->
+        <div class="content-section" id="p-career"><h2>Career Guidance</h2><div id="pCareerContent"></div></div>
 
         <!-- Report Card -->
-        <div class="content-section" id="report-card">
-            <h2>Report Card</h2>
-            <div id="reportCardContent"></div>
-            <button class="btn btn-primary" onclick="printReportCard()" style="margin-top:20px"><i class="fas fa-print"></i> Print Report Card</button>
-        </div>
+        <div class="content-section" id="report-card"><h2>Report Card</h2><div id="pReportContent"></div><button class="btn btn-primary" onclick="printPReport()" style="margin-top:20px"><i class="fas fa-print"></i> Print Report Card</button></div>
+
+        <!-- Fees -->
+        <div class="content-section" id="fees"><h2>Fees & Payments</h2><div class="stats-grid"><div class="stat-card"><div class="stat-icon"><i class="fas fa-coins"></i></div><div class="stat-info"><h3 id="totalPaid">KES 0</h3><p>Total Paid</p></div></div><div class="stat-card"><div class="stat-icon"><i class="fas fa-receipt"></i></div><div class="stat-info"><h3 id="balanceDue">KES 86,000</h3><p>Balance Due</p></div></div></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Receipt</th><th>Amount</th><th>Term</th><th>Method</th><th>Date</th></tr></thead><tbody id="feesBody"><tr class="no-data"><td colspan="5">No payments</td></tr></tbody></table></div><div class="make-payment-section" style="margin-top:25px"><h3><i class="fas fa-mobile-alt"></i> Record M-Pesa Payment</h3><div class="create-card-form"><div class="form-row"><div class="form-group"><label>M-Pesa Code <span class="required">*</span></label><input type="text" id="mpesaCode" placeholder="e.g QGH7X4Z8KL"></div><div class="form-group"><label>Amount <span class="required">*</span></label><input type="number" id="mpesaAmount" placeholder="Amount"></div></div><div class="form-row"><div class="form-group"><label>Term</label><select id="mpesaTerm"><option value="">Select</option><option value="Term 1">Term 1</option><option value="Term 2">Term 2</option><option value="Term 3">Term 3</option></select></div><div class="form-group"><label>Description</label><input type="text" id="mpesaDesc" placeholder="Optional"></div></div><button class="btn btn-primary" onclick="recordPayment()"><i class="fas fa-paper-plane"></i> Submit</button></div></div></div>
+
+        <!-- Discipline -->
+        <div class="content-section" id="discipline"><h2>Discipline Records</h2><div class="table-container"><table><thead><tr><th>Date</th><th>Incident</th><th>Action</th><th>Teacher</th><th>Status</th></tr></thead><tbody id="discBody"><tr class="no-data"><td colspan="5">No records</td></tr></tbody></table></div></div>
+
+        <!-- Attendance -->
+        <div class="content-section" id="attendance"><h2>Attendance</h2><div class="stats-grid"><div class="stat-card"><div class="stat-icon" style="background:rgba(39,174,96,0.15)"><i class="fas fa-check-circle" style="color:#27ae60"></i></div><div class="stat-info"><h3 id="attP">0</h3><p>Present</p></div></div><div class="stat-card"><div class="stat-icon" style="background:rgba(231,76,60,0.15)"><i class="fas fa-times-circle" style="color:#e74c3c"></i></div><div class="stat-info"><h3 id="attA">0</h3><p>Absent</p></div></div><div class="stat-card"><div class="stat-icon"><i class="fas fa-percentage"></i></div><div class="stat-info"><h3 id="attR">0%</h3><p>Rate</p></div></div></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Date</th><th>Status</th><th>Marked By</th></tr></thead><tbody id="attBody"><tr class="no-data"><td colspan="3">No records</td></tr></tbody></table></div></div>
+
+        <!-- Timetable -->
+        <div class="content-section" id="timetable"><h2>Class Timetable</h2><div class="table-container"><table><thead><tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead><tbody id="ttBody"></tbody></table></div></div>
+
+        <!-- Exam Timetable -->
+        <div class="content-section" id="exam-timetable"><h2>Exam Timetable</h2><div id="examTTContent"></div></div>
+
+        <!-- Library -->
+        <div class="content-section" id="library"><h2>School Library</h2><div class="table-container"><table><thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Available</th></tr></thead><tbody id="libBody"><tr class="no-data"><td colspan="4">No books</td></tr></tbody></table></div><h3 style="margin-top:20px">Child's Borrowed Books</h3><div class="table-container" style="margin-top:10px"><table><thead><tr><th>Title</th><th>Borrowed</th><th>Due</th><th>Status</th></tr></thead><tbody id="myBooksBody"><tr class="no-data"><td colspan="4">No borrowed books</td></tr></tbody></table></div></div>
+
+        <!-- Clubs -->
+        <div class="content-section" id="clubs"><h2>Clubs & Sports</h2><div id="clubsList"></div><h3 style="margin-top:20px">Child's Memberships</h3><div id="myClubsList"></div></div>
+
+        <!-- Lunch Menu -->
+        <div class="content-section" id="lunch"><h2>Weekly Lunch Menu</h2><div id="lunchContent"></div></div>
+
+        <!-- Bus Routes -->
+        <div class="content-section" id="bus"><h2>Bus Routes</h2><div id="busContent"></div></div>
+
+        <!-- Health -->
+        <div class="content-section" id="health"><h2>Child's Health Records</h2><div id="healthContent"></div></div>
+
+        <!-- Announcements -->
+        <div class="content-section" id="announcements"><h2>Announcements</h2><div id="annContent"><p class="no-data">No announcements</p></div></div>
+
+        <!-- Gallery -->
+        <div class="content-section" id="gallery"><h2>Photo Gallery</h2><div id="galleryContent"><p class="no-data">No photos</p></div></div>
+
+        <!-- Messaging -->
+        <div class="content-section" id="messaging"><h2>Message Teacher</h2><div class="chat-container"><div class="chat-messages" id="chatMessages"><p class="no-data">No messages</p></div><div class="chat-input"><select id="chatRecipient"><option value="">Select Teacher</option></select><input type="text" id="chatInput" placeholder="Type message..." onkeypress="if(event.key==='Enter')sendMsg()"><button class="btn btn-primary" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button></div></div></div>
+
+        <!-- Child's ID -->
+        <div class="content-section" id="p-id"><h2>Child's Digital ID</h2><div id="childIDContent"></div></div>
 
         <!-- Profile -->
-        <div class="content-section" id="profile">
-            <h2>My Profile</h2>
-            <div class="profile-card">
-                <div id="parentProfileInfo"></div>
-            </div>
-        </div>
+        <div class="content-section" id="profile"><h2>My Profile</h2><div class="profile-card"><div id="parentInfo"></div></div></div>
     </main>
 
     <script>
-        // ===== DATA HELPERS =====
-        function getStudents() { return JSON.parse(localStorage.getItem('wanganga_students') || '[]'); }
-        function getParents() { return JSON.parse(localStorage.getItem('wanganga_parents') || '[]'); }
-        function getGrades() { return JSON.parse(localStorage.getItem('wanganga_grades') || '[]'); }
-        function getFees() { return JSON.parse(localStorage.getItem('wanganga_fees') || '[]'); }
-        function getDiscipline() { return JSON.parse(localStorage.getItem('wanganga_discipline') || '[]'); }
-        function getAttendance() { return JSON.parse(localStorage.getItem('wanganga_attendance') || '[]'); }
-        function getTimetable() { return JSON.parse(localStorage.getItem('wanganga_timetable') || '[]'); }
-        function getAnnouncements() { return JSON.parse(localStorage.getItem('wanganga_announcements') || '[]'); }
-        function getTeachers() { return JSON.parse(localStorage.getItem('wanganga_teachers') || '[]'); }
+    function getData(k){return JSON.parse(localStorage.getItem('wanganga_'+k)||'[]')}
+    function setData(k,d){localStorage.setItem('wanganga_'+k,JSON.stringify(d))}
+    const pid=localStorage.getItem('wanganga_current_parent');
+    const parents=getData('parents');
+    const parent=parents.find(p=>p.id===pid)||parents.find(p=>p.phone===pid)||parents[0];
+    const children=getData('students').filter(s=>parent&&(s.parent===parent.name||s.parentPhone===parent.phone));
+    const child=children[0];
 
-        // ===== SESSION =====
-        const parentId = localStorage.getItem('wanganga_current_parent');
-        const parents = getParents();
-        const parent = parents.find(p => p.id === parentId) || parents.find(p => p.phone === parentId) || parents[0];
+    if(!parent||!child){document.querySelector('.main-content').innerHTML='<div style="text-align:center;padding:100px"><h2>No Session</h2><p>Please login again.</p><a href="login.html" class="btn btn-primary">Login</a></div>';}
 
-        if (!parent) {
-            alert('No parent session found. Please login again.');
-            window.location.href = 'login.html';
-        }
+    function toggleSidebar(){document.getElementById('sidebar').classList.toggle('active')}
+    function showSection(id,el){document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.sidebar-nav a').forEach(a=>a.classList.remove('active'));if(el)el.classList.add('active');const loaders={grades:loadPG,'p-analytics':renderPAnalytics,'p-kcse':renderPKCSE,'p-career':renderPCareer,'report-card':renderPReport,fees:loadFees,discipline:loadDiscipline,attendance:loadAttendance,timetable:loadTimetable,'exam-timetable':loadExamTT,library:loadLibrary,clubs:loadClubs,lunch:loadLunch,bus:loadBus,health:loadHealth,announcements:loadAnnouncements,gallery:loadGallery,messaging:loadMessaging,'p-id':renderChildID,profile:loadProfile};if(loaders[id])loaders[id]();}
 
-        const children = getStudents().filter(s => parent && (s.parent === parent.name || s.parentPhone === parent.phone));
-        const child = children[0];
+    // Dashboard
+    function loadDashboard(){if(!child)return;document.getElementById('childName').textContent=child.name;const grades=getData('grades').filter(g=>g.studentId===child.id);if(grades.length){const ap=(grades.reduce((s,g)=>s+(g.points||0),0)/grades.length).toFixed(1);document.getElementById('childAverage').textContent=ap+' pts';document.getElementById('recentGrades').innerHTML=grades.slice(0,5).map(g=>`<div class="activity-item"><i class="fas fa-graduation-cap" style="color:var(--primary)"></i><div><span>${g.subject}: <strong>${g.grade}</strong></span><small>${g.exam}</small></div></div>`).join('');}const fees=getData('fees').filter(f=>f.studentId===child.id);const tp=fees.reduce((s,f)=>s+(Number(f.amount)||0),0);document.getElementById('feesBalance').textContent='KES '+Math.max(0,86000-tp).toLocaleString();const att=getData('attendance').filter(a=>a.studentId===child.id);const p=att.filter(a=>a.status==='Present').length;document.getElementById('attendanceRate').textContent=att.length?Math.round(p/att.length*100)+'%':'-';const ann=getData('announcements').slice(0,3);if(ann.length)document.getElementById('recentAnnouncements').innerHTML=ann.map(a=>`<div class="activity-item"><i class="fas fa-bullhorn" style="color:var(--secondary)"></i><div><span>${a.title}</span><small>${a.date}</small></div></div>`).join('');}
 
-        // ===== SIDEBAR TOGGLE =====
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
+    // Grades
+    function loadPG(){if(!child)return;const grades=getData('grades').filter(g=>g.studentId===child.id);const sf=document.getElementById('pgSubject').value,ef=document.getElementById('pgExam').value;let mg=grades;if(sf)mg=mg.filter(g=>g.subject===sf);if(ef)mg=mg.filter(g=>g.exam===ef);mg.sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt));const tb=document.getElementById('pgBody');if(!mg.length){tb.innerHTML='<tr class="no-data"><td colspan="7">No grades</td></tr>';}else{tb.innerHTML=mg.map(g=>`<tr><td><strong>${g.subject}</strong></td><td>${g.exam}</td><td>${g.mark}/${g.maxMarks||100}</td><td><span class="status-badge approved" style="font-weight:700">${g.grade}</span></td><td>${g.points}</td><td>${g.remark||'-'}</td><td>${g.teacherName||'-'}</td></tr>`).join('');}if(grades.length){const tp=grades.reduce((s,g)=>s+(g.points||0),0),ap=(tp/grades.length).toFixed(1),subs=[...new Set(grades.map(g=>g.subject))];document.getElementById('pgSummary').innerHTML=`<div class="grade-summary-card"><h4>${ap}</h4><p>Avg Points</p></div><div class="grade-summary-card"><h4>${subs.length}</h4><p>Subjects</p></div><div class="grade-summary-card"><h4>${grades.length}</h4><p>Entries</p></div>`;document.getElementById('pgSummary').style.display='grid';}}
 
-        function showSection(id, el) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
-            if (el) el.classList.add('active');
-            if (id === 'grades') loadParentGrades();
-            if (id === 'fees') loadFees();
-            if (id === 'discipline') loadDiscipline();
-            if (id === 'attendance') loadAttendance();
-            if (id === 'timetable') loadTimetable();
-            if (id === 'announcements') loadAnnouncements();
-            if (id === 'report-card') loadReportCard();
-            if (id === 'profile') loadProfile();
-        }
+    // Analytics
+    function renderPAnalytics(){const grades=getData('grades').filter(g=>g.studentId===child.id);const el=document.querySelector('#p-analytics .analytics-grid');if(!grades.length){el.innerHTML='<p class="no-data" style="grid-column:1/-1;text-align:center;padding:40px">No grades yet</p>';return;}const subjects={},exams={},gd={A:0,'A-':0,'B+':0,B:0,'B-':0,'C+':0,C:0,'C-':0,'D+':0,D:0,'D-':0,E:0};grades.forEach(g=>{subjects[g.subject]=subjects[g.subject]||[];subjects[g.subject].push(g.mark);exams[g.exam]=exams[g.exam]||[];exams[g.exam].push(g.points);if(gd[g.grade]!==undefined)gd[g.grade]++;});const sl=Object.keys(subjects),sa=sl.map(s=>(subjects[s].reduce((a,b)=>a+b,0)/subjects[s].length).toFixed(1));const el2=Object.keys(exams),ea=el2.map(e=>(exams[e].reduce((a,b)=>a+b,0)/exams[e].length).toFixed(1));el.innerHTML='<div class="chart-card"><h3>Subject Performance</h3><canvas id="pSubjectChart"></canvas></div><div class="chart-card"><h3>Term Progress</h3><canvas id="pTermChart"></canvas></div><div class="chart-card"><h3>Grade Distribution</h3><canvas id="pGradeChart"></canvas></div><div class="chart-card"><h3>Trend</h3><canvas id="pTrendChart"></canvas></div>';const colors=['#1a5276','#27ae60','#e67e22','#e74c3c','#9b59b6','#2ecc71','#f39c12','#1abc9c','#e91e63','#00bcd4','#ff5722','#795548'];new Chart(document.getElementById('pSubjectChart'),{type:'bar',data:{labels:sl,datasets:[{label:'Avg Mark',data:sa,backgroundColor:colors.slice(0,sl.length)}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100}}}});new Chart(document.getElementById('pTermChart'),{type:'line',data:{labels:el2,datasets:[{label:'Avg Points',data:ea,borderColor:'#1a5276',fill:true,tension:0.3}]},options:{responsive:true}});const gk=Object.keys(gd).filter(k=>gd[k]>0);new Chart(document.getElementById('pGradeChart'),{type:'doughnut',data:{labels:gk,datasets:[{data:gk.map(k=>gd[k]),backgroundColor:colors.slice(0,gk.length)}]},options:{responsive:true}});const trend=grades.sort((a,b)=>new Date(a.updatedAt)-new Date(b.updatedAt));new Chart(document.getElementById('pTrendChart'),{type:'line',data:{labels:trend.map(g=>g.subject+' ('+g.exam+')'),datasets:[{label:'Mark',data:trend.map(g=>g.mark),borderColor:'#27ae60',fill:true,tension:0.3}]},options:{responsive:true,scales:{y:{beginAtZero:true,max:100}}}});}
 
-        // ===== DASHBOARD =====
-        function loadDashboard() {
-            if (!child) return;
-            document.getElementById('childName').textContent = child.name;
+    // KCSE
+    function renderPKCSE(){const grades=getData('grades').filter(g=>g.studentId===child.id);const el=document.getElementById('pKCSEContent');if(!grades.length){el.innerHTML='<div class="prediction-card"><p>No grades yet</p></div>';return;}const subjects={};grades.forEach(g=>{subjects[g.subject]=subjects[g.subject]||[];subjects[g.subject].push(g);});const latest=Object.values(subjects).map(gs=>gs.sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt))[0]);const tp=latest.reduce((s,g)=>s+g.points,0);const am=(latest.reduce((s,g)=>s+g.mark,0)/latest.length).toFixed(1);let pg,pd;if(tp>=80){pg='A';pd='Outstanding!';}else if(tp>=60){pg='B+';pd='Very good.';}else if(tp>=48){pg='B';pd='Good performance.';}else if(tp>=36){pg='C+';pd='Above average.';}else if(tp>=24){pg='C';pd='Average.';}else{pg='D';pd='Below average.';}el.innerHTML=`<div class="prediction-card"><h2><i class="fas fa-trophy" style="color:var(--secondary)"></i> KCSE Prediction</h2><div class="pred-main"><div class="pred-grade-circle"><h1>${pg}</h1><p>${tp} Points</p></div><div class="pred-info"><p><strong>Average:</strong> ${am}%</p><p><strong>Points:</strong> ${tp}</p><p>${pd}</p></div></div><h3 style="margin-top:20px">Subjects</h3>${latest.map(g=>`<div class="pred-subject"><span>${g.subject}</span><span>${g.mark}/100</span><span class="status-badge approved">${g.grade}</span><span>${g.points} pts</span></div>`).join('')}</div>`;}
 
-            const grades = getGrades().filter(g => g.studentId === child.id);
-            if (grades.length) {
-                const avgPoints = (grades.reduce((s, g) => s + (g.points || 0), 0) / grades.length).toFixed(1);
-                document.getElementById('childAverage').textContent = avgPoints + ' pts';
-                document.getElementById('recentGrades').innerHTML = grades.slice(0, 5).map(g =>
-                    `<div class="activity-item"><i class="fas fa-graduation-cap" style="color:var(--primary)"></i><div><span>${g.subject}: <strong>${g.grade}</strong> (${g.mark}/${g.maxMarks || 100})</span><small>${g.exam}</small></div></div>`
-                ).join('');
-            }
+    // Career
+    function renderPCareer(){const grades=getData('grades').filter(g=>g.studentId===child.id);const el=document.getElementById('pCareerContent');if(!grades.length){el.innerHTML='<div class="prediction-card"><p>No grades yet</p></div>';return;}const subjects={};grades.forEach(g=>{subjects[g.subject]=subjects[g.subject]||[];subjects[g.subject].push(g.mark);});const avgs=Object.entries(subjects).map(([s,m])=>({subject:s,avg:m.reduce((a,b)=>a+b,0)/m.length})).sort((a,b)=>b.avg-a.avg);const top3=avgs.slice(0,3).map(a=>a.subject.toLowerCase());const careers=[];if(top3.some(s=>s.includes('math')))careers.push({title:'Engineering',desc:'Strong math skills.',icon:'fas fa-cogs'});if(top3.some(s=>s.includes('bio')))careers.push({title:'Medicine',desc:'Good biology.',icon:'fas fa-heartbeat'});if(top3.some(s=>s.includes('chem')))careers.push({title:'Chemistry',desc:'Good chemistry.',icon:'fas fa-flask'});if(top3.some(s=>s.includes('phys')))careers.push({title:'Physics/Tech',desc:'Physics strength.',icon:'fas fa-atom'});if(top3.some(s=>s.includes('eng')))careers.push({title:'Journalism/Law',desc:'English proficiency.',icon:'fas fa-pen'});if(top3.some(s=>s.includes('kis')))careers.push({title:'Education',desc:'Kiswahili excellence.',icon:'fas fa-language'});if(top3.some(s=>s.includes('comp')))careers.push({title:'Computer Science',desc:'Tech skills.',icon:'fas fa-laptop-code'});if(!careers.length)careers.push({title:'General Studies',desc:'Keep working hard.',icon:'fas fa-graduation-cap'});el.innerHTML=`<div class="prediction-card"><h2><i class="fas fa-briefcase" style="color:var(--primary)"></i> Career Guidance</h2><p>Based on: <strong>${avgs.slice(0,3).map(a=>a.subject).join(', ')}</strong></p><div class="career-grid">${careers.map(c=>`<div class="career-card"><i class="${c.icon}" style="font-size:30px;color:var(--primary)"></i><h4>${c.title}</h4><p>${c.desc}</p></div>`).join('')}</div></div>`;}
 
-            const fees = getFees().filter(f => f.studentId === child.id);
-            const totalPaid = fees.reduce((s, f) => s + (Number(f.amount) || 0), 0);
-            const balance = 86000 - totalPaid;
-            document.getElementById('feesBalance').textContent = 'KES ' + Math.max(0, balance).toLocaleString();
+    // Report Card
+    function renderPReport(){if(!child)return;const grades=getData('grades').filter(g=>g.studentId===child.id);const fees=getData('fees').filter(f=>f.studentId===child.id);const att=getData('attendance').filter(a=>a.studentId===child.id);const tp=fees.reduce((s,f)=>s+(Number(f.amount)||0),0);const p=att.filter(a=>a.status==='Present').length;const eg={};grades.forEach(g=>{if(!eg[g.exam])eg[g.exam]=[];eg[g.exam].push(g);});let es='';Object.keys(eg).forEach(ex=>{const eg2=eg[ex],ap=(eg2.reduce((s,g)=>s+(g.points||0),0)/eg2.length).toFixed(1);es+=`<h3 style="margin-top:20px;color:var(--primary)">${ex}</h3><table><thead><tr><th>Subject</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th></tr></thead><tbody>${eg2.map(g=>`<tr><td>${g.subject}</td><td>${g.mark}/${g.maxMarks||100}</td><td><strong>${g.grade}</strong></td><td>${g.points}</td><td>${g.remark||'-'}</td></tr>`).join('')}<tr style="font-weight:700;background:#f0f7fb"><td>Average</td><td></td><td></td><td>${ap}</td><td></td></tr></tbody></table>`;});document.getElementById('pReportContent').innerHTML=`<div class="report-card" id="pPrintable"><div style="text-align:center;margin-bottom:20px"><h2 style="color:var(--primary)">WANG'ANGA SENIOR SCHOOL</h2><h3>REPORT CARD</h3></div><div class="form-row" style="margin-bottom:15px"><div><strong>Name:</strong> ${child.name}</div><div><strong>Adm:</strong> ${child.id}</div><div><strong>Class:</strong> ${child.class}</div></div>${es||'<p>No grades yet</p>'}</div>`;}
+    function printPReport(){const c=document.getElementById('pPrintable').innerHTML;const w=window.open('','','height=800,width=900');w.document.write('<html><head><title>Report</title><style>body{font-family:Poppins,sans-serif;padding:30px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px}th{background:#1a5276;color:white}.form-row{display:flex;gap:30px}h2{color:#1a5276}</style></head><body>'+c+'</body></html>');w.document.close();w.print();}
 
-            const attendance = getAttendance().filter(a => a.studentId === child.id);
-            const present = attendance.filter(a => a.status === 'Present').length;
-            document.getElementById('attendanceRate').textContent = attendance.length ? Math.round(present / attendance.length * 100) + '%' : '-';
+    // Fees
+    function loadFees(){if(!child)return;const fees=getData('fees').filter(f=>f.studentId===child.id);const tp=fees.reduce((s,f)=>s+(Number(f.amount)||0),0);document.getElementById('totalPaid').textContent='KES '+tp.toLocaleString();document.getElementById('balanceDue').textContent='KES '+Math.max(0,86000-tp).toLocaleString();const tb=document.getElementById('feesBody');if(!fees.length){tb.innerHTML='<tr class="no-data"><td colspan="5">No payments</td></tr>';return;}tb.innerHTML=fees.map(f=>`<tr><td>${f.receiptNo}</td><td><strong>KES ${Number(f.amount).toLocaleString()}</strong></td><td>${f.term}</td><td>${f.method}</td><td>${new Date(f.date).toLocaleDateString()}</td></tr>`).join('');}
+    function recordPayment(){const code=document.getElementById('mpesaCode').value.trim(),amt=Number(document.getElementById('mpesaAmount').value),term=document.getElementById('mpesaTerm').value,desc=document.getElementById('mpesaDesc').value;if(!code||!amt||!term){alert('Fill all required fields');return;}const fees=getData('fees');fees.push({receiptNo:'MPESA-'+code.toUpperCase(),studentId:child.id,studentName:child.name,amount:amt,term,method:'M-Pesa',description:desc||'M-Pesa',date:new Date().toISOString(),recordedBy:parent.name});setData('fees',fees);document.getElementById('mpesaCode').value='';document.getElementById('mpesaAmount').value='';alert('Payment recorded!');loadFees();}
 
-            const announcements = getAnnouncements();
-            if (announcements.length) {
-                document.getElementById('recentAnnouncements').innerHTML = announcements.slice(0, 3).map(a =>
-                    `<div class="activity-item"><i class="fas fa-bullhorn" style="color:var(--secondary)"></i><div><span>${a.title}</span><small>${a.date} - ${a.message.substring(0, 80)}...</small></div></div>`
-                ).join('');
-            }
-        }
+    // Discipline
+    function loadDiscipline(){if(!child)return;const d=getData('discipline').filter(x=>x.studentId===child.id||x.studentName===child.name);const tb=document.getElementById('discBody');if(!d.length){tb.innerHTML='<tr class="no-data"><td colspan="5">No records</td></tr>';return;}tb.innerHTML=d.map(x=>`<tr><td>${x.date||'-'}</td><td>${x.incident||x.details||'-'}</td><td>${x.action||'-'}</td><td>${x.teacher||'-'}</td><td><span class="status-badge ${x.status==='suspended'?'pending':'approved'}">${x.status||'Recorded'}</span></td></tr>`).join('');}
 
-        // ===== GRADES =====
-        function loadParentGrades() {
-            if (!child) return;
-            const grades = getGrades().filter(g => g.studentId === child.id);
-            const subjectFilter = document.getElementById('parentGradeSubject').value;
-            const examFilter = document.getElementById('parentGradeExam').value;
-            let filtered = grades;
-            if (subjectFilter) filtered = filtered.filter(g => g.subject === subjectFilter);
-            if (examFilter) filtered = filtered.filter(g => g.exam === examFilter);
-            filtered.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    // Attendance
+    function loadAttendance(){if(!child)return;const att=getData('attendance').filter(a=>a.studentId===child.id);const p=att.filter(a=>a.status==='Present').length,a=att.filter(a=>a.status==='Absent').length;document.getElementById('attP').textContent=p;document.getElementById('attA').textContent=a;document.getElementById('attR').textContent=att.length?Math.round(p/att.length*100)+'%':'0%';const tb=document.getElementById('attBody');if(!att.length){tb.innerHTML='<tr class="no-data"><td colspan="3">No records</td></tr>';return;}tb.innerHTML=att.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(x=>`<tr><td>${x.date}</td><td><span class="status-badge ${x.status==='Present'?'approved':x.status==='Absent'?'rejected':'pending'}">${x.status}</span></td><td>${x.markedBy||'-'}</td></tr>`).join('');}
 
-            const tb = document.getElementById('parentGradesBody');
-            if (!filtered.length) { tb.innerHTML = '<tr class="no-data"><td colspan="7">No grades available</td></tr>'; }
-            else {
-                tb.innerHTML = filtered.map(g => `<tr>
-                    <td><strong>${g.subject}</strong></td><td>${g.exam}</td>
-                    <td>${g.mark}/${g.maxMarks || 100}</td>
-                    <td><span class="status-badge approved" style="font-weight:700">${g.grade}</span></td>
-                    <td>${g.points}</td><td>${g.remark || '-'}</td><td>${g.teacherName || '-'}</td>
-                </tr>`).join('');
-            }
+    // Timetable
+    function loadTimetable(){if(!child)return;const tt=getData('timetable').filter(t=>t.class===child.class);const days=['monday','tuesday','wednesday','thursday','friday'],periods=[1,2,3,4,6,7,8,9,10,11,12],tm={1:'7:30-8:00',2:'8:00-8:40',3:'8:40-9:20',4:'9:20-10:00',6:'10:20-11:00',7:'11:00-11:40',8:'11:40-12:20',9:'12:20-1:00',10:'1:00-1:40',11:'1:40-2:20',12:'2:20-3:00'};const tb=document.getElementById('ttBody');if(!tt.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No timetable</td></tr>';return;}tb.innerHTML=periods.map(p=>{if(p===4)return`<tr style="background:#f0f7fb"><td><strong>${tm[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">BREAK</td></tr>`;if(p===12)return`<tr style="background:#f0f7fb"><td><strong>${tm[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">BREAK</td></tr>`;return`<tr><td><strong>${tm[p]}</strong></td>${days.map(d=>{const e=tt.find(t=>t.day===d&&t.period===p);return`<td>${e?'<strong>'+e.subject+'</strong>'+(e.teacher?'<br><small>'+e.teacher+'</small>':''):'-'}</td>`;}).join('')}</tr>`;}).join('');}
 
-            if (grades.length) {
-                const totalPts = grades.reduce((s, g) => s + (g.points || 0), 0);
-                const avg = (totalPts / grades.length).toFixed(1);
-                const subjects = [...new Set(grades.map(g => g.subject))];
-                document.getElementById('parentGradesSummary').innerHTML = `
-                    <div class="grade-summary-card"><h4>${avg}</h4><p>Average Points</p></div>
-                    <div class="grade-summary-card"><h4>${subjects.length}</h4><p>Subjects Graded</p></div>
-                    <div class="grade-summary-card"><h4>${grades.length}</h4><p>Total Entries</p></div>`;
-                document.getElementById('parentGradesSummary').style.display = 'grid';
-            }
-        }
+    // Exam Timetable
+    function loadExamTT(){const exams=getData('exam_timetable'),el=document.getElementById('examTTContent');if(!exams.length){el.innerHTML='<p class="no-data">No exam timetable published</p>';return;}el.innerHTML='<div class="table-container"><table><thead><tr><th>Date</th><th>Time</th><th>Subject</th><th>Duration</th><th>Venue</th></tr></thead><tbody>'+exams.map(e=>`<tr><td>${e.date}</td><td>${e.time||'8:00 AM'}</td><td><strong>${e.subject}</strong></td><td>${e.duration||'2 hrs'}</td><td>${e.venue||'Main Hall'}</td></tr>`).join('')+'</tbody></table></div>';}
 
-        function populateParentGradeFilters() {
-            if (!child) return;
-            const grades = getGrades().filter(g => g.studentId === child.id);
-            const subjects = [...new Set(grades.map(g => g.subject))];
-            const sel = document.getElementById('parentGradeSubject');
-            subjects.forEach(s => { sel.innerHTML += '<option value="' + s + '">' + s + '</option>'; });
-        }
+    // Library
+    function loadLibrary(){const books=getData('library_books'),tb=document.getElementById('libBody');if(!books.length){tb.innerHTML='<tr class="no-data"><td colspan="4">No books</td></tr>';return;}const borrowed=getData('library_borrowed');tb.innerHTML=books.map(b=>{const avail=b.copies-(borrowed.filter(x=>x.bookId===b.id&&x.status==='Borrowed').length);return`<tr><td><strong>${b.title}</strong></td><td>${b.author}</td><td>${b.category}</td><td><span class="status-badge ${avail>0?'approved':'rejected'}">${avail}/${b.copies}</span></td></tr>`;}).join('');const mb=getData('library_borrowed').filter(x=>x.studentId===child.id);const mbt=document.getElementById('myBooksBody');if(!mb.length){mbt.innerHTML='<tr class="no-data"><td colspan="4">No borrowed books</td></tr>';return;}mbt.innerHTML=mb.map(b=>{const od=b.status==='Borrowed'&&new Date(b.dueDate)<new Date();return`<tr><td>${b.bookTitle}</td><td>${new Date(b.borrowedAt).toLocaleDateString()}</td><td>${new Date(b.dueDate).toLocaleDateString()}</td><td><span class="status-badge ${b.status==='Returned'?'approved':od?'rejected':'pending'}">${od?'Overdue':b.status}</span></td></tr>`;}).join('');}
 
-        // ===== FEES =====
-        function loadFees() {
-            if (!child) return;
-            const fees = getFees().filter(f => f.studentId === child.id);
-            const totalPaid = fees.reduce((s, f) => s + (Number(f.amount) || 0), 0);
-            const balance = Math.max(0, 86000 - totalPaid);
-            document.getElementById('totalFeesPaid').textContent = 'KES ' + totalPaid.toLocaleString();
-            document.getElementById('feesBalanceAmt').textContent = 'KES ' + balance.toLocaleString();
+    // Clubs
+    function loadClubs(){const clubs=getData('clubs'),el=document.getElementById('clubsList');if(!clubs.length){el.innerHTML='<p class="no-data">No clubs registered</p>';return;}el.innerHTML='<div class="clubs-grid">'+clubs.map(c=>`<div class="club-card"><i class="${c.icon||'fas fa-users'}" style="font-size:24px;color:var(--primary)"></i><h4>${c.name}</h4><p>${c.description||''}</p><p style="font-size:11px;color:var(--text-light)">${c.meetingDay||''} ${c.meetingTime||''}</p></div>`).join('')+'</div>';const mc=getData('student_clubs').filter(x=>x.studentId===child.id);const mcl=document.getElementById('myClubsList');mcl.innerHTML=mc.length?mc.map(x=>{const c=clubs.find(cl=>cl.id===x.clubId);return`<div class="activity-item"><i class="fas fa-check-circle" style="color:var(--primary)"></i><span>${c?c.name:x.clubId}</span></div>`;}).join(''):'<p class="no-data">Child has not joined any clubs</p>';}
 
-            const tb = document.getElementById('feesBody');
-            if (!fees.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No payments recorded</td></tr>'; return; }
-            tb.innerHTML = fees.map(f => `<tr>
-                <td>${f.receiptNo}</td><td><strong>KES ${Number(f.amount).toLocaleString()}</strong></td>
-                <td>${f.term}</td><td>${f.method}</td><td>${f.description || '-'}</td>
-                <td>${new Date(f.date).toLocaleDateString()}</td>
-            </tr>`).join('');
-        }
+    // Lunch
+    function loadLunch(){const menu=getData('lunch_menu'),el=document.getElementById('lunchContent');if(!menu.length){el.innerHTML='<div class="menu-grid">'+['Monday','Tuesday','Wednesday','Thursday','Friday'].map(d=>`<div class="menu-day"><h4>${d}</h4><p>Ugali & Sukuma Wiki</p><p style="font-size:12px;color:var(--text-light)">Lentils, Vegetables</p></div>`).join('')+'</div>';return;}el.innerHTML='<div class="menu-grid">'+menu.map(m=>`<div class="menu-day"><h4>${m.day}</h4><p>${m.main}</p><p style="font-size:12px;color:var(--text-light)">${m.side||''}</p></div>`).join('')+'</div>';}
 
-        function recordPayment() {
-            const code = document.getElementById('mpesaCode').value.trim();
-            const amount = Number(document.getElementById('mpesaAmount').value);
-            const term = document.getElementById('mpesaTerm').value;
-            const desc = document.getElementById('mpesaDesc').value;
+    // Bus
+    function loadBus(){const routes=getData('bus_routes'),el=document.getElementById('busContent');if(!routes.length){el.innerHTML='<div class="route-card"><h4><i class="fas fa-bus" style="color:var(--primary)"></i> Default Route</h4><p><strong>Stops:</strong> Town Center - Market Road - School Gate</p><p><strong>Time:</strong> 6:30 AM / 4:30 PM</p><p><strong>Driver:</strong> Mr. Odhiambo | <a href="tel:0798394035">0798394035</a></p></div>';return;}el.innerHTML=routes.map(r=>`<div class="route-card"><h4><i class="fas fa-bus" style="color:var(--primary)"></i> ${r.name}</h4><p><strong>Stops:</strong> ${r.stops}</p><p><strong>Time:</strong> ${r.morningTime||'6:30 AM'} / ${r.afternoonTime||'4:30 PM'}</p><p><strong>Driver:</strong> ${r.driver||'TBD'} | ${r.phone||''}</p></div>`).join('');}
 
-            if (!code || !amount || !term) { alert('Please fill in M-Pesa code, amount and term'); return; }
-            if (amount <= 0) { alert('Amount must be positive'); return; }
+    // Health
+    function loadHealth(){if(!child)return;const h=getData('health_records').find(r=>r.studentId===child.id);const el=document.getElementById('healthContent');if(!h){el.innerHTML='<p class="no-data">No health records on file</p>';return;}el.innerHTML=`<div class="prediction-card"><h3><i class="fas fa-heartbeat" style="color:#e74c3c"></i> Health Information</h3><p><strong>Blood Group:</strong> ${h.bloodGroup||'-'}</p><p><strong>Allergies:</strong> ${h.allergies||'None'}</p><p><strong>Conditions:</strong> ${h.conditions||'None'}</p><p><strong>Emergency Contact:</strong> ${h.emergencyContact||'-'}</p></div>`;}
 
-            const fees = getFees();
-            fees.push({
-                receiptNo: 'MPESA-' + code.toUpperCase(),
-                studentId: child.id,
-                studentName: child.name,
-                amount: amount,
-                term: term,
-                method: 'M-Pesa',
-                description: desc || 'M-Pesa Payment',
-                date: new Date().toISOString(),
-                recordedBy: parent.name
-            });
-            localStorage.setItem('wanganga_fees', JSON.stringify(fees));
+    // Announcements
+    function loadAnnouncements(){const ann=getData('announcements'),el=document.getElementById('annContent');if(!ann.length){el.innerHTML='<p class="no-data">No announcements</p>';return;}el.innerHTML=ann.map(a=>`<div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)"><i class="fas fa-bullhorn" style="color:var(--secondary);font-size:20px;margin-right:12px"></i><div><strong>${a.title}</strong><p style="margin:5px 0">${a.message}</p><small style="color:var(--text-light)">${a.date} - ${a.author||'Admin'}</small></div></div>`).join('');}
 
-            // Log activity
-            const records = JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]');
-            records.unshift({ id: records.length + 1, timestamp: new Date().toISOString(), category: 'fees', action: 'create', details: parent.name + ' recorded payment KES ' + amount.toLocaleString() + ' for ' + child.name, user: parent.name, ip: 'Local Network' });
-            localStorage.setItem('wanganga_admin_center', JSON.stringify(records));
+    // Gallery
+    function loadGallery(){const photos=getData('gallery_photos'),el=document.getElementById('galleryContent');if(!photos.length){el.innerHTML='<p class="no-data">No photos</p>';return;}el.innerHTML='<div class="gallery-grid">'+photos.map(p=>`<div class="gallery-item"><img src="${p.url}" alt="${p.caption}"><p>${p.caption}</p></div>`).join('')+'</div>';}
 
-            document.getElementById('mpesaCode').value = '';
-            document.getElementById('mpesaAmount').value = '';
-            document.getElementById('mpesaDesc').value = '';
-            alert('Payment recorded successfully!');
-            loadFees();
-        }
+    // Messaging
+    function loadMessaging(){const teachers=getData('teachers'),sel=document.getElementById('chatRecipient');if(sel.options.length<=1)teachers.forEach(t=>{sel.innerHTML+='<option value="'+t.id+'">'+t.name+'</option>';});const msgs=getData('chat_messages').filter(m=>m.senderId===parent.id||m.recipient===parent.id);const el=document.getElementById('chatMessages');if(!msgs.length){el.innerHTML='<p class="no-data">No messages</p>';return;}el.innerHTML=msgs.map(m=>`<div class="chat-msg ${m.senderId===parent.id?'own':'other'}"><div class="chat-bubble"><strong>${m.senderName}</strong><p>${m.text}</p><small>${new Date(m.sentAt).toLocaleTimeString()}</small></div></div>`).join('');el.scrollTop=el.scrollHeight;}
+    function sendMsg(){const input=document.getElementById('chatInput'),text=input.value.trim();if(!text)return;const rid=document.getElementById('chatRecipient').value;if(!rid){alert('Select a teacher');return;}const teachers=getData('teachers');const t=teachers.find(x=>x.id===rid);const msgs=getData('chat_messages');msgs.push({id:'MSG'+Date.now(),senderId:parent.id,senderName:parent.name,recipient:rid,text,sentAt:new Date().toISOString()});setData('chat_messages',msgs);input.value='';loadMessaging();}
 
-        // ===== DISCIPLINE =====
-        function loadDiscipline() {
-            if (!child) return;
-            const all = getDiscipline();
-            const records = all.filter(d => d.studentId === child.id || d.studentName === child.name);
-            const tb = document.getElementById('disciplineBody');
-            if (!records.length) { tb.innerHTML = '<tr class="no-data"><td colspan="5">No discipline records found</td></tr>'; return; }
-            tb.innerHTML = records.map(d => `<tr>
-                <td>${d.date || '-'}</td><td>${d.incident || d.details || '-'}</td>
-                <td>${d.action || '-'}</td><td>${d.teacher || d.reportedBy || '-'}</td>
-                <td><span class="status-badge ${d.status === 'suspended' ? 'pending' : d.status === 'expelled' ? 'rejected' : 'approved'}">${d.status || 'Recorded'}</span></td>
-            </tr>`).join('');
-        }
+    // Child ID
+    function renderChildID(){if(!child)return;const el=document.getElementById('childIDContent');el.innerHTML=`<div class="id-card"><div class="id-card-header"><h3>WANG'ANGA SENIOR SCHOOL</h3><p>Student Identity Card</p></div><div class="id-card-body"><div class="id-photo">${(()=>{const p=localStorage.getItem('wanganga_student_photo_'+child.id);return p?'<img src="'+p+'">':'<i class="fas fa-user" style="font-size:50px;color:#ccc"></i>';})()}</div><div class="id-info"><p><strong>${child.name}</strong></p><p>Adm: ${child.id}</p><p>Class: ${child.class}</p><p>Gender: ${child.gender||'-'}</p></div></div><div class="id-card-footer"><p style="font-size:10px">Verify via WhatsApp: <a href="https://wa.me/254798394035?text=Verify+student+${child.id}" target="_blank" style="color:white">Click Here</a></p></div></div>`;}
 
-        // ===== ATTENDANCE =====
-        function loadAttendance() {
-            if (!child) return;
-            const attendance = getAttendance().filter(a => a.studentId === child.id);
-            const present = attendance.filter(a => a.status === 'Present').length;
-            const absent = attendance.filter(a => a.status === 'Absent').length;
-            const late = attendance.filter(a => a.status === 'Late').length;
-            const total = attendance.length;
+    // Profile
+    function loadProfile(){document.getElementById('parentInfo').innerHTML=`<div class="applicant-info"><p><strong>Name:</strong> ${parent.name}</p><p><strong>Phone:</strong> ${parent.phone}</p><p><strong>Email:</strong> ${parent.email||'-'}</p><p><strong>Child:</strong> ${child?child.name+' ('+child.id+')':'-'}</p><p><strong>Class:</strong> ${child?child.class:'-'}</p></div>`;}
 
-            document.getElementById('attPresent').textContent = present;
-            document.getElementById('attAbsent').textContent = absent;
-            document.getElementById('attLate').textContent = late;
-            document.getElementById('attRate').textContent = total ? Math.round(present / total * 100) + '%' : '0%';
-
-            const tb = document.getElementById('attendanceBody');
-            if (!attendance.length) { tb.innerHTML = '<tr class="no-data"><td colspan="4">No attendance records</td></tr>'; return; }
-            tb.innerHTML = attendance.sort((a, b) => new Date(b.date) - new Date(a.date)).map(a => `<tr>
-                <td>${a.date}</td>
-                <td><span class="status-badge ${a.status === 'Present' ? 'approved' : a.status === 'Absent' ? 'rejected' : 'pending'}">${a.status}</span></td>
-                <td>${a.markedBy || '-'}</td><td>${a.remarks || '-'}</td>
-            </tr>`).join('');
-        }
-
-        // ===== TIMETABLE =====
-        function loadTimetable() {
-            if (!child) return;
-            const all = getTimetable();
-            const timetable = all.filter(t => t.class === child.class);
-            const periods = ['7:30 - 8:00', '8:00 - 8:40', '8:40 - 9:20', '9:20 - 10:00', '10:00 - 10:20', '10:20 - 11:00', '11:00 - 11:40', '11:40 - 12:20', '12:20 - 1:00', '1:00 - 1:40', '1:40 - 2:20', '2:20 - 3:00', '3:00 - 3:30'];
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-            const tb = document.getElementById('timetableBody');
-
-            if (!timetable.length) {
-                tb.innerHTML = '<tr class="no-data"><td colspan="6">No timetable set for ' + (child.class || 'your class') + '</td></tr>';
-                return;
-            }
-
-            tb.innerHTML = periods.map((p, i) => {
-                const isBreak = i === 4 || i === 12;
-                if (isBreak) return `<tr style="background:#f0f7fb"><td><strong>${p}</strong></td><td colspan="5" style="text-align:center;color:var(--primary);font-weight:600">${i === 4 ? 'MORNING BREAK' : 'AFTERNOON BREAK'}</td></tr>`;
-                return `<tr><td><strong>${p}</strong></td>${days.map(d => {
-                    const entry = timetable.find(t => t.day === d && t.period === i + 1);
-                    return `<td>${entry ? '<strong>' + entry.subject + '</strong>' + (entry.teacher ? '<br><small>' + entry.teacher + '</small>' : '') : '-'}</td>`;
-                }).join('')}</tr>`;
-            }).join('');
-        }
-
-        // ===== ANNOUNCEMENTS =====
-        function loadAnnouncements() {
-            const announcements = getAnnouncements();
-            const container = document.getElementById('announcementsContainer');
-            if (!announcements.length) { container.innerHTML = '<p class="no-data">No announcements</p>'; return; }
-            container.innerHTML = announcements.map(a => `
-                <div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)">
-                    <i class="fas fa-bullhorn" style="color:var(--secondary);font-size:20px;margin-right:12px"></i>
-                    <div>
-                        <strong style="font-size:15px">${a.title}</strong>
-                        <p style="margin:5px 0 0;color:var(--text)">${a.message}</p>
-                        <small style="color:var(--text-light)">${a.date} - Posted by ${a.author || 'Admin'}</small>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // ===== REPORT CARD =====
-        function loadReportCard() {
-            if (!child) return;
-            const grades = getGrades().filter(g => g.studentId === child.id);
-            const fees = getFees().filter(f => f.studentId === child.id);
-            const attendance = getAttendance().filter(a => a.studentId === child.id);
-            const totalPaid = fees.reduce((s, f) => s + (Number(f.amount) || 0), 0);
-            const present = attendance.filter(a => a.status === 'Present').length;
-
-            const examGroups = {};
-            grades.forEach(g => {
-                const key = g.exam;
-                if (!examGroups[key]) examGroups[key] = [];
-                examGroups[key].push(g);
-            });
-
-            let examSections = '';
-            Object.keys(examGroups).forEach(exam => {
-                const exGrades = examGroups[exam];
-                const avgPts = (exGrades.reduce((s, g) => s + (g.points || 0), 0) / exGrades.length).toFixed(1);
-                examSections += `<h3 style="margin-top:20px;color:var(--primary)">${exam}</h3>
-                <table><thead><tr><th>Subject</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th></tr></thead>
-                <tbody>${exGrades.map(g => `<tr><td>${g.subject}</td><td>${g.mark}/${g.maxMarks || 100}</td><td><strong>${g.grade}</strong></td><td>${g.points}</td><td>${g.remark || '-'}</td></tr>`).join('')}
-                <tr style="font-weight:700;background:#f0f7fb"><td>Average</td><td></td><td></td><td>${avgPts}</td><td></td></tr>
-                </tbody></table>`;
-            });
-
-            document.getElementById('reportCardContent').innerHTML = `
-                <div class="report-card" id="printableReport">
-                    <div style="text-align:center;margin-bottom:20px">
-                        <h2 style="color:var(--primary)">WANG'ANGA SENIOR SCHOOL</h2>
-                        <p>Phone: 0798394035 | Email: bencarsonodhiambo6@gmail.com</p>
-                        <h3 style="margin-top:10px">STUDENT REPORT CARD</h3>
-                    </div>
-                    <div class="form-row" style="margin-bottom:15px">
-                        <div><strong>Name:</strong> ${child.name}</div>
-                        <div><strong>Adm No:</strong> ${child.id}</div>
-                        <div><strong>Class:</strong> ${child.class}</div>
-                    </div>
-                    <div class="form-row" style="margin-bottom:20px">
-                        <div><strong>Fees Paid:</strong> KES ${totalPaid.toLocaleString()}</div>
-                        <div><strong>Attendance:</strong> ${attendance.length ? Math.round(present / attendance.length * 100) + '%' : 'N/A'}</div>
-                    </div>
-                    ${examSections || '<p>No grades available yet</p>'}
-                </div>`;
-        }
-
-        function printReportCard() {
-            const content = document.getElementById('printableReport').innerHTML;
-            const win = window.open('', '', 'height=800,width=900');
-            win.document.write('<html><head><title>Report Card - ' + (child ? child.name : '') + '</title>');
-            win.document.write('<style>body{font-family:Poppins,sans-serif;padding:30px;color:#333}table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#1a5276;color:white}tr:nth-child(even){background:#f9f9f9}.form-row{display:flex;gap:30px}h2{color:#1a5276}h3{color:#1a5276;margin-top:20px}@media print{body{padding:15px}}</style>');
-            win.document.write('</head><body>');
-            win.document.write(content);
-            win.document.write('</body></html>');
-            win.document.close();
-            win.print();
-        }
-
-        // ===== PROFILE =====
-        function loadProfile() {
-            document.getElementById('parentProfileInfo').innerHTML = `
-                <div class="form-row" style="margin-bottom:12px"><div><strong>Name:</strong> ${parent.name}</div><div><strong>Phone:</strong> ${parent.phone}</div></div>
-                <div class="form-row" style="margin-bottom:12px"><div><strong>Email:</strong> ${parent.email || '-'}</div><div><strong>Child:</strong> ${child ? child.name + ' (' + child.id + ')' : '-'}</div></div>
-                <div class="form-row"><div><strong>Child's Class:</strong> ${child ? child.class : '-'}</div></div>`;
-        }
-
-        // ===== INIT =====
-        function init() {
-            if (!parent) return;
-            document.getElementById('parentDisplayName').textContent = parent.name;
-            document.getElementById('welcomeName').textContent = parent.name;
-            loadDashboard();
-            populateParentGradeFilters();
-        }
-        init();
-        // Dark mode
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('wanganga_dark_mode', isDark);
-            document.getElementById('dmIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-        }
-        if (localStorage.getItem('wanganga_dark_mode') === 'true') {
-            document.body.classList.add('dark-mode');
-            const icon = document.getElementById('dmIcon');
-            if (icon) icon.className = 'fas fa-sun';
-        }
+    function init(){if(!parent)return;document.getElementById('parentDisplayName').textContent=parent.name;document.getElementById('welcomeName').textContent=parent.name;loadDashboard();const subs=getData('grades').filter(g=>g.studentId===child?.id);const sels=[...new Set(subs.map(g=>g.subject))];const sel=document.getElementById('pgSubject');sels.forEach(s=>{sel.innerHTML+='<option value="'+s+'">'+s+'</option>';});}
+    init();
+    function toggleDarkMode(){document.body.classList.toggle('dark-mode');const d=document.body.classList.contains('dark-mode');localStorage.setItem('wanganga_dark_mode',d);document.getElementById('dmIcon').className=d?'fas fa-sun':'fas fa-moon';}
+    if(localStorage.getItem('wanganga_dark_mode')==='true'){document.body.classList.add('dark-mode');const i=document.getElementById('dmIcon');if(i)i.className='fas fa-sun';}
     </script>
-
 </body>
 </html>

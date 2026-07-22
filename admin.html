@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body class="dashboard-body">
 
@@ -34,6 +35,7 @@
                 <li><a href="#" onclick="showSection('attendance', this)"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
                 <li><a href="#" onclick="showSection('announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
                 <li><a href="#" onclick="showSection('calendar', this)"><i class="fas fa-calendar"></i> Calendar</a></li>
+                <li><a href="#" onclick="showSection('analytics', this)"><i class="fas fa-chart-bar"></i> Analytics</a></li>
                 <li><a href="#" onclick="showSection('bulk-import', this)"><i class="fas fa-file-csv"></i> Bulk Import</a></li>
                 <li class="nav-divider">Resources</li>
                 <li><a href="#" onclick="showSection('library-mgmt', this)"><i class="fas fa-book"></i> Library</a></li>
@@ -59,6 +61,7 @@
             <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
             <div class="topbar-right">
                 <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <a href="https://wa.me/254798394035" target="_blank" class="whatsapp-topbar" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 <div class="admin-profile"><i class="fas fa-user-circle"></i> <span>Admin</span></div>
             </div>
         </div>
@@ -439,6 +442,19 @@
                     <thead><tr><th>Title</th><th>Date</th><th>End Date</th><th>Type</th><th>Description</th><th>Actions</th></tr></thead>
                     <tbody id="eventsBody"><tr class="no-data"><td colspan="6">No events</td></tr></tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="content-section" id="analytics">
+            <h2>School Analytics</h2>
+            <div class="analytics-grid" id="adminAnalyticsGrid">
+                <div class="chart-card"><h3>Enrollment by Class</h3><canvas id="adminEnrollChart"></canvas></div>
+                <div class="chart-card"><h3>Gender Distribution</h3><canvas id="adminGenderChart"></canvas></div>
+                <div class="chart-card"><h3>KCSE Performance</h3><canvas id="adminKCSEChart"></canvas></div>
+                <div class="chart-card"><h3>Grade Distribution</h3><canvas id="adminGradeDistChart"></canvas></div>
+                <div class="chart-card"><h3>Fees Collection</h3><canvas id="adminFeesChart"></canvas></div>
+                <div class="chart-card"><h3>Attendance Overview</h3><canvas id="adminAttChart"></canvas></div>
             </div>
         </div>
 
@@ -885,6 +901,7 @@
             if (id === 'gallery-mgmt') renderGalleryMgmt();
             if (id === 'sotm-mgmt') { renderSOTMMgmt(); populateSOTMStudent(); }
             if (id === 'health-mgmt') renderHealthMgmt();
+            if (id === 'analytics') renderAdminAnalytics();
         }
         function openModal(name) { document.getElementById(name + 'Modal').classList.add('active'); }
         function closeModal(name) { document.getElementById(name + 'Modal').classList.remove('active'); }
@@ -1878,6 +1895,86 @@
 
         // ===== HEALTH MGMT =====
         function renderHealthMgmt() { const records=getData('health_records'), tb=document.getElementById('healthMgmtBody'); if(!records.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No health records</td></tr>';return;} tb.innerHTML=records.map(r=>{const s=getData('students').find(x=>x.id===r.studentId);return`<tr><td><strong>${s?s.name:r.studentId}</strong></td><td>${s?s.class:'-'}</td><td>${r.bloodGroup||'-'}</td><td>${r.allergies||'None'}</td><td>${r.conditions||'None'}</td><td>${r.emergencyContact||'-'}</td></tr>`;}).join(''); }
+
+        // ===== ADMIN ANALYTICS =====
+        function renderAdminAnalytics() {
+            const students = getData('students').filter(s=>s.status!=='expelled');
+            const grades = getData('grades');
+            const fees = getData('fees');
+            const attendance = getData('attendance');
+            const grid = document.getElementById('adminAnalyticsGrid');
+
+            // Enrollment by class
+            const classCounts = {};
+            const classes = ['Form 1 East','Form 1 West','Form 2 East','Form 2 West','Form 3 East','Form 3 West','Form 4 East','Form 4 West'];
+            classes.forEach(c => { classCounts[c] = students.filter(s => s.class === c).length; });
+
+            // Gender
+            const male = students.filter(s => s.gender === 'Male').length;
+            const female = students.filter(s => s.gender === 'Female').length;
+
+            // Grade distribution from all grades
+            const gd = {A:0,'A-':0,'B+':0,B:0,'B-':0,'C+':0,C:0,'C-':0,'D+':0,D:0,'D-':0,E:0};
+            grades.forEach(g => { if(gd[g.grade]!==undefined) gd[g.grade]++; });
+
+            // KCSE prediction distribution
+            const kcsePreds = {A:0,'B+':0,B:0,'C+':0,C:0,D:0};
+            const studentGrades = {};
+            grades.forEach(g => { studentGrades[g.studentId] = studentGrades[g.studentId] || []; studentGrades[g.studentId].push(g); });
+            Object.values(studentGrades).forEach(gs => {
+                const latest = {};
+                gs.forEach(g => { latest[g.subject] = g; });
+                const vals = Object.values(latest);
+                if(vals.length){
+                    const tp = vals.reduce((s,g)=>s+(g.points||0),0);
+                    if(tp>=80)kcsePreds.A++;else if(tp>=60)kcsePreds['B+']++;else if(tp>=48)kcsePreds.B++;else if(tp>=36)kcsePreds['C+']++;else if(tp>=24)kcsePreds.C++;else kcsePreds.D++;
+                }
+            });
+
+            // Fees by term
+            const feeTerms = {};
+            fees.forEach(f => { feeTerms[f.term] = (feeTerms[f.term]||0) + (Number(f.amount)||0); });
+
+            // Attendance
+            const attPresent = attendance.filter(a => a.status === 'Present').length;
+            const attAbsent = attendance.filter(a => a.status === 'Absent').length;
+            const attLate = attendance.filter(a => a.status === 'Late').length;
+
+            const colors = ['#1a5276','#27ae60','#e67e22','#e74c3c','#9b59b6','#2ecc71','#f39c12','#1abc9c'];
+
+            // Destroy existing charts if any
+            ['adminEnrollChart','adminGenderChart','adminKCSEChart','adminGradeDistChart','adminFeesChart','adminAttChart'].forEach(id => {
+                const canvas = document.getElementById(id);
+                if(canvas && canvas.__chart) canvas.__chart.destroy();
+            });
+
+            // Enrollment chart
+            const c1 = document.getElementById('adminEnrollChart');
+            c1.__chart = new Chart(c1, {type:'bar',data:{labels:classes,datasets:[{label:'Students',data:classes.map(c=>classCounts[c]),backgroundColor:colors}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+
+            // Gender
+            const c2 = document.getElementById('adminGenderChart');
+            c2.__chart = new Chart(c2, {type:'doughnut',data:{labels:['Male','Female'],datasets:[{data:[male,female],backgroundColor:['#1a5276','#e74c3c']}]},options:{responsive:true}});
+
+            // KCSE Prediction
+            const kcseKeys = Object.keys(kcsePreds).filter(k=>kcsePreds[k]>0);
+            const c3 = document.getElementById('adminKCSEChart');
+            c3.__chart = new Chart(c3, {type:'bar',data:{labels:kcseKeys,datasets:[{label:'Students',data:kcseKeys.map(k=>kcsePreds[k]),backgroundColor:colors.slice(0,kcseKeys.length)}]},options:{responsive:true,plugins:{legend:{display:false}}}});
+
+            // Grade distribution
+            const gdKeys = Object.keys(gd).filter(k=>gd[k]>0);
+            const c4 = document.getElementById('adminGradeDistChart');
+            c4.__chart = new Chart(c4, {type:'doughnut',data:{labels:gdKeys,datasets:[{data:gdKeys.map(k=>gd[k]),backgroundColor:colors.slice(0,gdKeys.length)}]},options:{responsive:true}});
+
+            // Fees
+            const feeKeys = Object.keys(feeTerms);
+            const c5 = document.getElementById('adminFeesChart');
+            c5.__chart = new Chart(c5, {type:'bar',data:{labels:feeKeys.length?feeKeys:['No Data'],datasets:[{label:'KES',data:feeKeys.length?feeKeys.map(k=>feeTerms[k]):[0],backgroundColor:'#27ae60'}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+
+            // Attendance
+            const c6 = document.getElementById('adminAttChart');
+            c6.__chart = new Chart(c6, {type:'doughnut',data:{labels:['Present','Absent','Late'],datasets:[{data:[attPresent,attAbsent,attLate],backgroundColor:['#27ae60','#e74c3c','#f39c12']}]},options:{responsive:true}});
+        }
 
         init();
         // Dark mode

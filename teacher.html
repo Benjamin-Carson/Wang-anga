@@ -23,13 +23,24 @@
         <nav class="sidebar-nav">
             <ul>
                 <li><a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-divider">Academics</li>
                 <li><a href="#" onclick="showSection('cards', this)"><i class="fas fa-clipboard-list"></i> Online Cards</a></li>
                 <li><a href="#" onclick="showSection('create-card', this)"><i class="fas fa-plus-circle"></i> Create Card</a></li>
                 <li><a href="#" onclick="showSection('gradebook', this)"><i class="fas fa-book"></i> Grade Book</a></li>
                 <li><a href="#" onclick="showSection('enter-grades', this)"><i class="fas fa-pen"></i> Enter Grades</a></li>
                 <li><a href="#" onclick="showSection('my-students', this)"><i class="fas fa-user-graduate"></i> My Students</a></li>
+                <li><a href="#" onclick="showSection('study-materials', this)"><i class="fas fa-folder-open"></i> Study Materials</a></li>
+                <li class="nav-divider">School Life</li>
                 <li><a href="#" onclick="showSection('teacher-attendance', this)"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
                 <li><a href="#" onclick="showSection('teacher-timetable', this)"><i class="fas fa-calendar-alt"></i> My Timetable</a></li>
+                <li><a href="#" onclick="showSection('teacher-exam-tt', this)"><i class="fas fa-pen-fancy"></i> Exam Timetable</a></li>
+                <li><a href="#" onclick="showSection('teacher-library', this)"><i class="fas fa-book-reader"></i> Library</a></li>
+                <li><a href="#" onclick="showSection('teacher-clubs', this)"><i class="fas fa-futbol"></i> Clubs & Sports</a></li>
+                <li><a href="#" onclick="showSection('teacher-announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                <li class="nav-divider">Communication</li>
+                <li><a href="#" onclick="showSection('parent-messaging', this)"><i class="fas fa-comments"></i> Parent Messages</a></li>
+                <li><a href="#" onclick="showSection('teacher-eval', this)"><i class="fas fa-star"></i> My Evaluation</a></li>
+                <li class="nav-divider">Account</li>
                 <li><a href="#" onclick="showSection('profile', this)"><i class="fas fa-user-circle"></i> My Profile</a></li>
             </ul>
         </nav>
@@ -44,6 +55,7 @@
             <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
             <div class="topbar-right">
                 <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <a href="https://wa.me/254798394035" target="_blank" class="whatsapp-topbar" title="Contact School via WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 <div class="admin-profile"><i class="fas fa-user-circle"></i> <span id="teacherDisplayName">Teacher</span></div>
             </div>
         </div>
@@ -340,6 +352,95 @@
                 <div id="profileInfo"></div>
             </div>
         </div>
+
+        <!-- Study Materials -->
+        <div class="content-section" id="study-materials">
+            <div class="section-top">
+                <h2>Study Materials</h2>
+                <button class="btn btn-primary" onclick="openUploadMaterial()"><i class="fas fa-upload"></i> Upload Material</button>
+            </div>
+            <div class="table-container" style="margin-top:15px">
+                <table>
+                    <thead><tr><th>Title</th><th>Subject</th><th>Class</th><th>Type</th><th>Uploaded</th><th>Downloads</th><th>Actions</th></tr></thead>
+                    <tbody id="materialsBody"><tr class="no-data"><td colspan="7">No materials uploaded yet</td></tr></tbody>
+                </table>
+            </div>
+            <!-- Upload Modal -->
+            <div class="modal-overlay" id="materialModal">
+                <div class="modal-content dashboard-modal" style="max-width:550px">
+                    <div class="modal-header"><h3>Upload Study Material</h3><span class="close-modal" onclick="document.getElementById('materialModal').classList.remove('active')">&times;</span></div>
+                    <div class="modal-body">
+                        <div class="form-group"><label>Title <span class="required">*</span></label><input type="text" id="matTitle" placeholder="e.g. Form 3 Math Notes - Algebra"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Subject <span class="required">*</span></label><select id="matSubject"><option value="">Select</option></select></div>
+                            <div class="form-group"><label>Class <span class="required">*</span></label><select id="matClass"><option value="">Select</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Type</label><select id="matType"><option value="Notes">Notes</option><option value="Past Paper">Past Paper</option><option value="Revision">Revision Material</option><option value="Assignment">Assignment</option></select></div>
+                            <div class="form-group"><label>Term</label><select id="matTerm"><option value="Term 1">Term 1</option><option value="Term 2">Term 2</option><option value="Term 3">Term 3</option></select></div>
+                        </div>
+                        <div class="form-group"><label>Description</label><textarea id="matDesc" rows="3" placeholder="Brief description of the material..."></textarea></div>
+                        <div class="form-group"><label>File URL / Link <span class="required">*</span></label><input type="text" id="matUrl" placeholder="Google Drive link, Dropbox, etc."></div>
+                        <button class="btn btn-primary" onclick="uploadMaterial()"><i class="fas fa-save"></i> Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Timetable (Teacher) -->
+        <div class="content-section" id="teacher-exam-tt">
+            <h2>Exam Timetable</h2>
+            <div id="teacherExamTTContent"></div>
+        </div>
+
+        <!-- Library (Teacher) -->
+        <div class="content-section" id="teacher-library">
+            <h2>School Library</h2>
+            <div class="form-row">
+                <div class="form-group"><label>Search</label><input type="text" id="tLibSearch" placeholder="Search by title or author..." oninput="searchTeacherLibrary()"></div>
+                <div class="form-group"><label>Category</label><select id="tLibCategory" onchange="searchTeacherLibrary()"><option value="">All</option><option value="Textbook">Textbooks</option><option value="Novel">Novels</option><option value="Reference">Reference</option><option value="Magazine">Magazines</option></select></div>
+            </div>
+            <div class="table-container" style="margin-top:15px">
+                <table>
+                    <thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Copies</th><th>Available</th><th>Borrowed By</th></tr></thead>
+                    <tbody id="tLibBody"><tr class="no-data"><td colspan="6">No books in library</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Clubs & Sports (Teacher) -->
+        <div class="content-section" id="teacher-clubs">
+            <h2>Clubs & Sports</h2>
+            <div id="tClubsList"></div>
+            <h3 style="margin-top:25px">Club Members</h3>
+            <div id="tClubMembers" style="margin-top:10px"></div>
+        </div>
+
+        <!-- Announcements (Teacher) -->
+        <div class="content-section" id="teacher-announcements">
+            <h2>Announcements</h2>
+            <div id="tAnnContent"><p class="no-data">No announcements</p></div>
+        </div>
+
+        <!-- Parent Messaging -->
+        <div class="content-section" id="parent-messaging">
+            <h2>Messages from Parents</h2>
+            <div class="chat-container">
+                <div class="chat-messages" id="tChatMessages"><p class="no-data">No messages yet</p></div>
+                <div class="chat-input">
+                    <select id="tChatRecipient"><option value="">Select Parent</option></select>
+                    <input type="text" id="tChatInput" placeholder="Type reply..." onkeypress="if(event.key==='Enter')sendTeacherMsg()">
+                    <button class="btn btn-primary" onclick="sendTeacherMsg()"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher Evaluation -->
+        <div class="content-section" id="teacher-eval">
+            <h2>My Evaluation</h2>
+            <div id="evalSummaryCards" class="grades-summary-cards" style="display:none"></div>
+            <div id="evalReviews" style="margin-top:20px"></div>
+        </div>
     </main>
 
     <script>
@@ -365,6 +466,13 @@
             if (id === 'profile') renderProfile();
             if (id === 'teacher-attendance') loadTeacherAttendanceStudents();
             if (id === 'teacher-timetable') renderTeacherTimetable();
+            if (id === 'study-materials') renderMaterials();
+            if (id === 'teacher-exam-tt') renderTeacherExamTT();
+            if (id === 'teacher-library') searchTeacherLibrary();
+            if (id === 'teacher-clubs') renderTeacherClubs();
+            if (id === 'teacher-announcements') renderTeacherAnnouncements();
+            if (id === 'parent-messaging') loadTeacherMessaging();
+            if (id === 'teacher-eval') renderTeacherEval();
         }
 
         // ===== PHOTO =====
@@ -886,6 +994,198 @@
             localStorage.setItem('wanganga_admin_center', JSON.stringify(records));
 
             alert('Grades saved successfully! ' + saved + ' students graded.');
+        }
+
+        // ===== HELPER FUNCTIONS =====
+        function getData(k) { return JSON.parse(localStorage.getItem('wanganga_' + k) || '[]'); }
+        function setData(k, d) { localStorage.setItem('wanganga_' + k, JSON.stringify(d)); }
+
+        // ===== STUDY MATERIALS =====
+        function openUploadMaterial() {
+            const matSubj = document.getElementById('matSubject');
+            const matCls = document.getElementById('matClass');
+            if (matSubj.options.length <= 1) {
+                (teacher.subjects || []).forEach(s => { matSubj.innerHTML += '<option value="' + s + '">' + s + '</option>'; });
+                const classes = ['Form 1 East','Form 1 West','Form 2 East','Form 2 West','Form 3 East','Form 3 West','Form 4 East','Form 4 West','All Classes'];
+                classes.forEach(c => { matCls.innerHTML += '<option value="' + c + '">' + c + '</option>'; });
+            }
+            document.getElementById('materialModal').classList.add('active');
+        }
+
+        function uploadMaterial() {
+            const title = document.getElementById('matTitle').value.trim();
+            const subject = document.getElementById('matSubject').value;
+            const cls = document.getElementById('matClass').value;
+            const url = document.getElementById('matUrl').value.trim();
+            if (!title || !subject || !cls || !url) { alert('Fill all required fields'); return; }
+            const materials = getData('study_materials');
+            materials.push({
+                id: 'MAT' + Date.now().toString().slice(-8),
+                title, subject, class: cls,
+                type: document.getElementById('matType').value,
+                term: document.getElementById('matTerm').value,
+                description: document.getElementById('matDesc').value,
+                url, downloads: 0,
+                teacherId: teacher.id, teacherName: teacher.name,
+                uploadedAt: new Date().toISOString()
+            });
+            setData('study_materials', materials);
+            const r = JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]');
+            r.unshift({ id: r.length + 1, timestamp: new Date().toISOString(), category: 'teacher', action: 'create', details: teacher.name + ' uploaded material: ' + title, user: teacher.name, ip: 'Local Network' });
+            localStorage.setItem('wanganga_admin_center', JSON.stringify(r));
+            document.getElementById('materialModal').classList.remove('active');
+            document.getElementById('matTitle').value = '';
+            document.getElementById('matDesc').value = '';
+            document.getElementById('matUrl').value = '';
+            alert('Material uploaded!');
+            renderMaterials();
+        }
+
+        function renderMaterials() {
+            const materials = getData('study_materials').filter(m => m.teacherId === teacher.id);
+            const tb = document.getElementById('materialsBody');
+            if (!materials.length) { tb.innerHTML = '<tr class="no-data"><td colspan="7">No materials uploaded yet</td></tr>'; return; }
+            tb.innerHTML = materials.map(m => `<tr>
+                <td><strong>${m.title}</strong></td>
+                <td>${m.subject}</td>
+                <td>${m.class}</td>
+                <td><span class="status-badge">${m.type}</span></td>
+                <td><small>${new Date(m.uploadedAt).toLocaleDateString()}</small></td>
+                <td>${m.downloads || 0}</td>
+                <td>
+                    <a href="${m.url}" target="_blank" class="action-btn view" title="Open"><i class="fas fa-external-link-alt"></i></a>
+                    <button class="action-btn delete" onclick="deleteMaterial(${materials.indexOf(m)})" title="Delete"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`).join('');
+        }
+
+        function deleteMaterial(i) {
+            if (!confirm('Delete this material?')) return;
+            const materials = getData('study_materials').filter(m => m.teacherId === teacher.id);
+            const allMaterials = getData('study_materials');
+            const globalIdx = allMaterials.indexOf(materials[i]);
+            if (globalIdx >= 0) { allMaterials.splice(globalIdx, 1); setData('study_materials', allMaterials); }
+            renderMaterials();
+        }
+
+        // ===== EXAM TIMETABLE (Teacher) =====
+        function renderTeacherExamTT() {
+            const exams = getData('exam_timetable');
+            const el = document.getElementById('teacherExamTTContent');
+            if (!exams.length) { el.innerHTML = '<p class="no-data">No exam timetable published yet</p>'; return; }
+            el.innerHTML = '<div class="table-container"><table><thead><tr><th>Date</th><th>Time</th><th>Subject</th><th>Duration</th><th>Venue</th></tr></thead><tbody>' + exams.map(e => `<tr><td><strong>${e.date}</strong></td><td>${e.time || '8:00 AM'}</td><td><strong>${e.subject}</strong></td><td>${e.duration || '2 hours'}</td><td>${e.venue || 'Main Hall'}</td></tr>`).join('') + '</tbody></table></div>';
+        }
+
+        // ===== LIBRARY (Teacher) =====
+        function searchTeacherLibrary() {
+            const books = getData('library_books');
+            const q = (document.getElementById('tLibSearch').value || '').toLowerCase();
+            const cat = document.getElementById('tLibCategory').value;
+            let filtered = books;
+            if (q) filtered = filtered.filter(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q));
+            if (cat) filtered = filtered.filter(b => b.category === cat);
+            const borrowed = getData('library_borrowed');
+            const tb = document.getElementById('tLibBody');
+            if (!filtered.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No books found</td></tr>'; return; }
+            tb.innerHTML = filtered.map(b => {
+                const borrows = borrowed.filter(x => x.bookId === b.id && x.status === 'Borrowed');
+                const avail = b.copies - borrows.length;
+                const borrowers = borrows.map(x => x.studentName).join(', ') || '-';
+                return `<tr><td><strong>${b.title}</strong></td><td>${b.author}</td><td>${b.category}</td><td>${b.copies}</td><td><span class="status-badge ${avail > 0 ? 'approved' : 'rejected'}">${avail}</span></td><td><small>${borrowers}</small></td></tr>`;
+            }).join('');
+        }
+
+        // ===== CLUBS (Teacher) =====
+        function renderTeacherClubs() {
+            const clubs = getData('clubs');
+            const el = document.getElementById('tClubsList');
+            if (!clubs.length) { el.innerHTML = '<p class="no-data">No clubs registered yet</p>'; return; }
+            el.innerHTML = '<div class="clubs-grid">' + clubs.map(c => {
+                const members = getData('student_clubs').filter(x => x.clubId === c.id);
+                return `<div class="club-card"><i class="${c.icon || 'fas fa-users'}" style="font-size:24px;color:var(--primary);margin-bottom:8px"></i><h4>${c.name}</h4><p>${c.description || ''}</p><p style="font-size:12px;color:var(--text-light)">${c.meetingDay || ''} ${c.meetingTime || ''}</p><p style="font-size:12px;margin-top:5px"><strong>${members.length}</strong> members</p></div>`;
+            }).join('') + '</div>';
+
+            // Club members table
+            const allMembers = getData('student_clubs');
+            const mel = document.getElementById('tClubMembers');
+            if (!allMembers.length) { mel.innerHTML = '<p class="no-data">No club memberships yet</p>'; return; }
+            const students = getData('students');
+            mel.innerHTML = '<div class="table-container"><table><thead><tr><th>Club</th><th>Student</th><th>Class</th><th>Joined</th></tr></thead><tbody>' + allMembers.map(m => {
+                const club = clubs.find(c => c.id === m.clubId);
+                const stu = students.find(s => s.id === m.studentId);
+                return `<tr><td>${club ? club.name : m.clubId}</td><td>${m.studentName || (stu ? stu.name : '-')}</td><td>${stu ? stu.class : '-'}</td><td><small>${new Date(m.joinedAt).toLocaleDateString()}</small></td></tr>`;
+            }).join('') + '</tbody></table></div>';
+        }
+
+        // ===== ANNOUNCEMENTS (Teacher) =====
+        function renderTeacherAnnouncements() {
+            const ann = getData('announcements').filter(a => a.audience === 'all' || a.audience === 'teachers');
+            const el = document.getElementById('tAnnContent');
+            if (!ann.length) { el.innerHTML = '<p class="no-data">No announcements</p>'; return; }
+            el.innerHTML = ann.map(a => `<div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)"><i class="fas fa-bullhorn" style="color:var(--secondary);font-size:20px;margin-right:12px"></i><div><strong style="font-size:15px">${a.title}</strong><p style="margin:5px 0 0;color:var(--text)">${a.message}</p><small style="color:var(--text-light)">${a.date} - ${a.author || 'Admin'}</small></div></div>`).join('');
+        }
+
+        // ===== PARENT MESSAGING =====
+        function loadTeacherMessaging() {
+            const parents = getData('parents');
+            const sel = document.getElementById('tChatRecipient');
+            if (sel.options.length <= 1) {
+                parents.forEach(p => { sel.innerHTML += '<option value="' + p.id + '">' + p.name + '</option>'; });
+            }
+            const msgs = getData('chat_messages').filter(m => m.recipient === teacher.id || m.senderId === teacher.id);
+            const el = document.getElementById('tChatMessages');
+            if (!msgs.length) { el.innerHTML = '<p class="no-data">No messages yet</p>'; return; }
+            el.innerHTML = msgs.map(m => `<div class="chat-msg ${m.senderId === teacher.id ? 'own' : 'other'}"><div class="chat-bubble"><strong>${m.senderName}</strong><p>${m.text}</p><small>${new Date(m.sentAt).toLocaleTimeString()}</small></div></div>`).join('');
+            el.scrollTop = el.scrollHeight;
+        }
+
+        function sendTeacherMsg() {
+            const input = document.getElementById('tChatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const rid = document.getElementById('tChatRecipient').value;
+            if (!rid) { alert('Select a parent'); return; }
+            const msgs = getData('chat_messages');
+            msgs.push({ id: 'MSG' + Date.now(), senderId: teacher.id, senderName: teacher.name, recipient: rid, text, sentAt: new Date().toISOString() });
+            setData('chat_messages', msgs);
+            input.value = '';
+            loadTeacherMessaging();
+        }
+
+        // ===== TEACHER EVALUATION =====
+        function renderTeacherEval() {
+            const evals = getData('teacher_evaluations').filter(e => e.teacherId === teacher.id);
+            const summaryEl = document.getElementById('evalSummaryCards');
+            const reviewsEl = document.getElementById('evalReviews');
+
+            if (!evals.length) {
+                summaryEl.style.display = 'none';
+                reviewsEl.innerHTML = '<div class="prediction-card"><p><i class="fas fa-info-circle"></i> No evaluations yet. Students will rate you once they submit feedback.</p></div>';
+                return;
+            }
+
+            const avgOverall = (evals.reduce((s, e) => s + (e.overall || 0), 0) / evals.length).toFixed(1);
+            const avgTeaching = (evals.reduce((s, e) => s + (e.teaching || 0), 0) / evals.length).toFixed(1);
+            const avgPunctuality = (evals.reduce((s, e) => s + (e.punctuality || 0), 0) / evals.length).toFixed(1);
+            const avgFairness = (evals.reduce((s, e) => s + (e.fairness || 0), 0) / evals.length).toFixed(1);
+
+            summaryEl.innerHTML = `
+                <div class="grade-summary-card"><h4>${avgOverall}/5</h4><p>Overall</p></div>
+                <div class="grade-summary-card"><h4>${avgTeaching}/5</h4><p>Teaching</p></div>
+                <div class="grade-summary-card"><h4>${avgPunctuality}/5</h4><p>Punctuality</p></div>
+                <div class="grade-summary-card"><h4>${avgFairness}/5</h4><p>Fairness</p></div>
+            `;
+            summaryEl.style.display = 'grid';
+
+            reviewsEl.innerHTML = evals.map(e => {
+                const stars = '&#9733;'.repeat(Math.round(e.overall || 0)) + '&#9734;'.repeat(5 - Math.round(e.overall || 0));
+                return `<div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)">
+                    <div><div style="color:var(--secondary);font-size:16px;margin-bottom:5px">${stars}</div>
+                    <p style="margin:0"><strong>${e.studentName || 'Anonymous'}</strong> - ${e.class || ''}</p>
+                    <p style="margin:5px 0">${e.comment || 'No comment'}</p>
+                    <small style="color:var(--text-light)">${e.teaching ? 'Teaching: ' + e.teaching + '/5' : ''} ${e.punctuality ? '| Punctuality: ' + e.punctuality + '/5' : ''} | ${new Date(e.date).toLocaleDateString()}</small></div>
+                </div>`;
+            }).join('');
         }
 
         // ===== INIT =====

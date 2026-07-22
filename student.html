@@ -37,6 +37,7 @@
                 <li><a href="#" onclick="showSection('my-timetable', this)"><i class="fas fa-calendar-alt"></i> Timetable</a></li>
                 <li><a href="#" onclick="showSection('exam-timetable', this)"><i class="fas fa-pen-fancy"></i> Exam Timetable</a></li>
                 <li><a href="#" onclick="showSection('library', this)"><i class="fas fa-book"></i> Library</a></li>
+                <li><a href="#" onclick="showSection('study-materials-student', this)"><i class="fas fa-folder-open"></i> Study Materials</a></li>
                 <li><a href="#" onclick="showSection('sports-clubs', this)"><i class="fas fa-futbol"></i> Sports & Clubs</a></li>
                 <li><a href="#" onclick="showSection('lunch-menu', this)"><i class="fas fa-utensils"></i> Lunch Menu</a></li>
                 <li><a href="#" onclick="showSection('bus-tracking', this)"><i class="fas fa-bus"></i> Bus Routes</a></li>
@@ -45,6 +46,7 @@
                 <li><a href="#" onclick="showSection('student-announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
                 <li><a href="#" onclick="showSection('photo-gallery', this)"><i class="fas fa-images"></i> Gallery</a></li>
                 <li><a href="#" onclick="showSection('live-chat', this)"><i class="fas fa-comments"></i> Live Chat</a></li>
+                <li><a href="#" onclick="showSection('rate-teachers', this)"><i class="fas fa-star"></i> Rate Teachers</a></li>
                 <li><a href="#" onclick="showSection('student-of-month', this)"><i class="fas fa-star"></i> Stars</a></li>
                 <li><a href="#" onclick="showSection('birthday-wishes', this)"><i class="fas fa-birthday-cake"></i> Birthdays</a></li>
                 <li class="nav-divider">Account</li>
@@ -141,6 +143,48 @@
         <!-- Digital ID Card -->
         <div class="content-section" id="digital-id"><h2>My Digital ID Card</h2><div id="digitalIdContent"></div></div>
 
+        <!-- Study Materials (Student) -->
+        <div class="content-section" id="study-materials-student">
+            <h2>Study Materials</h2>
+            <div class="form-row">
+                <div class="form-group"><label>Search</label><input type="text" id="sMatSearch" placeholder="Search materials..." oninput="searchStudentMaterials()"></div>
+                <div class="form-group"><label>Subject</label><select id="sMatSubject" onchange="searchStudentMaterials()"><option value="">All</option></select></div>
+                <div class="form-group"><label>Type</label><select id="sMatType" onchange="searchStudentMaterials()"><option value="">All</option><option value="Notes">Notes</option><option value="Past Paper">Past Paper</option><option value="Revision">Revision</option><option value="Assignment">Assignment</option></select></div>
+            </div>
+            <div class="table-container" style="margin-top:15px">
+                <table><thead><tr><th>Title</th><th>Subject</th><th>Type</th><th>Teacher</th><th>Term</th><th>Action</th></tr></thead>
+                <tbody id="sMatBody"><tr class="no-data"><td colspan="6">No materials available</td></tr></tbody></table>
+            </div>
+        </div>
+
+        <!-- Rate Teachers -->
+        <div class="content-section" id="rate-teachers">
+            <h2>Rate Your Teachers</h2>
+            <p style="color:var(--text-light);margin-bottom:20px">Your feedback helps improve teaching quality. All responses are anonymous.</p>
+            <div class="create-card-form" id="evalForm">
+                <div class="form-group"><label>Select Teacher <span class="required">*</span></label><select id="evalTeacher"><option value="">Select Teacher</option></select></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Teaching Quality (1-5) <span class="required">*</span></label><select id="evalTeaching"><option value="5">5 - Excellent</option><option value="4">4 - Good</option><option value="3" selected>3 - Average</option><option value="2">2 - Below Average</option><option value="1">1 - Poor</option></select></div>
+                    <div class="form-group"><label>Punctuality (1-5)</label><select id="evalPunctuality"><option value="5">5 - Excellent</option><option value="4">4 - Good</option><option value="3" selected>3 - Average</option><option value="2">2 - Below Average</option><option value="1">1 - Poor</option></select></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Fairness (1-5)</label><select id="evalFairness"><option value="5">5 - Excellent</option><option value="4">4 - Good</option><option value="3" selected>3 - Average</option><option value="2">2 - Below Average</option><option value="1">1 - Poor</option></select></div>
+                    <div class="form-group"><label>Overall (1-5) <span class="required">*</span></label><select id="evalOverall"><option value="5">5 - Excellent</option><option value="4">4 - Good</option><option value="3" selected>3 - Average</option><option value="2">2 - Below Average</option><option value="1">1 - Poor</option></select></div>
+                </div>
+                <div class="form-group"><label>Comments (optional)</label><textarea id="evalComment" rows="3" placeholder="Share your thoughts about this teacher's performance..."></textarea></div>
+                <button class="btn btn-primary" onclick="submitEvaluation()"><i class="fas fa-paper-plane"></i> Submit Evaluation</button>
+            </div>
+            <h3 style="margin-top:25px">My Past Evaluations</h3>
+            <div id="myEvalsList" style="margin-top:10px"></div>
+        </div>
+
+        <!-- Student Report Card -->
+        <div class="content-section" id="student-report-card">
+            <h2>Report Card</h2>
+            <div id="studentReportCardContent"></div>
+            <button class="btn btn-primary" onclick="printStudentReportCard()" style="margin-top:20px"><i class="fas fa-print"></i> Print Report Card</button>
+        </div>
+
         <!-- School Anthem & Media -->
         <div class="content-section" id="school-media"><h2>School Anthem & Media</h2><div class="school-media-card"><h3><i class="fas fa-music" style="color:var(--primary)"></i> School Anthem</h3><p style="margin:10px 0">Wang'anga Senior School Anthem</p><audio controls style="width:100%;margin:10px 0" id="schoolAnthemAudio"><source src="" type="audio/mpeg">Your browser does not support audio. Upload the school anthem audio file.</audio><p style="margin-top:15px"><small>Upload your school anthem audio file to: <code>images/school-anthem.mp3</code></small></p></div><div class="school-media-card" style="margin-top:15px"><h3><i class="fas fa-video" style="color:var(--primary)"></i> School Video Tour</h3><div style="margin:10px 0;background:#000;border-radius:10px;min-height:300px;display:flex;align-items:center;justify-content:center;color:white"><p><i class="fas fa-play-circle" style="font-size:60px;opacity:0.5"></i><br>Upload your school video to: <code>images/school-tour.mp4</code></p></div></div></div>
 
@@ -167,7 +211,7 @@
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
         if (link) link.classList.add('active');
-        const loaders = { 'my-cards': renderAssignedCards, 'submitted': renderSubmitted, 'my-grades': loadStudentGrades, 'analytics': renderAnalytics, 'kcse-prediction': renderKCSEPrediction, 'career-guidance': renderCareerGuidance, 'my-attendance': renderStudentAttendance, 'my-timetable': renderStudentTimetable, 'exam-timetable': renderExamTimetable, 'library': renderLibrary, 'sports-clubs': renderClubs, 'lunch-menu': renderLunchMenu, 'bus-tracking': renderBusRoutes, 'health-records': renderHealth, 'student-announcements': renderStudentAnnouncements, 'photo-gallery': renderGallery, 'live-chat': renderChat, 'student-of-month': renderStudentOfMonth, 'birthday-wishes': renderBirthdays, 'digital-id': renderDigitalID, 'profile': renderProfile };
+        const loaders = { 'my-cards': renderAssignedCards, 'submitted': renderSubmitted, 'my-grades': loadStudentGrades, 'analytics': renderAnalytics, 'kcse-prediction': renderKCSEPrediction, 'career-guidance': renderCareerGuidance, 'my-attendance': renderStudentAttendance, 'my-timetable': renderStudentTimetable, 'exam-timetable': renderExamTimetable, 'library': renderLibrary, 'study-materials-student': searchStudentMaterials, 'sports-clubs': renderClubs, 'lunch-menu': renderLunchMenu, 'bus-tracking': renderBusRoutes, 'health-records': renderHealth, 'student-announcements': renderStudentAnnouncements, 'photo-gallery': renderGallery, 'live-chat': renderChat, 'rate-teachers': renderEvalForm, 'student-of-month': renderStudentOfMonth, 'birthday-wishes': renderBirthdays, 'digital-id': renderDigitalID, 'student-report-card': renderStudentReportCard, 'profile': renderProfile };
         if (loaders[id]) loaders[id]();
     }
     function openModal(n) { document.getElementById(n + 'Modal').classList.add('active'); }
@@ -316,6 +360,87 @@
     // ===== REPORT CARD =====
     function renderStudentReportCard() { const grades=getData('grades').filter(g=>g.studentId===student.id), fees=getData('fees').filter(f=>f.studentId===student.id), att=getData('attendance').filter(a=>a.studentId===student.id), tp=fees.reduce((s,f)=>s+(Number(f.amount)||0),0), p=att.filter(a=>a.status==='Present').length; const eg={}; grades.forEach(g=>{if(!eg[g.exam])eg[g.exam]=[];eg[g.exam].push(g);}); let es=''; Object.keys(eg).forEach(ex=>{const eg2=eg[ex],ap=(eg2.reduce((s,g)=>s+(g.points||0),0)/eg2.length).toFixed(1);es+=`<h3 style="margin-top:20px;color:var(--primary)">${ex}</h3><table><thead><tr><th>Subject</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th></tr></thead><tbody>${eg2.map(g=>`<tr><td>${g.subject}</td><td>${g.mark}/${g.maxMarks||100}</td><td><strong>${g.grade}</strong></td><td>${g.points}</td><td>${g.remark||'-'}</td></tr>`).join('')}<tr style="font-weight:700;background:#f0f7fb"><td>Average</td><td></td><td></td><td>${ap}</td><td></td></tr></tbody></table>`;}); document.getElementById('studentReportCardContent').innerHTML=`<div class="report-card" id="printableStudentReport"><div style="text-align:center;margin-bottom:20px"><h2 style="color:var(--primary)">WANG'ANGA SENIOR SCHOOL</h2><p>Phone: 0798394035</p><h3 style="margin-top:10px">REPORT CARD</h3></div><div class="form-row" style="margin-bottom:15px"><div><strong>Name:</strong> ${student.name}</div><div><strong>Adm:</strong> ${student.id}</div><div><strong>Class:</strong> ${student.class}</div></div><div class="form-row" style="margin-bottom:20px"><div><strong>Fees:</strong> KES ${tp.toLocaleString()}</div><div><strong>Attendance:</strong> ${att.length?Math.round(p/att.length*100)+'%':'N/A'}</div></div>${es||'<p>No grades yet</p>'}</div>`; }
     function printStudentReportCard() { const c=document.getElementById('printableStudentReport').innerHTML; const w=window.open('','','height=800,width=900'); w.document.write('<html><head><title>Report Card</title><style>body{font-family:Poppins,sans-serif;padding:30px;color:#333}table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid #ddd;padding:8px}th{background:#1a5276;color:white}.form-row{display:flex;gap:30px}h2{color:#1a5276}@media print{body{padding:15px}}</style></head><body>'+c+'</body></html>'); w.document.close(); w.print(); }
+
+    // ===== STUDY MATERIALS (Student) =====
+    function searchStudentMaterials() {
+        const materials = getData('study_materials');
+        const q = (document.getElementById('sMatSearch').value || '').toLowerCase();
+        const subj = document.getElementById('sMatSubject').value;
+        const type = document.getElementById('sMatType').value;
+        let filtered = materials;
+        if (q) filtered = filtered.filter(m => m.title.toLowerCase().includes(q) || (m.description||'').toLowerCase().includes(q));
+        if (subj) filtered = filtered.filter(m => m.subject === subj);
+        if (type) filtered = filtered.filter(m => m.type === type);
+        const tb = document.getElementById('sMatBody');
+        if (!filtered.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No materials found</td></tr>'; return; }
+        tb.innerHTML = filtered.map(m => `<tr>
+            <td><strong>${m.title}</strong></td>
+            <td>${m.subject}</td>
+            <td><span class="status-badge">${m.type}</span></td>
+            <td>${m.teacherName || '-'}</td>
+            <td>${m.term || '-'}</td>
+            <td><a href="${m.url}" target="_blank" class="btn btn-primary btn-sm" onclick="downloadMaterial('${m.id}')"><i class="fas fa-download"></i> Open</a></td>
+        </tr>`).join('');
+        // Populate subject filter
+        const sel = document.getElementById('sMatSubject');
+        if (sel.options.length <= 1) {
+            [...new Set(materials.map(m => m.subject))].forEach(s => { sel.innerHTML += '<option value="' + s + '">' + s + '</option>'; });
+        }
+    }
+    function downloadMaterial(id) {
+        const materials = getData('study_materials');
+        const m = materials.find(x => x.id === id);
+        if (m) { m.downloads = (m.downloads || 0) + 1; setData('study_materials', materials); }
+    }
+
+    // ===== RATE TEACHERS =====
+    function renderEvalForm() {
+        const teachers = getData('teachers').filter(t => t.status !== 'suspended');
+        const sel = document.getElementById('evalTeacher');
+        if (sel.options.length <= 1) {
+            teachers.forEach(t => { sel.innerHTML += '<option value="' + t.id + '">' + t.name + ' (' + (t.subjects || []).join(', ') + ')</option>'; });
+        }
+        // Show past evaluations
+        const evals = getData('teacher_evaluations').filter(e => e.studentId === student.id);
+        const el = document.getElementById('myEvalsList');
+        if (!evals.length) { el.innerHTML = '<p class="no-data">You have not evaluated any teacher yet</p>'; return; }
+        el.innerHTML = evals.map(e => {
+            const t = teachers.find(x => x.id === e.teacherId);
+            return `<div class="activity-item" style="padding:12px;margin-bottom:8px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)">
+                <i class="fas fa-star" style="color:var(--secondary);margin-right:10px"></i>
+                <div><strong>${t ? t.name : e.teacherName || 'Teacher'}</strong> - Overall: ${e.overall}/5
+                <br><small style="color:var(--text-light)">${e.comment || 'No comment'} | ${new Date(e.date).toLocaleDateString()}</small></div>
+            </div>`;
+        }).join('');
+    }
+    function submitEvaluation() {
+        const tid = document.getElementById('evalTeacher').value;
+        if (!tid) { alert('Select a teacher'); return; }
+        const evals = getData('teacher_evaluations');
+        if (evals.some(e => e.teacherId === tid && e.studentId === student.id)) {
+            alert('You have already evaluated this teacher.'); return;
+        }
+        const teachers = getData('teachers');
+        const t = teachers.find(x => x.id === tid);
+        evals.push({
+            id: 'EVAL' + Date.now(),
+            teacherId: tid,
+            teacherName: t ? t.name : '',
+            studentId: student.id,
+            studentName: 'Anonymous',
+            class: student.class,
+            teaching: Number(document.getElementById('evalTeaching').value),
+            punctuality: Number(document.getElementById('evalPunctuality').value),
+            fairness: Number(document.getElementById('evalFairness').value),
+            overall: Number(document.getElementById('evalOverall').value),
+            comment: document.getElementById('evalComment').value,
+            date: new Date().toISOString()
+        });
+        setData('teacher_evaluations', evals);
+        alert('Evaluation submitted! Thank you for your feedback.');
+        document.getElementById('evalComment').value = '';
+        renderEvalForm();
+    }
 
     // ===== DASHBOARD BIRTHDAY =====
     function checkDashboardBirthday() { const all=getData('students'); const today=new Date(); const bday=all.find(s=>{if(!s.dob)return false;const d=new Date(s.dob);return d.getDate()===today.getDate()&&d.getMonth()===today.getMonth();}); if(bday){const el=document.getElementById('dashboardBirthday');el.style.display='block';el.innerHTML=`<div class="activity-item" style="padding:15px;background:linear-gradient(135deg,#d4ac0d,#f1c40f);border-radius:10px;color:white"><i class="fas fa-birthday-cake" style="font-size:24px;margin-right:12px"></i><div><strong>🎂 Happy Birthday, ${bday.name}!</strong><p>Wishing you a wonderful year ahead!</p></div></div>`;} }

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Portal | Wang'anga Senior School</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a5276">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header"><div class="sidebar-logo"><i class="fas fa-medal"></i></div><h3>Alumni Portal</h3></div>
+        <nav class="sidebar-nav"><ul>
+            <li><a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-divider">Network</li>
+            <li><a href="#" onclick="showSection('alumni-directory', this)"><i class="fas fa-address-book"></i> Alumni Directory</a></li>
+            <li><a href="#" onclick="showSection('alumni-events', this)"><i class="fas fa-calendar-alt"></i> Events</a></li>
+            <li><a href="#" onclick="showSection('alumni-news', this)"><i class="fas fa-newspaper"></i> News & Updates</a></li>
+            <li class="nav-divider">Giving Back</li>
+            <li><a href="#" onclick="showSection('alumni-donations', this)"><i class="fas fa-donate"></i> Donations</a></li>
+            <li><a href="#" onclick="showSection('alumni-mentorship', this)"><i class="fas fa-hands-helping"></i> Mentorship</a></li>
+            <li><a href="#" onclick="showSection('alumni-jobs', this)"><i class="fas fa-briefcase"></i> Job Board</a></li>
+            <li class="nav-divider">More</li>
+            <li><a href="#" onclick="showSection('alumni-gallery', this)"><i class="fas fa-images"></i> Gallery</a></li>
+            <li><a href="#" onclick="showSection('alumni-announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+            <li><a href="#" onclick="showSection('alumni-profile', this)"><i class="fas fa-user-circle"></i> My Profile</a></li>
+        </ul></nav>
+        <div class="sidebar-footer"><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></div>
+    </aside>
+
+    <main class="main-content">
+        <div class="dashboard-topbar">
+            <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+            <div class="topbar-right">
+                <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <a href="https://wa.me/254798394035" target="_blank" class="whatsapp-topbar"><i class="fab fa-whatsapp"></i></a>
+                <div class="admin-profile"><i class="fas fa-user-circle"></i> <span id="alumniDisplayName">Alumni</span></div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="content-section active" id="dashboard">
+            <div class="welcome-card"><h2>Welcome, <span id="welcomeName">Alumni</span>!</h2><p>Stay connected with your alma mater and fellow alumni.</p></div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h3 id="totalAlumniCount">0</h3><p>Fellow Alumni</p></div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-check"></i></div><div class="stat-info"><h3 id="upcomingEventsCount">0</h3><p>Upcoming Events</p></div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-donate"></i></div><div class="stat-info"><h3 id="myDonationsTotal">KES 0</h3><p>My Donations</p></div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-handshake"></i></div><div class="stat-info"><h3 id="mentorshipCount">0</h3><p>Mentorship</p></div></div>
+            </div>
+            <div class="recent-grid">
+                <div class="activity-card"><h3><i class="fas fa-calendar"></i> Upcoming Events</h3><div id="dashEvents"><p class="no-data">No upcoming events</p></div></div>
+                <div class="activity-card"><h3><i class="fas fa-newspaper"></i> Latest News</h3><div id="dashNews"><p class="no-data">No news</p></div></div>
+            </div>
+        </div>
+
+        <!-- Alumni Directory -->
+        <div class="content-section" id="alumni-directory">
+            <h2>Alumni Directory</h2>
+            <div class="form-row">
+                <div class="form-group"><label>Search</label><input type="text" id="alumniSearch" placeholder="Search by name, location, industry..." oninput="filterAlumniDir()"></div>
+                <div class="form-group"><label>Year</label><select id="alumniYearFilter" onchange="filterAlumniDir()"><option value="">All Years</option></select></div>
+                <div class="form-group"><label>Industry</label><select id="alumniIndustryFilter" onchange="filterAlumniDir()"><option value="">All Industries</option></select></div>
+            </div>
+            <div class="table-container" style="margin-top:15px">
+                <table><thead><tr><th>Name</th><th>KCSE Year</th><th>Class</th><th>Grade</th><th>Occupation</th><th>Location</th><th>Contact</th></tr></thead>
+                <tbody id="alumniDirBody"><tr class="no-data"><td colspan="7">No alumni found</td></tr></tbody></table>
+            </div>
+        </div>
+
+        <!-- Events -->
+        <div class="content-section" id="alumni-events">
+            <h2>Events</h2>
+            <div id="eventsList"></div>
+        </div>
+
+        <!-- News -->
+        <div class="content-section" id="alumni-news">
+            <h2>News & Updates</h2>
+            <div id="newsList"><p class="no-data">No news yet</p></div>
+        </div>
+
+        <!-- Donations -->
+        <div class="content-section" id="alumni-donations">
+            <h2>Donations & Contributions</h2>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-coins"></i></div><div class="stat-info"><h3 id="myTotalDonated">KES 0</h3><p>My Total</p></div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-hand-holding-usd"></i></div><div class="stat-info"><h3 id="totalDonationsAll">KES 0</h3><p>School Total</p></div></div>
+            </div>
+            <div class="create-card-form" style="margin-top:25px">
+                <h3>Record Donation</h3>
+                <div class="form-row">
+                    <div class="form-group"><label>Amount (KES) <span class="required">*</span></label><input type="number" id="donationAmount" placeholder="e.g 5000"></div>
+                    <div class="form-group"><label>Purpose</label><select id="donationPurpose"><option value="General">General Fund</option><option value="Infrastructure">Infrastructure</option><option value="Scholarship">Scholarship Fund</option><option value="Sports">Sports</option><option value="Library">Library</option><option value="Events">Events</option></select></div>
+                </div>
+                <div class="form-group"><label>Payment Code / Reference</label><input type="text" id="donationRef" placeholder="M-Pesa code or bank ref"></div>
+                <button class="btn btn-primary" onclick="recordDonation()"><i class="fas fa-paper-plane"></i> Submit Donation</button>
+            </div>
+            <h3 style="margin-top:25px">My Donation History</h3>
+            <div class="table-container" style="margin-top:10px">
+                <table><thead><tr><th>Date</th><th>Amount</th><th>Purpose</th><th>Reference</th><th>Status</th></tr></thead>
+                <tbody id="donationsBody"><tr class="no-data"><td colspan="5">No donations yet</td></tr></tbody></table>
+            </div>
+        </div>
+
+        <!-- Mentorship -->
+        <div class="content-section" id="alumni-mentorship">
+            <h2>Mentorship Program</h2>
+            <div class="create-card-form">
+                <h3>Become a Mentor</h3>
+                <p style="margin:10px 0;color:var(--text-light)">Help current students navigate their academic and career paths.</p>
+                <div class="form-row">
+                    <div class="form-group"><label>Areas of Expertise</label><input type="text" id="mentorSkills" placeholder="e.g. Software Development, Medicine"></div>
+                    <div class="form-group"><label>Availability</label><select id="mentorAvailability"><option value="Online">Online Only</option><option value="In-Person">In-Person</option><option value="Both">Both</option></select></div>
+                </div>
+                <div class="form-group"><label>Bio / About You</label><textarea id="mentorBio" rows="3" placeholder="Brief description of your experience..."></textarea></div>
+                <button class="btn btn-primary" onclick="registerMentor()"><i class="fas fa-check"></i> Register as Mentor</button>
+            </div>
+            <h3 style="margin-top:25px">Registered Mentors</h3>
+            <div id="mentorsList" style="margin-top:10px"></div>
+        </div>
+
+        <!-- Job Board -->
+        <div class="content-section" id="alumni-jobs">
+            <h2>Job Board</h2>
+            <div class="section-top">
+                <div></div>
+                <button class="btn btn-primary" onclick="openJobModal()"><i class="fas fa-plus"></i> Post a Job</button>
+            </div>
+            <div id="jobsList" style="margin-top:15px"></div>
+            <!-- Job Modal -->
+            <div class="modal-overlay" id="jobModal">
+                <div class="modal-content dashboard-modal" style="max-width:550px">
+                    <div class="modal-header"><h3>Post a Job Opportunity</h3><span class="close-modal" onclick="document.getElementById('jobModal').classList.remove('active')">&times;</span></div>
+                    <div class="modal-body">
+                        <div class="form-group"><label>Title <span class="required">*</span></label><input type="text" id="jobTitle" placeholder="e.g. Software Engineer"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Company <span class="required">*</span></label><input type="text" id="jobCompany" placeholder="Company name"></div>
+                            <div class="form-group"><label>Location</label><input type="text" id="jobLocation" placeholder="e.g. Nairobi"></div>
+                        </div>
+                        <div class="form-group"><label>Description</label><textarea id="jobDesc" rows="4" placeholder="Job description and requirements..."></textarea></div>
+                        <div class="form-group"><label>Application Link / Email</label><input type="text" id="jobLink" placeholder="URL or email"></div>
+                        <button class="btn btn-primary" onclick="postJob()"><i class="fas fa-save"></i> Post Job</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="content-section" id="alumni-gallery"><h2>Photo Gallery</h2><div id="alumniGalleryContent"><p class="no-data">No photos</p></div></div>
+
+        <!-- Announcements -->
+        <div class="content-section" id="alumni-announcements"><h2>Announcements</h2><div id="alumniAnnContent"><p class="no-data">No announcements</p></div></div>
+
+        <!-- Profile -->
+        <div class="content-section" id="alumni-profile">
+            <h2>My Profile</h2>
+            <div class="profile-card"><div id="alumniProfileInfo"></div></div>
+        </div>
+    </main>
+
+    <script>
+    function getData(k){return JSON.parse(localStorage.getItem('wanganga_'+k)||'[]')}
+    function setData(k,d){localStorage.setItem('wanganga_'+k,JSON.stringify(d))}
+    const aid=localStorage.getItem('wanganga_current_alumni');
+    const alumni=getData('alumni');
+    const me=alumni.find(a=>a.alumniId===aid)||alumni[0];
+
+    if(!me){document.querySelector('.main-content').innerHTML='<div style="text-align:center;padding:100px"><h2>No Session</h2><p>Please login again.</p><a href="login.html" class="btn btn-primary">Login</a></div>';}
+
+    function toggleSidebar(){document.getElementById('sidebar').classList.toggle('active')}
+    function showSection(id,el){document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.sidebar-nav a').forEach(a=>a.classList.remove('active'));if(el)el.classList.add('active');const loaders={'alumni-directory':filterAlumniDir,'alumni-events':loadEvents,'alumni-news':loadNews,alumni_donations:loadDonations,'alumni-donations':loadDonations,'alumni-mentorship':loadMentors,'alumni-jobs':loadJobs,'alumni-gallery':loadGallery,'alumni-announcements':loadAnnouncements,'alumni-profile':loadProfile};if(loaders[id])loaders[id]();}
+
+    // Dashboard
+    function loadDashboard(){if(!me)return;const approved=alumni.filter(a=>a.status==='Approved'||a.status==='Active');document.getElementById('totalAlumniCount').textContent=Math.max(0,approved.length-1);const events=getData('alumni_events');const now=new Date();document.getElementById('upcomingEventsCount').textContent=events.filter(e=>new Date(e.date)>=now).length;const myDonations=getData('alumni_donations').filter(d=>d.alumniId===me.alumniId);document.getElementById('myDonationsTotal').textContent='KES '+myDonations.reduce((s,d)=>s+(Number(d.amount)||0),0).toLocaleString();const mentors=getData('alumni_mentors');document.getElementById('mentorshipCount').textContent=mentors.length;const upcoming=events.filter(e=>new Date(e.date)>=now).slice(0,3);const el=document.getElementById('dashEvents');el.innerHTML=upcoming.length?upcoming.map(e=>`<div class="activity-item"><i class="fas fa-calendar" style="color:var(--primary)"></i><div><strong>${e.title}</strong><p style="margin:2px 0;font-size:13px">${e.description||''}</p><small>${new Date(e.date).toLocaleDateString()} ${e.time||''}</small></div></div>`).join(''):'<p class="no-data">No upcoming events</p>';const news=getData('alumni_news').slice(0,3);const nel=document.getElementById('dashNews');nel.innerHTML=news.length?news.map(n=>`<div class="activity-item"><i class="fas fa-newspaper" style="color:var(--secondary)"></i><div><strong>${n.title}</strong><p style="margin:2px 0;font-size:13px">${(n.content||'').substring(0,100)}...</p><small>${n.date}</small></div></div>`).join(''):'<p class="no-data">No news</p>';}
+
+    // Directory
+    function filterAlumniDir(){const approved=alumni.filter(a=>a.status==='Approved'||a.status==='Active');const q=(document.getElementById('alumniSearch').value||'').toLowerCase();const yf=document.getElementById('alumniYearFilter').value;const ind=document.getElementById('alumniIndustryFilter').value;let filtered=approved;if(q)filtered=filtered.filter(a=>(a.name||'').toLowerCase().includes(q)||(a.location||'').toLowerCase().includes(q)||(a.occupation||'').toLowerCase().includes(q)||(a.industry||'').toLowerCase().includes(q));if(yf)filtered=filtered.filter(a=>a.kcseYear===yf);if(ind)filtered=filtered.filter(a=>a.industry===ind);const tb=document.getElementById('alumniDirBody');if(!filtered.length){tb.innerHTML='<tr class="no-data"><td colspan="7">No alumni found</td></tr>';return;}tb.innerHTML=filtered.map(a=>`<tr><td><strong>${a.currentName||a.name}</strong></td><td>${a.kcseYear}</td><td>${a.classStream||'-'}</td><td><span class="status-badge approved">${a.grade||'-'}</span></td><td>${a.occupation||'-'}</td><td>${a.location||'-'}</td><td><a href="https://wa.me/254${(a.phone||'').replace(/^0/,'')}" target="_blank" class="action-btn view"><i class="fab fa-whatsapp"></i></a></td></tr>`).join('');}
+    function populateAlumniFilters(){const years=[...new Set(alumni.map(a=>a.kcseYear).filter(Boolean))].sort().reverse();const ysel=document.getElementById('alumniYearFilter');years.forEach(y=>{ysel.innerHTML+='<option value="'+y+'">'+y+'</option>';});const industries=[...new Set(alumni.map(a=>a.industry).filter(Boolean))].sort();const isel=document.getElementById('alumniIndustryFilter');industries.forEach(i=>{isel.innerHTML+='<option value="'+i+'">'+i+'</option>';});}
+
+    // Events
+    function loadEvents(){const events=getData('alumni_events');const el=document.getElementById('eventsList');if(!events.length){el.innerHTML='<p class="no-data">No events yet. Admin will create events.</p>';return;}el.innerHTML=events.map(e=>`<div class="prediction-card" style="margin-bottom:15px"><h3><i class="fas fa-calendar-check" style="color:var(--primary)"></i> ${e.title}</h3><p><strong>Date:</strong> ${new Date(e.date).toLocaleDateString()} ${e.time||''}</p><p><strong>Venue:</strong> ${e.venue||'TBD'}</p><p>${e.description||''}</p><p style="font-size:12px;color:var(--text-light)">Organized by: ${e.organizer||'Alumni Association'}</p></div>`).join('');}
+
+    // News
+    function loadNews(){const news=getData('alumni_news');const el=document.getElementById('newsList');if(!news.length){el.innerHTML='<p class="no-data">No news yet</p>';return;}el.innerHTML=news.map(n=>`<div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)"><i class="fas fa-newspaper" style="color:var(--primary);font-size:20px;margin-right:12px"></i><div><strong style="font-size:15px">${n.title}</strong><p style="margin:5px 0">${n.content||''}</p><small style="color:var(--text-light)">${n.date} - ${n.author||'Admin'}</small></div></div>`).join('');}
+
+    // Donations
+    function loadDonations(){const myDonations=getData('alumni_donations').filter(d=>d.alumniId===me.alumniId);const allDonations=getData('alumni_donations');document.getElementById('myTotalDonated').textContent='KES '+myDonations.reduce((s,d)=>s+(Number(d.amount)||0),0).toLocaleString();document.getElementById('totalDonationsAll').textContent='KES '+allDonations.reduce((s,d)=>s+(Number(d.amount)||0),0).toLocaleString();const tb=document.getElementById('donationsBody');if(!myDonations.length){tb.innerHTML='<tr class="no-data"><td colspan="5">No donations yet</td></tr>';return;}tb.innerHTML=myDonations.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(d=>`<tr><td>${new Date(d.date).toLocaleDateString()}</td><td><strong>KES ${Number(d.amount).toLocaleString()}</strong></td><td>${d.purpose}</td><td>${d.reference||'-'}</td><td><span class="status-badge approved">${d.status||'Recorded'}</span></td></tr>`).join('');}
+    function recordDonation(){const amt=Number(document.getElementById('donationAmount').value);const ref=document.getElementById('donationRef').value.trim();if(!amt||amt<=0){alert('Enter valid amount');return;}const donations=getData('alumni_donations');donations.push({id:'DON'+Date.now(),alumniId:me.alumniId,alumniName:me.currentName||me.name,amount:amt,purpose:document.getElementById('donationPurpose').value,reference:ref||'Direct',date:new Date().toISOString(),status:'Recorded'});setData('alumni_donations',donations);document.getElementById('donationAmount').value='';document.getElementById('donationRef').value='';alert('Thank you for your donation!');loadDonations();}
+
+    // Mentorship
+    function loadMentors(){const mentors=getData('alumni_mentors');const el=document.getElementById('mentorsList');if(!mentors.length){el.innerHTML='<p class="no-data">No mentors registered yet. Be the first!</p>';return;}el.innerHTML='<div class="clubs-grid">'+mentors.map(m=>`<div class="club-card"><i class="fas fa-user-tie" style="font-size:24px;color:var(--primary);margin-bottom:8px"></i><h4>${m.name}</h4><p><strong>Expertise:</strong> ${m.skills||'-'}</p><p><strong>Available:</strong> ${m.availability||'Online'}</p><p style="font-size:12px;color:var(--text-light)">${m.bio||''}</p><a href="https://wa.me/254${(m.phone||'').replace(/^0/,'')}" target="_blank" class="btn btn-primary btn-sm" style="margin-top:8px"><i class="fab fa-whatsapp"></i> Contact</a></div>`).join('')+'</div>';}
+    function registerMentor(){const skills=document.getElementById('mentorSkills').value.trim();const bio=document.getElementById('mentorBio').value.trim();if(!skills){alert('Enter your expertise areas');return;}const mentors=getData('alumni_mentors');if(mentors.some(m=>m.alumniId===me.alumniId)){alert('You are already registered as a mentor!');return;}mentors.push({alumniId:me.alumniId,name:me.currentName||me.name,phone:me.phone,email:me.email,skills,availability:document.getElementById('mentorAvailability').value,bio,registeredAt:new Date().toISOString()});setData('alumni_mentors',mentors);alert('Thank you for becoming a mentor!');document.getElementById('mentorSkills').value='';document.getElementById('mentorBio').value='';loadMentors();}
+
+    // Jobs
+    function loadJobs(){const jobs=getData('alumni_jobs');const el=document.getElementById('jobsList');if(!jobs.length){el.innerHTML='<p class="no-data">No job opportunities posted yet.</p>';return;}el.innerHTML=jobs.map(j=>`<div class="prediction-card" style="margin-bottom:15px"><div class="section-top"><h3><i class="fas fa-briefcase" style="color:var(--primary)"></i> ${j.title}</h3><small style="color:var(--text-light)">${new Date(j.postedAt).toLocaleDateString()}</small></div><p><strong>Company:</strong> ${j.company} | <strong>Location:</strong> ${j.location||'Not specified'}</p><p>${j.description||''}</p>${j.link?'<a href="'+j.link+'" target="_blank" class="btn btn-primary btn-sm" style="margin-top:8px"><i class="fas fa-external-link-alt"></i> Apply</a>':''}<p style="font-size:11px;color:var(--text-light);margin-top:8px">Posted by: ${j.postedBy||'Anonymous'}</p></div>`).join('');}
+    function openJobModal(){document.getElementById('jobModal').classList.add('active');}
+    function postJob(){const title=document.getElementById('jobTitle').value.trim();const company=document.getElementById('jobCompany').value.trim();if(!title||!company){alert('Fill required fields');return;}const jobs=getData('alumni_jobs');jobs.push({id:'JOB'+Date.now(),title,company,location:document.getElementById('jobLocation').value,description:document.getElementById('jobDesc').value,link:document.getElementById('jobLink').value,postedBy:me.currentName||me.name,postedAt:new Date().toISOString()});setData('alumni_jobs',jobs);document.getElementById('jobModal').classList.remove('active');document.getElementById('jobTitle').value='';document.getElementById('jobCompany').value='';document.getElementById('jobDesc').value='';document.getElementById('jobLocation').value='';document.getElementById('jobLink').value='';alert('Job posted!');loadJobs();}
+
+    // Gallery
+    function loadGallery(){const photos=getData('gallery_photos');const el=document.getElementById('alumniGalleryContent');if(!photos.length){el.innerHTML='<p class="no-data">No photos uploaded yet</p>';return;}el.innerHTML='<div class="gallery-grid">'+photos.map(p=>`<div class="gallery-item"><img src="${p.url}" alt="${p.caption||''}"><p>${p.caption||''}</p></div>`).join('')+'</div>';}
+
+    // Announcements
+    function loadAnnouncements(){const ann=getData('announcements').filter(a=>a.audience==='all'||a.audience==='alumni');const el=document.getElementById('alumniAnnContent');if(!ann.length){el.innerHTML='<p class="no-data">No announcements</p>';return;}el.innerHTML=ann.map(a=>`<div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)"><i class="fas fa-bullhorn" style="color:var(--secondary);font-size:20px;margin-right:12px"></i><div><strong style="font-size:15px">${a.title}</strong><p style="margin:5px 0">${a.message}</p><small style="color:var(--text-light)">${a.date} - ${a.author||'Admin'}</small></div></div>`).join('');}
+
+    // Profile
+    function loadProfile(){if(!me)return;document.getElementById('alumniProfileInfo').innerHTML=`<div class="applicant-info"><p><strong>Alumni ID:</strong> ${me.alumniId}</p><p><strong>Name:</strong> ${me.currentName||me.name}</p><p><strong>KCSE Year:</strong> ${me.kcseYear}</p><p><strong>Class:</strong> ${me.classStream||'-'}</p><p><strong>Grade:</strong> ${me.grade||'-'}</p><p><strong>Phone:</strong> ${me.phone}</p><p><strong>Email:</strong> ${me.email||'-'}</p><p><strong>Location:</strong> ${me.location||'-'}</p><p><strong>Occupation:</strong> ${me.occupation||'-'}</p><p><strong>Company:</strong> ${me.company||'-'}</p><p><strong>Industry:</strong> ${me.industry||'-'}</p><p><strong>Skills:</strong> ${me.skills||'-'}</p><p><strong>Status:</strong> <span class="status-badge ${me.status==='Approved'||me.status==='Active'?'approved':'pending'}">${me.status}</span></p></div>`;}
+
+    function init(){if(!me)return;document.getElementById('alumniDisplayName').textContent=me.currentName||me.name;document.getElementById('welcomeName').textContent=me.currentName||me.name;populateAlumniFilters();loadDashboard();}
+    init();
+    function toggleDarkMode(){document.body.classList.toggle('dark-mode');const d=document.body.classList.contains('dark-mode');localStorage.setItem('wanganga_dark_mode',d);document.getElementById('dmIcon').className=d?'fas fa-sun':'fas fa-moon';}
+    if(localStorage.getItem('wanganga_dark_mode')==='true'){document.body.classList.add('dark-mode');const i=document.getElementById('dmIcon');if(i)i.className='fas fa-sun';}
+    </script>
+</body>
+</html>
