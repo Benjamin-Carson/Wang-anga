@@ -54,6 +54,7 @@
         <div class="dashboard-topbar">
             <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
             <div class="topbar-right">
+                <button class="lang-toggle" id="langToggle" onclick="toggleLang()">SW</button>
                 <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
                 <a href="https://wa.me/254798394035" target="_blank" class="whatsapp-topbar" title="Contact School via WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 <div class="admin-profile"><i class="fas fa-user-circle"></i> <span id="teacherDisplayName">Teacher</span></div>
@@ -193,7 +194,10 @@
 
         <!-- Grade Book -->
         <div class="content-section" id="gradebook">
-            <h2>Grade Book</h2>
+            <div class="section-top">
+                <h2>Grade Book</h2>
+                <button class="export-btn" onclick="exportMyGradesCSV()"><i class="fas fa-download"></i> Export CSV</button>
+            </div>
             <div class="gradebook-filters">
                 <div class="form-row">
                     <div class="form-group">
@@ -999,6 +1003,14 @@
         // ===== HELPER FUNCTIONS =====
         function getData(k) { return JSON.parse(localStorage.getItem('wanganga_' + k) || '[]'); }
         function setData(k, d) { localStorage.setItem('wanganga_' + k, JSON.stringify(d)); }
+        function exportMyGradesCSV() {
+            const grades = getData('grades').filter(g => g.teacherId === teacher.id);
+            if (!grades.length) { alert('No grades to export'); return; }
+            let csv = 'Student ID,Student Name,Class,Subject,Exam,Mark,Grade,Points,Remarks\n';
+            grades.forEach(g => { csv += `"${g.studentId}","${g.studentName}","${g.class}","${g.subject}","${g.exam}",${g.mark},"${g.grade}",${g.points},"${g.remark||''}"\n`; });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'my_grades_export.csv'; a.click();
+        }
 
         // ===== STUDY MATERIALS =====
         function openUploadMaterial() {
@@ -1235,6 +1247,8 @@
             const icon = document.getElementById('dmIcon');
             if (icon) icon.className = 'fas fa-sun';
         }
+        function toggleLang(){const c=localStorage.getItem('wanganga_lang')||'en';const n=c==='en'?'sw':'en';localStorage.setItem('wanganga_lang',n);document.getElementById('langToggle').textContent=n==='en'?'SW':'EN';}
+        if(localStorage.getItem('wanganga_lang')==='sw')document.getElementById('langToggle').textContent='EN';
     </script>
 
 </body>

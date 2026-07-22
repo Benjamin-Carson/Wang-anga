@@ -37,6 +37,7 @@
         <div class="dashboard-topbar">
             <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
             <div class="topbar-right">
+                <button class="lang-toggle" id="langToggle" onclick="toggleLang()">SW</button>
                 <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
                 <a href="https://wa.me/254798394035" target="_blank" class="whatsapp-topbar"><i class="fab fa-whatsapp"></i></a>
                 <div class="admin-profile"><i class="fas fa-user-circle"></i> <span id="alumniDisplayName">Alumni</span></div>
@@ -214,6 +215,8 @@
     init();
     function toggleDarkMode(){document.body.classList.toggle('dark-mode');const d=document.body.classList.contains('dark-mode');localStorage.setItem('wanganga_dark_mode',d);document.getElementById('dmIcon').className=d?'fas fa-sun':'fas fa-moon';}
     if(localStorage.getItem('wanganga_dark_mode')==='true'){document.body.classList.add('dark-mode');const i=document.getElementById('dmIcon');if(i)i.className='fas fa-sun';}
+    function toggleLang(){const c=localStorage.getItem('wanganga_lang')||'en';const n=c==='en'?'sw':'en';localStorage.setItem('wanganga_lang',n);document.getElementById('langToggle').textContent=n==='en'?'SW':'EN';}
+    if(localStorage.getItem('wanganga_lang')==='sw')document.getElementById('langToggle').textContent='EN';
     </script>
 </body>
 </html>
