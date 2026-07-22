@@ -11,10 +11,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body class="dashboard-body">
 
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo"><i class="fas fa-user-graduate"></i></div>
@@ -23,13 +24,32 @@
         <nav class="sidebar-nav">
             <ul>
                 <li><a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-divider">Academics</li>
                 <li><a href="#" onclick="showSection('my-cards', this)"><i class="fas fa-clipboard-list"></i> My Cards</a></li>
                 <li><a href="#" onclick="showSection('submitted', this)"><i class="fas fa-check-double"></i> Submitted</a></li>
                 <li><a href="#" onclick="showSection('my-grades', this)"><i class="fas fa-chart-bar"></i> My Grades</a></li>
+                <li><a href="#" onclick="showSection('analytics', this)"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#" onclick="showSection('kcse-prediction', this)"><i class="fas fa-trophy"></i> KCSE Prediction</a></li>
+                <li><a href="#" onclick="showSection('career-guidance', this)"><i class="fas fa-briefcase"></i> Career Guidance</a></li>
+                <li><a href="#" onclick="showSection('student-report-card', this)"><i class="fas fa-file-alt"></i> Report Card</a></li>
+                <li class="nav-divider">School Life</li>
                 <li><a href="#" onclick="showSection('my-attendance', this)"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
                 <li><a href="#" onclick="showSection('my-timetable', this)"><i class="fas fa-calendar-alt"></i> Timetable</a></li>
+                <li><a href="#" onclick="showSection('exam-timetable', this)"><i class="fas fa-pen-fancy"></i> Exam Timetable</a></li>
+                <li><a href="#" onclick="showSection('library', this)"><i class="fas fa-book"></i> Library</a></li>
+                <li><a href="#" onclick="showSection('sports-clubs', this)"><i class="fas fa-futbol"></i> Sports & Clubs</a></li>
+                <li><a href="#" onclick="showSection('lunch-menu', this)"><i class="fas fa-utensils"></i> Lunch Menu</a></li>
+                <li><a href="#" onclick="showSection('bus-tracking', this)"><i class="fas fa-bus"></i> Bus Routes</a></li>
+                <li><a href="#" onclick="showSection('health-records', this)"><i class="fas fa-heartbeat"></i> Health</a></li>
+                <li class="nav-divider">Social</li>
                 <li><a href="#" onclick="showSection('student-announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
-                <li><a href="#" onclick="showSection('student-report-card', this)"><i class="fas fa-file-alt"></i> Report Card</a></li>
+                <li><a href="#" onclick="showSection('photo-gallery', this)"><i class="fas fa-images"></i> Gallery</a></li>
+                <li><a href="#" onclick="showSection('live-chat', this)"><i class="fas fa-comments"></i> Live Chat</a></li>
+                <li><a href="#" onclick="showSection('student-of-month', this)"><i class="fas fa-star"></i> Stars</a></li>
+                <li><a href="#" onclick="showSection('birthday-wishes', this)"><i class="fas fa-birthday-cake"></i> Birthdays</a></li>
+                <li class="nav-divider">Account</li>
+                <li><a href="#" onclick="showSection('digital-id', this)"><i class="fas fa-id-card"></i> My ID Card</a></li>
+                <li><a href="#" onclick="showSection('school-media', this)"><i class="fas fa-music"></i> School Anthem</a></li>
                 <li><a href="#" onclick="showSection('profile', this)"><i class="fas fa-user-circle"></i> My Profile</a></li>
             </ul>
         </nav>
@@ -38,12 +58,12 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="dashboard-topbar">
             <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
             <div class="topbar-right">
                 <button class="dark-mode-toggle-sm" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon" id="dmIcon"></i></button>
+                <a href="https://wa.me/254798394035" target="_blank" class="whatsapp-topbar" title="Contact School via WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 <div class="admin-profile"><i class="fas fa-user-circle"></i> <span id="studentDisplayName">Student</span></div>
             </div>
         </div>
@@ -52,577 +72,259 @@
         <div class="content-section active" id="dashboard">
             <h2>Welcome, <span id="welcomeName">Student</span></h2>
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon students-bg"><i class="fas fa-clipboard-list"></i></div>
-                    <div class="stat-info"><h3 id="totalCardsCount">0</h3><p>Assigned Cards</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:linear-gradient(135deg,#27ae60,#2ecc71)"><i class="fas fa-check-circle"></i></div>
-                    <div class="stat-info"><h3 id="submittedCount">0</h3><p>Submitted</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:linear-gradient(135deg,#e67e22,#d35400)"><i class="fas fa-clock"></i></div>
-                    <div class="stat-info"><h3 id="pendingCardsCount">0</h3><p>Pending</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:linear-gradient(135deg,#e74c3c,#c0392b)"><i class="fas fa-exclamation-triangle"></i></div>
-                    <div class="stat-info"><h3 id="overdueCount">0</h3><p>Overdue</p></div>
-                </div>
+                <div class="stat-card"><div class="stat-icon students-bg"><i class="fas fa-clipboard-list"></i></div><div class="stat-info"><h3 id="totalCardsCount">0</h3><p>Assigned Cards</p></div></div>
+                <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#27ae60,#2ecc71)"><i class="fas fa-check-circle"></i></div><div class="stat-info"><h3 id="submittedCount">0</h3><p>Submitted</p></div></div>
+                <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#e67e22,#d35400)"><i class="fas fa-clock"></i></div><div class="stat-info"><h3 id="pendingCardsCount">0</h3><p>Pending</p></div></div>
+                <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#e74c3c,#c0392b)"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-info"><h3 id="overdueCount">0</h3><p>Overdue</p></div></div>
             </div>
-            <div class="recent-section">
-                <h3>Upcoming Deadlines</h3>
-                <div id="upcomingDeadlines"><p class="no-activity">No upcoming deadlines</p></div>
-            </div>
+            <div class="recent-section"><h3>Upcoming Deadlines</h3><div id="upcomingDeadlines"><p class="no-activity">No upcoming deadlines</p></div></div>
+            <div id="dashboardBirthday" style="display:none;margin-top:20px"></div>
         </div>
 
         <!-- My Cards -->
-        <div class="content-section" id="my-cards">
-            <h2>Assigned Cards</h2>
-            <div class="cards-grid" id="assignedCards">
-                <p class="no-activity">No cards assigned</p>
-            </div>
-        </div>
+        <div class="content-section" id="my-cards"><h2>Assigned Cards</h2><div class="cards-grid" id="assignedCards"><p class="no-activity">No cards assigned</p></div></div>
 
         <!-- Submitted -->
-        <div class="content-section" id="submitted">
-            <h2>My Submissions</h2>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Card Title</th><th>Subject</th><th>Teacher</th><th>Submitted</th><th>Score</th><th>Status</th></tr></thead>
-                    <tbody id="submittedBody"><tr class="no-data"><td colspan="6">No submissions yet</td></tr></tbody>
-                </table>
-            </div>
-        </div>
+        <div class="content-section" id="submitted"><h2>My Submissions</h2><div class="table-container"><table><thead><tr><th>Card Title</th><th>Subject</th><th>Teacher</th><th>Submitted</th><th>Score</th><th>Status</th></tr></thead><tbody id="submittedBody"><tr class="no-data"><td colspan="6">No submissions yet</td></tr></tbody></table></div></div>
 
         <!-- My Grades -->
-        <div class="content-section" id="my-grades">
-            <h2>My Grades</h2>
-            <div class="grades-summary-cards" id="gradesSummaryCards"></div>
-            <div class="gradebook-filters">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Select Subject</label>
-                        <select id="studentSubjectFilter" onchange="loadStudentGrades()">
-                            <option value="">All Subjects</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Select Exam/Term</label>
-                        <select id="studentExamFilter" onchange="loadStudentGrades()">
-                            <option value="">All Exams</option>
-                            <option value="Term 1 Opening">Term 1 Opening</option>
-                            <option value="Term 1 Mid">Term 1 Mid</option>
-                            <option value="Term 1 End">Term 1 End</option>
-                            <option value="Term 2 Opening">Term 2 Opening</option>
-                            <option value="Term 2 Mid">Term 2 Mid</option>
-                            <option value="Term 2 End">Term 2 End</option>
-                            <option value="Term 3 Opening">Term 3 Opening</option>
-                            <option value="Term 3 Mid">Term 3 Mid</option>
-                            <option value="Term 3 End (KCSE Preps)">Term 3 End (KCSE Preps)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="table-container" style="margin-top:20px;">
-                <table>
-                    <thead><tr><th>Subject</th><th>Exam</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th><th>Teacher</th></tr></thead>
-                    <tbody id="studentGradesBody"><tr class="no-data"><td colspan="7">No grades available yet</td></tr></tbody>
-                </table>
-            </div>
-        </div>
+        <div class="content-section" id="my-grades"><h2>My Grades</h2><div class="grades-summary-cards" id="gradesSummaryCards"></div><div class="gradebook-filters"><div class="form-row"><div class="form-group"><label>Subject</label><select id="studentSubjectFilter" onchange="loadStudentGrades()"><option value="">All Subjects</option></select></div><div class="form-group"><label>Exam/Term</label><select id="studentExamFilter" onchange="loadStudentGrades()"><option value="">All Exams</option><option value="Term 1 Opening">Term 1 Opening</option><option value="Term 1 Mid">Term 1 Mid</option><option value="Term 1 End">Term 1 End</option><option value="Term 2 Opening">Term 2 Opening</option><option value="Term 2 Mid">Term 2 Mid</option><option value="Term 2 End">Term 2 End</option><option value="Term 3 Opening">Term 3 Opening</option><option value="Term 3 Mid">Term 3 Mid</option><option value="Term 3 End (KCSE Preps)">Term 3 End (KCSE Preps)</option></select></div></div></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Subject</th><th>Exam</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th><th>Teacher</th></tr></thead><tbody id="studentGradesBody"><tr class="no-data"><td colspan="7">No grades available yet</td></tr></tbody></table></div></div>
+
+        <!-- Performance Analytics -->
+        <div class="content-section" id="analytics"><h2>Performance Analytics</h2><div class="analytics-grid"><div class="chart-card"><h3>Subject Performance</h3><canvas id="subjectChart"></canvas></div><div class="chart-card"><h3>Term Progress</h3><canvas id="termChart"></canvas></div><div class="chart-card"><h3>Grade Distribution</h3><canvas id="gradeDistChart"></canvas></div><div class="chart-card"><h3>Performance Trend</h3><canvas id="trendChart"></canvas></div></div></div>
+
+        <!-- KCSE Prediction -->
+        <div class="content-section" id="kcse-prediction"><h2>KCSE Prediction</h2><div class="prediction-card" id="predictionContent"></div></div>
+
+        <!-- Career Guidance -->
+        <div class="content-section" id="career-guidance"><h2>Career Guidance</h2><div id="careerContent"></div></div>
 
         <!-- My Attendance -->
-        <div class="content-section" id="my-attendance">
-            <h2>My Attendance</h2>
-            <div class="grades-summary-cards" id="attendanceSummaryCards"></div>
-            <div class="table-container" style="margin-top:20px">
-                <table>
-                    <thead><tr><th>Date</th><th>Status</th><th>Marked By</th><th>Remarks</th></tr></thead>
-                    <tbody id="studentAttendanceBody"><tr class="no-data"><td colspan="4">No attendance records</td></tr></tbody>
-                </table>
-            </div>
-        </div>
+        <div class="content-section" id="my-attendance"><h2>My Attendance</h2><div class="grades-summary-cards" id="attendanceSummaryCards"></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Date</th><th>Status</th><th>MarkedBy</th><th>Remarks</th></tr></thead><tbody id="studentAttendanceBody"><tr class="no-data"><td colspan="4">No attendance records</td></tr></tbody></table></div></div>
 
         <!-- My Timetable -->
-        <div class="content-section" id="my-timetable">
-            <h2>My Timetable</h2>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead>
-                    <tbody id="studentTimetableBody"></tbody>
-                </table>
-            </div>
-        </div>
+        <div class="content-section" id="my-timetable"><h2>My Timetable</h2><div class="table-container"><table><thead><tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead><tbody id="studentTimetableBody"></tbody></table></div></div>
 
-        <!-- Student Announcements -->
-        <div class="content-section" id="student-announcements">
-            <h2>Announcements</h2>
-            <div id="studentAnnouncementsContainer"><p class="no-data">No announcements</p></div>
-        </div>
+        <!-- Exam Timetable -->
+        <div class="content-section" id="exam-timetable"><h2>Exam Timetable</h2><div id="examTimetableContent"></div></div>
 
-        <!-- Student Report Card -->
-        <div class="content-section" id="student-report-card">
-            <h2>My Report Card</h2>
-            <div id="studentReportCardContent"></div>
-            <button class="btn btn-primary" onclick="printStudentReportCard()" style="margin-top:20px"><i class="fas fa-print"></i> Print Report Card</button>
-        </div>
+        <!-- Library -->
+        <div class="content-section" id="library"><h2>School Library</h2><div class="form-row"><div class="form-group"><label>Search Books</label><input type="text" id="libSearch" placeholder="Search by title or author..." oninput="searchLibrary()"></div><div class="form-group"><label>Category</label><select id="libCategory" onchange="searchLibrary()"><option value="">All</option><option value="Textbook">Textbooks</option><option value="Novel">Novels</option><option value="Reference">Reference</option><option value="Magazine">Magazines</option></select></div></div><div class="table-container" style="margin-top:15px"><table><thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Available</th><th>Action</th></tr></thead><tbody id="libraryBody"></tbody></table></div><h3 style="margin-top:25px">My Borrowed Books</h3><div class="table-container" style="margin-top:10px"><table><thead><tr><th>Title</th><th>Borrowed</th><th>Due Date</th><th>Status</th></tr></thead><tbody id="myBooksBody"><tr class="no-data"><td colspan="4">No books borrowed</td></tr></tbody></table></div></div>
+
+        <!-- Sports & Clubs -->
+        <div class="content-section" id="sports-clubs"><h2>Sports & Clubs</h2><div id="clubsList"></div><h3 style="margin-top:25px">My Memberships</h3><div id="myClubs"></div></div>
+
+        <!-- Lunch Menu -->
+        <div class="content-section" id="lunch-menu"><h2>Weekly Lunch Menu</h2><div id="lunchMenuContent"></div></div>
+
+        <!-- Bus Tracking -->
+        <div class="content-section" id="bus-tracking"><h2>School Bus Routes</h2><div id="busRoutesContent"></div></div>
+
+        <!-- Health Records -->
+        <div class="content-section" id="health-records"><h2>My Health Records</h2><div id="healthContent"></div></div>
+
+        <!-- Announcements -->
+        <div class="content-section" id="student-announcements"><h2>Announcements</h2><div id="studentAnnouncementsContainer"><p class="no-data">No announcements</p></div></div>
+
+        <!-- Photo Gallery -->
+        <div class="content-section" id="photo-gallery"><h2>Photo Gallery</h2><div id="galleryContent"><p class="no-data">No photos uploaded yet</p></div></div>
+
+        <!-- Live Chat -->
+        <div class="content-section" id="live-chat"><h2>Live Chat</h2><div class="chat-container"><div class="chat-messages" id="chatMessages"><p class="no-data">No messages yet. Start a conversation!</p></div><div class="chat-input"><select id="chatRecipient"><option value="all">Everyone in Class</option></select><input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter')sendChat()"><button class="btn btn-primary" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button></div></div></div>
+
+        <!-- Student of the Month -->
+        <div class="content-section" id="student-of-month"><h2>Student of the Month</h2><div id="studentOfMonthContent"></div></div>
+
+        <!-- Birthday Wishes -->
+        <div class="content-section" id="birthday-wishes"><h2>Birthday Wishes</h2><div id="birthdayContent"></div></div>
+
+        <!-- Digital ID Card -->
+        <div class="content-section" id="digital-id"><h2>My Digital ID Card</h2><div id="digitalIdContent"></div></div>
+
+        <!-- School Anthem & Media -->
+        <div class="content-section" id="school-media"><h2>School Anthem & Media</h2><div class="school-media-card"><h3><i class="fas fa-music" style="color:var(--primary)"></i> School Anthem</h3><p style="margin:10px 0">Wang'anga Senior School Anthem</p><audio controls style="width:100%;margin:10px 0" id="schoolAnthemAudio"><source src="" type="audio/mpeg">Your browser does not support audio. Upload the school anthem audio file.</audio><p style="margin-top:15px"><small>Upload your school anthem audio file to: <code>images/school-anthem.mp3</code></small></p></div><div class="school-media-card" style="margin-top:15px"><h3><i class="fas fa-video" style="color:var(--primary)"></i> School Video Tour</h3><div style="margin:10px 0;background:#000;border-radius:10px;min-height:300px;display:flex;align-items:center;justify-content:center;color:white"><p><i class="fas fa-play-circle" style="font-size:60px;opacity:0.5"></i><br>Upload your school video to: <code>images/school-tour.mp4</code></p></div></div></div>
 
         <!-- Profile -->
-        <div class="content-section" id="profile">
-            <h2>My Profile</h2>
-            <div class="profile-card">
-                <div class="photo-upload">
-                    <div class="photo-preview profile-photo-lg" id="myProfilePreview" onclick="document.getElementById('myProfileInput').click()">
-                        <i class="fas fa-camera"></i>
-                    </div>
-                    <input type="file" id="myProfileInput" accept="image/*" onchange="updateMyProfilePhoto(this)">
-                    <label onclick="document.getElementById('myProfileInput').click()">Change Photo</label>
-                </div>
-                <div id="profileInfo"></div>
-            </div>
-        </div>
+        <div class="content-section" id="profile"><h2>My Profile</h2><div class="profile-card"><div class="photo-upload"><div class="photo-preview profile-photo-lg" id="myProfilePreview" onclick="document.getElementById('myProfileInput').click()"><i class="fas fa-camera"></i></div><input type="file" id="myProfileInput" accept="image/*" onchange="updateMyProfilePhoto(this)"><label onclick="document.getElementById('myProfileInput').click()">Change Photo</label></div><div id="profileInfo"></div></div></div>
     </main>
 
     <!-- Submit Card Modal -->
-    <div class="modal-overlay" id="submitCardModal">
-        <div class="modal-content dashboard-modal" style="max-width:650px">
-            <div class="modal-header"><h3 id="submitModalTitle">Submit Card</h3><span class="close-modal" onclick="closeModal('submitCard')">&times;</span></div>
-            <div class="modal-body">
-                <div id="cardDetails"></div>
-                <div class="form-group">
-                    <label>Your Answer <span class="required">*</span></label>
-                    <textarea id="submissionAnswer" rows="8" placeholder="Type your answer here... You can also paste links to documents, Google Docs, etc."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Attachment Link (optional)</label>
-                    <input type="text" id="submissionLink" placeholder="e.g. Google Drive link, GitHub link...">
-                </div>
-                <button class="btn btn-primary" onclick="submitCard()"><i class="fas fa-paper-plane"></i> Submit</button>
-            </div>
-        </div>
-    </div>
+    <div class="modal-overlay" id="submitCardModal"><div class="modal-content dashboard-modal" style="max-width:650px"><div class="modal-header"><h3 id="submitModalTitle">Submit Card</h3><span class="close-modal" onclick="closeModal('submitCard')">&times;</span></div><div class="modal-body"><div id="cardDetails"></div><div class="form-group"><label>Your Answer <span class="required">*</span></label><textarea id="submissionAnswer" rows="8" placeholder="Type your answer here..."></textarea></div><div class="form-group"><label>Attachment Link (optional)</label><input type="text" id="submissionLink" placeholder="e.g. Google Drive link"></div><button class="btn btn-primary" onclick="submitCard()"><i class="fas fa-paper-plane"></i> Submit</button></div></div></div>
 
     <script>
-        const STUDENT_ID = localStorage.getItem('wanganga_current_student') || '';
-        const STUDENTS = JSON.parse(localStorage.getItem('wanganga_students') || '[]');
-        const student = STUDENTS.find(s => s.id === STUDENT_ID) || { name: 'Student', class: 'Form 1 East', id: STUDENT_ID };
+    const SID = localStorage.getItem('wanganga_current_student') || '';
+    const STUDENTS = JSON.parse(localStorage.getItem('wanganga_students') || '[]');
+    const student = STUDENTS.find(s => s.id === SID) || { name: 'Student', class: 'Form 1 East', id: SID };
+    function getCards() { return JSON.parse(localStorage.getItem('wanganga_cards') || '[]'); }
+    function getSubmissions() { return JSON.parse(localStorage.getItem('wanganga_submissions') || '[]'); }
+    function setSubmissions(d) { localStorage.setItem('wanganga_submissions', JSON.stringify(d)); }
+    function getData(k) { return JSON.parse(localStorage.getItem('wanganga_' + k) || '[]'); }
+    function setData(k, d) { localStorage.setItem('wanganga_' + k, JSON.stringify(d)); }
 
-        function getCards() { return JSON.parse(localStorage.getItem('wanganga_cards') || '[]'); }
-        function getSubmissions() { return JSON.parse(localStorage.getItem('wanganga_submissions') || '[]'); }
-        function setSubmissions(d) { localStorage.setItem('wanganga_submissions', JSON.stringify(d)); }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    function showSection(id, link) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+        if (link) link.classList.add('active');
+        const loaders = { 'my-cards': renderAssignedCards, 'submitted': renderSubmitted, 'my-grades': loadStudentGrades, 'analytics': renderAnalytics, 'kcse-prediction': renderKCSEPrediction, 'career-guidance': renderCareerGuidance, 'my-attendance': renderStudentAttendance, 'my-timetable': renderStudentTimetable, 'exam-timetable': renderExamTimetable, 'library': renderLibrary, 'sports-clubs': renderClubs, 'lunch-menu': renderLunchMenu, 'bus-tracking': renderBusRoutes, 'health-records': renderHealth, 'student-announcements': renderStudentAnnouncements, 'photo-gallery': renderGallery, 'live-chat': renderChat, 'student-of-month': renderStudentOfMonth, 'birthday-wishes': renderBirthdays, 'digital-id': renderDigitalID, 'profile': renderProfile };
+        if (loaders[id]) loaders[id]();
+    }
+    function openModal(n) { document.getElementById(n + 'Modal').classList.add('active'); }
+    function closeModal(n) { document.getElementById(n + 'Modal').classList.remove('active'); }
 
-        // ===== SIDEBAR =====
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-        function showSection(id, link) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
-            if (link) link.classList.add('active');
-            if (id === 'my-cards') renderAssignedCards();
-            if (id === 'submitted') renderSubmitted();
-            if (id === 'profile') renderProfile();
-            if (id === 'my-attendance') renderStudentAttendance();
-            if (id === 'my-timetable') renderStudentTimetable();
-            if (id === 'student-announcements') renderStudentAnnouncements();
-            if (id === 'student-report-card') renderStudentReportCard();
-        }
+    // ===== CARDS =====
+    function getMyCards() { return getCards().filter(c => c.status === 'Active' && (c.class === student.class || c.class === 'All Classes')); }
+    function renderAssignedCards() {
+        const myCards = getMyCards(), subs = getSubmissions(), grid = document.getElementById('assignedCards');
+        document.getElementById('totalCardsCount').textContent = myCards.length;
+        const submitted = subs.filter(s => s.studentId === student.id), subIds = submitted.map(s => s.cardId);
+        const pending = myCards.filter(c => !subIds.includes(c.id)), now = new Date();
+        document.getElementById('submittedCount').textContent = submitted.length;
+        document.getElementById('pendingCardsCount').textContent = pending.length;
+        document.getElementById('overdueCount').textContent = pending.filter(c => new Date(c.deadline) < now).length;
+        if (!myCards.length) { grid.innerHTML = '<p class="no-activity">No cards assigned</p>'; return; }
+        grid.innerHTML = myCards.map(c => { const dl = new Date(c.deadline), diff = dl - now, isSub = subIds.includes(c.id), isExp = diff <= 0; const sub = submitted.find(s => s.cardId === c.id); let tl = '', cc = ''; if (isSub) { tl = 'Submitted'; cc = 'card-submitted'; } else if (isExp) { tl = 'Expired'; cc = 'card-expired'; } else { const d = Math.floor(diff/864e5), h = Math.floor((diff%864e5)/36e5), m = Math.floor((diff%36e5)/6e4); tl = d>0?d+'d '+h+'h left':h+'h '+m+'m left'; if(d<1&&h<6) cc='card-urgent'; } return `<div class="assignment-card ${cc}"><div class="card-header"><span class="card-type">${c.type}</span><span class="card-subject">${c.subject}</span></div><h3>${c.title}</h3><p class="card-teacher"><i class="fas fa-chalkboard-teacher"></i> ${c.teacherName}</p><p class="card-class"><i class="fas fa-school"></i> ${c.class}</p><div class="card-deadline"><i class="fas fa-clock"></i> <span>${dl.toLocaleDateString()} ${dl.toLocaleTimeString()}</span></div><div class="card-time ${cc}">${tl}</div><div class="card-footer"><span class="card-score">Max: ${c.maxScore}</span>${isSub?`<span class="card-status-badge submitted">Score: ${sub.score||'Pending'}</span>`:isExp&&!c.allowLate?'<span class="card-status-badge expired">Passed</span>':`<button class="btn btn-primary btn-sm" onclick="openSubmit('${c.id}')">Submit</button>`}</div></div>`; }).join('');
+    }
+    let currentCardId = '';
+    function openSubmit(id) { currentCardId = id; const c = getCards().find(x=>x.id===id); if(!c)return; document.getElementById('submitModalTitle').textContent='Submit: '+c.title; document.getElementById('cardDetails').innerHTML=`<div class="card-detail-box"><p><strong>Subject:</strong> ${c.subject}</p><p><strong>Max Score:</strong> ${c.maxScore}</p><div class="card-description">${c.description.replace(/\n/g,'<br>')}</div></div>`; document.getElementById('submissionAnswer').value=''; document.getElementById('submissionLink').value=''; openModal('submitCard'); }
+    function submitCard() { const a = document.getElementById('submissionAnswer').value; if(!a.trim()){alert('Write your answer');return;} const subs=getSubmissions(), c=getCards().find(x=>x.id===currentCardId); subs.push({id:'SUB'+Date.now().toString().slice(-8),cardId:currentCardId,studentId:student.id,studentName:student.name,studentClass:student.class,answer:a,link:document.getElementById('submissionLink').value||'',submittedAt:new Date().toISOString(),status:'Submitted'}); setSubmissions(subs); const r=JSON.parse(localStorage.getItem('wanganga_admin_center')||'[]'); r.unshift({id:r.length+1,timestamp:new Date().toISOString(),category:'student',action:'create',details:student.name+' submitted: '+(c?c.title:currentCardId),user:student.name,ip:'Local Network'}); localStorage.setItem('wanganga_admin_center',JSON.stringify(r)); closeModal('submitCard'); alert('Submitted!'); renderAssignedCards(); }
+    function renderSubmitted() { const subs=getSubmissions().filter(s=>s.studentId===student.id), cards=getCards(), tb=document.getElementById('submittedBody'); if(!subs.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No submissions</td></tr>';return;} tb.innerHTML=subs.map(s=>{const c=cards.find(x=>x.id===s.cardId);return`<tr><td>${c?c.title:s.cardId}</td><td>${c?c.subject:'-'}</td><td>${c?c.teacherName:'-'}</td><td><small>${new Date(s.submittedAt).toLocaleString()}</small></td><td>${s.score!==undefined?s.score+'/'+(c?c.maxScore:'-'):'Pending'}</td><td><span class="status-badge ${s.status==='Graded'?'active':''}">${s.status}</span></td></tr>`;}).join(''); }
+    function renderUpcoming() { const mc=getMyCards(), subs=getSubmissions().filter(s=>s.studentId===student.id), si=subs.map(s=>s.cardId), p=mc.filter(c=>!si.includes(c.id)&&new Date(c.deadline)>new Date()); p.sort((a,b)=>new Date(a.deadline)-new Date(b.deadline)); const el=document.getElementById('upcomingDeadlines'); if(!p.length){el.innerHTML='<p class="no-activity">All caught up!</p>';return;} el.innerHTML=p.slice(0,5).map(c=>{const dl=new Date(c.deadline),diff=dl-new Date(),d=Math.floor(diff/864e5),h=Math.floor((diff%864e5)/36e5),u=d<1?'color:#e74c3c':d<3?'color:#e67e22':'';return`<div class="activity-item"><i class="fas fa-circle"></i><span><strong>${c.title}</strong> - ${c.subject}</span><small style="${u}">${d>0?d+'d ':''}${h}h left</small></div>`;}).join(''); }
 
-        function openModal(name) { document.getElementById(name + 'Modal').classList.add('active'); }
-        function closeModal(name) { document.getElementById(name + 'Modal').classList.remove('active'); }
+    // ===== ANALYTICS =====
+    function renderAnalytics() {
+        const grades = getData('grades').filter(g => g.studentId === student.id);
+        if (!grades.length) { document.querySelector('#analytics .analytics-grid').innerHTML = '<p class="no-data" style="grid-column:1/-1;text-align:center;padding:40px">No grades yet. Analytics will appear once teachers enter your grades.</p>'; return; }
+        const subjects = {}, exams = {}, gradeDist = {A:0,'A-':0,'B+':0,B:0,'B-':0,'C+':0,C:0,'C-':0,'D+':0,D:0,'D-':0,E:0};
+        grades.forEach(g => { subjects[g.subject] = subjects[g.subject] || []; subjects[g.subject].push(g.mark); exams[g.exam] = exams[g.exam] || []; exams[g.exam].push(g.points); if(gradeDist[g.grade]!==undefined) gradeDist[g.grade]++; });
+        const subLabels = Object.keys(subjects), subAvgs = subLabels.map(s => (subjects[s].reduce((a,b)=>a+b,0)/subjects[s].length).toFixed(1));
+        const examLabels = Object.keys(exams), examAvgs = examLabels.map(e => (exams[e].reduce((a,b)=>a+b,0)/exams[e].length).toFixed(1));
+        document.querySelector('#analytics .analytics-grid').innerHTML = '<div class="chart-card"><h3>Subject Performance</h3><canvas id="subjectChart"></canvas></div><div class="chart-card"><h3>Term Progress</h3><canvas id="termChart"></canvas></div><div class="chart-card"><h3>Grade Distribution</h3><canvas id="gradeDistChart"></canvas></div><div class="chart-card"><h3>Performance Trend</h3><canvas id="trendChart"></canvas></div>';
+        const colors = ['#1a5276','#27ae60','#e67e22','#e74c3c','#9b59b6','#2ecc71','#f39c12','#1abc9c','#e91e63','#00bcd4','#ff5722','#795548'];
+        new Chart(document.getElementById('subjectChart'),{type:'bar',data:{labels:subLabels,datasets:[{label:'Average Mark',data:subAvgs,backgroundColor:colors.slice(0,subLabels.length)}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100}}}});
+        new Chart(document.getElementById('termChart'),{type:'line',data:{labels:examLabels,datasets:[{label:'Average Points',data:examAvgs,borderColor:'#1a5276',backgroundColor:'rgba(26,82,118,0.1)',fill:true,tension:0.3}]},options:{responsive:true}});
+        const gdLabels = Object.keys(gradeDist).filter(k=>gradeDist[k]>0);
+        new Chart(document.getElementById('gradeDistChart'),{type:'doughnut',data:{labels:gdLabels,datasets:[{data:gdLabels.map(k=>gradeDist[k]),backgroundColor:colors.slice(0,gdLabels.length)}]},options:{responsive:true}});
+        const trendLabels = grades.sort((a,b)=>new Date(a.updatedAt)-new Date(b.updatedAt)).map(g=>g.subject+' ('+g.exam+')');
+        const trendData = grades.map(g=>g.mark);
+        new Chart(document.getElementById('trendChart'),{type:'line',data:{labels:trendLabels,datasets:[{label:'Mark',data:trendData,borderColor:'#27ae60',backgroundColor:'rgba(39,174,96,0.1)',fill:true,tension:0.3}]},options:{responsive:true,scales:{y:{beginAtZero:true,max:100}}}});
+    }
 
-        // ===== ASSIGNED CARDS =====
-        function getMyCards() {
-            const cards = getCards();
-            return cards.filter(c =>
-                c.status === 'Active' && (c.class === student.class || c.class === 'All Classes')
-            );
-        }
+    // ===== KCSE PREDICTION =====
+    function renderKCSEPrediction() {
+        const grades = getData('grades').filter(g => g.studentId === student.id);
+        const el = document.getElementById('predictionContent');
+        if (!grades.length) { el.innerHTML = '<div class="prediction-card"><h3><i class="fas fa-info-circle"></i> No Data Yet</h3><p>Your KCSE prediction will appear once teachers enter your grades.</p></div>'; return; }
+        const subjects = {};
+        grades.forEach(g => { subjects[g.subject] = subjects[g.subject] || []; subjects[g.subject].push(g); });
+        const latestGrades = Object.values(subjects).map(gs => gs.sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt))[0]);
+        const totalPoints = latestGrades.reduce((s,g)=>s+g.points,0);
+        const avgMark = (latestGrades.reduce((s,g)=>s+g.mark,0)/latestGrades.length).toFixed(1);
+        const numSubs = latestGrades.length;
+        let predGrade, predPoints, predDesc;
+        if (totalPoints >= 80) { predGrade = 'A'; predPoints = totalPoints; predDesc = 'Outstanding performance! You are on track for an A.'; }
+        else if (totalPoints >= 60) { predGrade = 'B+'; predPoints = totalPoints; predDesc = 'Very good performance. Keep pushing for an A!'; }
+        else if (totalPoints >= 48) { predGrade = 'B'; predPoints = totalPoints; predDesc = 'Good performance. With more effort you can reach B+.'; }
+        else if (totalPoints >= 36) { predGrade = 'C+'; predPoints = totalPoints; predDesc = 'Above average. Focus on weak subjects to improve.'; }
+        else if (totalPoints >= 24) { predGrade = 'C'; predPoints = totalPoints; predDesc = 'Average performance. Need significant improvement.'; }
+        else { predGrade = 'D'; predPoints = totalPoints; predDesc = 'Below average. Seek extra tuition and work harder.'; }
+        const subjectBreakdown = latestGrades.map(g => `<div class="pred-subject"><span>${g.subject}</span><span>${g.mark}/100</span><span class="status-badge approved">${g.grade}</span><span>${g.points} pts</span></div>`).join('');
+        el.innerHTML = `<div class="prediction-card"><h2><i class="fas fa-trophy" style="color:var(--secondary)"></i> Your KCSE Prediction</h2><div class="pred-main"><div class="pred-grade-circle"><h1>${predGrade}</h1><p>${totalPoints} Points</p></div><div class="pred-info"><p><strong>Based on:</strong> ${numSubs} subjects</p><p><strong>Average Mark:</strong> ${avgMark}%</p><p><strong>Total Points:</strong> ${totalPoints}</p><p style="margin-top:10px">${predDesc}</p></div></div><h3 style="margin-top:20px">Subject Breakdown</h3><div class="pred-subject header"><span>Subject</span><span>Mark</span><span>Grade</span><span>Points</span></div>${subjectBreakdown}</div>`;
+    }
 
-        function renderAssignedCards() {
-            const myCards = getMyCards();
-            const subs = getSubmissions();
-            const grid = document.getElementById('assignedCards');
+    // ===== CAREER GUIDANCE =====
+    function renderCareerGuidance() {
+        const grades = getData('grades').filter(g => g.studentId === student.id);
+        const el = document.getElementById('careerContent');
+        if (!grades.length) { el.innerHTML = '<div class="prediction-card"><h3><i class="fas fa-info-circle"></i> No Data Yet</h3><p>Career recommendations will appear once your grades are entered.</p></div>'; return; }
+        const subjects = {};
+        grades.forEach(g => { subjects[g.subject] = subjects[g.subject] || []; subjects[g.subject].push(g.mark); });
+        const avgs = Object.entries(subjects).map(([s,m])=>({subject:s,avg:m.reduce((a,b)=>a+b,0)/m.length})).sort((a,b)=>b.avg-a.avg);
+        const top3 = avgs.slice(0,3).map(a=>a.subject.toLowerCase());
+        const careers = [];
+        if (top3.some(s=>s.includes('math'))) careers.push({title:'Engineering / Actuarial Science',desc:'Your strong math skills suit engineering careers.',icon:'fas fa-cogs'});
+        if (top3.some(s=>s.includes('bio')||s.includes('biology'))) careers.push({title:'Medicine / Pharmacy',desc:'Strong biology performance opens medical careers.',icon:'fas fa-heartbeat'});
+        if (top3.some(s=>s.includes('chem'))) careers.push({title:'Chemistry / Material Science',desc:'Good chemistry grades suit research careers.',icon:'fas fa-flask'});
+        if (top3.some(s=>s.includes('phys'))) careers.push({title:'Physics / Engineering',desc:'Physics strength suits tech and engineering.',icon:'fas fa-atom'});
+        if (top3.some(s=>s.includes('eng'))) careers.push({title:'Journalism / Law / Literature',desc:'English proficiency suits communication careers.',icon:'fas fa-pen'});
+        if (top3.some(s=>s.includes('kiswahili')||s.includes('kis'))) careers.push({title:'Translation / Linguistics / Education',desc:'Kiswahili excellence suits language careers.',icon:'fas fa-language'});
+        if (top3.some(s=>s.includes('hist'))) careers.push({title:'History / Political Science / Tourism',desc:'History knowledge suits social science careers.',icon:'fas fa-landmark'});
+        if (top3.some(s=>s.includes('geo'))) careers.push({title:'Geography / Environmental Science',desc:'Geography skills suit environmental careers.',icon:'fas fa-globe'});
+        if (top3.some(s=>s.includes('comp')||s.includes('computer'))) careers.push({title:'Computer Science / IT',desc:'Computer skills suit tech industry careers.',icon:'fas fa-laptop-code'});
+        if (!careers.length) careers.push({title:'General Studies',desc:'Keep working hard. Your career path will become clearer with better grades.',icon:'fas fa-graduation-cap'});
+        el.innerHTML = `<div class="prediction-card"><h2><i class="fas fa-briefcase" style="color:var(--primary)"></i> Career Recommendations</h2><p style="margin-bottom:15px">Based on your top subjects: <strong>${avgs.slice(0,3).map(a=>a.subject).join(', ')}</strong></p><div class="career-grid">${careers.map(c=>`<div class="career-card"><i class="${c.icon}" style="font-size:30px;color:var(--primary);margin-bottom:10px"></i><h4>${c.title}</h4><p>${c.desc}</p></div>`).join('')}</div><h3 style="margin-top:25px">Subject Rankings</h3>${avgs.map((a,i)=>`<div class="rank-item"><span class="rank-num">#${i+1}</span><span>${a.subject}</span><span><strong>${a.avg.toFixed(1)}%</strong></span></div>`).join('')}</div>`;
+    }
 
-            document.getElementById('totalCardsCount').textContent = myCards.length;
+    // ===== ATTENDANCE =====
+    function renderStudentAttendance() { const att=getData('attendance').filter(a=>a.studentId===student.id), p=att.filter(a=>a.status==='Present').length, ab=att.filter(a=>a.status==='Absent').length, l=att.filter(a=>a.status==='Late').length, t=att.length, r=t?Math.round(p/t*100):0; document.getElementById('attendanceSummaryCards').innerHTML=`<div class="grade-summary-card"><h4>${p}</h4><p>Present</p></div><div class="grade-summary-card"><h4>${ab}</h4><p>Absent</p></div><div class="grade-summary-card"><h4>${l}</h4><p>Late</p></div><div class="grade-summary-card"><h4>${r}%</h4><p>Rate</p></div>`; document.getElementById('attendanceSummaryCards').style.display='grid'; const tb=document.getElementById('studentAttendanceBody'); if(!att.length){tb.innerHTML='<tr class="no-data"><td colspan="4">No records</td></tr>';return;} tb.innerHTML=att.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(a=>`<tr><td>${a.date}</td><td><span class="status-badge ${a.status==='Present'?'approved':a.status==='Absent'?'rejected':'pending'}">${a.status}</span></td><td>${a.markedBy||'-'}</td><td>${a.remarks||'-'}</td></tr>`).join(''); }
 
-            const submitted = subs.filter(s => s.studentId === student.id);
-            const submittedCardIds = submitted.map(s => s.cardId);
-            const pending = myCards.filter(c => !submittedCardIds.includes(c.id));
-            const now = new Date();
-            const overdue = pending.filter(c => new Date(c.deadline) < now);
+    // ===== TIMETABLE =====
+    function renderStudentTimetable() { const tt=getData('timetable').filter(t=>t.class===student.class), days=['monday','tuesday','wednesday','thursday','friday'], periods=[1,2,3,4,6,7,8,9,10,11,12], tm={1:'7:30-8:00',2:'8:00-8:40',3:'8:40-9:20',4:'9:20-10:00',6:'10:20-11:00',7:'11:00-11:40',8:'11:40-12:20',9:'12:20-1:00',10:'1:00-1:40',11:'1:40-2:20',12:'2:20-3:00'}; const tb=document.getElementById('studentTimetableBody'); if(!tt.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No timetable for '+student.class+'</td></tr>';return;} tb.innerHTML=periods.map(p=>{if(p===4)return`<tr style="background:#f0f7fb"><td><strong>${tm[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">BREAK</td></tr>`;if(p===12)return`<tr style="background:#f0f7fb"><td><strong>${tm[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">BREAK</td></tr>`;return`<tr><td><strong>${tm[p]}</strong></td>${days.map(d=>{const e=tt.find(t=>t.day===d&&t.period===p);return`<td>${e?'<strong>'+e.subject+'</strong>'+(e.teacher?'<br><small>'+e.teacher+'</small>':''):'-'}</td>`;}).join('')}</tr>`;}).join(''); }
 
-            document.getElementById('submittedCount').textContent = submitted.length;
-            document.getElementById('pendingCardsCount').textContent = pending.length;
-            document.getElementById('overdueCount').textContent = overdue.length;
+    // ===== EXAM TIMETABLE =====
+    function renderExamTimetable() { const exams=getData('exam_timetable'), el=document.getElementById('examTimetableContent'); if(!exams.length){el.innerHTML='<p class="no-data">No exam timetable published yet. Check back later.</p>';return;} el.innerHTML='<div class="table-container"><table><thead><tr><th>Date</th><th>Time</th><th>Subject</th><th>Duration</th><th>Venue</th></tr></thead><tbody>'+exams.map(e=>`<tr><td><strong>${e.date}</strong></td><td>${e.time||'8:00 AM'}</td><td><strong>${e.subject}</strong></td><td>${e.duration||'2 hours'}</td><td>${e.venue||'Main Hall'}</td></tr>`).join('')+'</tbody></table></div>'; }
 
-            if (!myCards.length) { grid.innerHTML = '<p class="no-activity">No cards assigned to your class</p>'; return; }
+    // ===== LIBRARY =====
+    function renderLibrary() { const books=getData('library_books'), tb=document.getElementById('libraryBody'); if(!books.length){tb.innerHTML='<tr class="no-data"><td colspan="5">No books in library yet</td></tr>';}else{searchLibrary();} renderMyBooks(); }
+    function searchLibrary() { const books=getData('library_books'), q=(document.getElementById('libSearch').value||'').toLowerCase(), cat=document.getElementById('libCategory').value; let filtered=books; if(q) filtered=filtered.filter(b=>b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q)); if(cat) filtered=filtered.filter(b=>b.category===cat); const borrowed=getData('library_borrowed'); const tb=document.getElementById('libraryBody'); if(!filtered.length){tb.innerHTML='<tr class="no-data"><td colspan="5">No books found</td></tr>';return;} tb.innerHTML=filtered.map(b=>{const avail=b.copies-(borrowed.filter(x=>x.bookId===b.id&&x.status==='Borrowed').length);return`<tr><td><strong>${b.title}</strong></td><td>${b.author}</td><td>${b.category}</td><td><span class="status-badge ${avail>0?'approved':'rejected'}">${avail}/${b.copies}</span></td><td>${avail>0?`<button class="btn btn-primary btn-sm" onclick="borrowBook('${b.id}')">Borrow</button>`:'Unavailable'}</td></tr>`;}).join(''); }
+    function borrowBook(bookId) { const books=getData('library_books'), book=books.find(b=>b.id===bookId); if(!book)return; const borrowed=getData('library_borrowed'); borrowed.push({id:'LB'+Date.now(),bookId,bookTitle:book.title,studentId:student.id,studentName:student.name,borrowedAt:new Date().toISOString(),dueDate:new Date(Date.now()+14*864e5).toISOString(),status:'Borrowed'}); setData('library_borrowed',borrowed); alert('Book borrowed! Due in 14 days.'); renderLibrary(); }
+    function returnBook(id) { const borrowed=getData('library_borrowed'); const b=borrowed.find(x=>x.id===id); if(b){b.status='Returned';b.returnedAt=new Date().toISOString();} setData('library_borrowed',borrowed); alert('Book returned!'); renderLibrary(); }
+    function renderMyBooks() { const borrowed=getData('library_borrowed').filter(b=>b.studentId===student.id), tb=document.getElementById('myBooksBody'); if(!borrowed.length){tb.innerHTML='<tr class="no-data"><td colspan="4">No books borrowed</td></tr>';return;} tb.innerHTML=borrowed.map(b=>{const isOverdue=b.status==='Borrowed'&&new Date(b.dueDate)<new Date(); return`<tr><td>${b.bookTitle}</td><td>${new Date(b.borrowedAt).toLocaleDateString()}</td><td>${new Date(b.dueDate).toLocaleDateString()}</td><td><span class="status-badge ${b.status==='Returned'?'approved':isOverdue?'rejected':'pending'}">${isOverdue?'Overdue':b.status}</span> ${b.status==='Borrowed'?`<button class="btn btn-primary btn-sm" onclick="returnBook('${b.id}')" style="margin-left:5px">Return</button>`:''}</td></tr>`;}).join(''); }
 
-            grid.innerHTML = myCards.map(c => {
-                const deadline = new Date(c.deadline);
-                const diff = deadline - now;
-                const isSubmitted = submittedCardIds.includes(c.id);
-                const isExpired = diff <= 0;
-                const sub = submitted.find(s => s.cardId === c.id);
+    // ===== CLUBS =====
+    function renderClubs() { const clubs=getData('clubs'), el=document.getElementById('clubsList'), myClubs=getData('student_clubs').filter(c=>c.studentId===student.id); if(!clubs.length){el.innerHTML='<p class="no-data">No clubs/sports registered yet. Ask admin to add them.</p>';}else{el.innerHTML='<div class="clubs-grid">'+clubs.map(c=>`<div class="club-card"><i class="${c.icon||'fas fa-users'}" style="font-size:24px;color:var(--primary);margin-bottom:8px"></i><h4>${c.name}</h4><p>${c.description||''}</p><p style="font-size:12px;color:var(--text-light)">${c.meetingDay||''} ${c.meetingTime||''}</p>${myClubs.some(mc=>mc.clubId===c.id)?'<span class="status-badge approved">Joined</span>':`<button class="btn btn-primary btn-sm" onclick="joinClub('${c.id}')" style="margin-top:8px">Join</button>`}</div>`).join('')+'</div>';} const mc=document.getElementById('myClabs'); document.getElementById('myClubs').innerHTML=myClubs.length?myClubs.map(mc=>{const club=clubs.find(c=>c.id===mc.clubId);return`<div class="activity-item"><i class="fas fa-check-circle" style="color:var(--primary)"></i><span><strong>${club?club.name:mc.clubId}</strong></span><small>Joined ${new Date(mc.joinedAt).toLocaleDateString()}</small></div>`;}).join(''):'<p class="no-data">You have not joined any clubs yet</p>'; }
+    function joinClub(clubId) { const clubs=getData('student_clubs'); if(clubs.some(c=>c.clubId===clubId&&c.studentId===student.id))return; clubs.push({clubId,studentId:student.id,studentName:student.name,joinedAt:new Date().toISOString()}); setData('student_clubs',clubs); alert('Joined club!'); renderClubs(); }
 
-                let timeLeft = '';
-                let cardClass = '';
-                if (isSubmitted) { timeLeft = 'Submitted'; cardClass = 'card-submitted'; }
-                else if (isExpired) { timeLeft = 'Expired'; cardClass = 'card-expired'; }
-                else {
-                    const days = Math.floor(diff / 86400000);
-                    const hours = Math.floor((diff % 86400000) / 3600000);
-                    const mins = Math.floor((diff % 3600000) / 60000);
-                    if (days > 0) timeLeft = days + 'd ' + hours + 'h left';
-                    else timeLeft = hours + 'h ' + mins + 'm left';
-                    if (days < 1 && hours < 6) cardClass = 'card-urgent';
-                }
+    // ===== LUNCH MENU =====
+    function renderLunchMenu() { const menu=getData('lunch_menu'), el=document.getElementById('lunchMenuContent'); if(!menu.length){el.innerHTML='<div class="prediction-card"><h3>Weekly Menu</h3><div class="menu-grid">'+['Monday','Tuesday','Wednesday','Thursday','Friday'].map(d=>`<div class="menu-day"><h4>${d}</h4><p>Ugali & Sukuma Wiki</p><p style="font-size:12px;color:var(--text-light)">Lentils, Fresh Vegetables</p></div>`).join('')+'</div><p style="margin-top:15px;color:var(--text-light)">Default menu. Admin can customize.</p></div>';return;} el.innerHTML='<div class="menu-grid">'+menu.map(m=>`<div class="menu-day"><h4>${m.day}</h4><p>${m.main}</p><p style="font-size:12px;color:var(--text-light)">${m.side||''}</p><p style="font-size:12px;color:var(--text-light)">${m.drink||''}</p></div>`).join('')+'</div>'; }
 
-                return `<div class="assignment-card ${cardClass}">
-                    <div class="card-header">
-                        <span class="card-type">${c.type}</span>
-                        <span class="card-subject">${c.subject}</span>
-                    </div>
-                    <h3>${c.title}</h3>
-                    <p class="card-teacher"><i class="fas fa-chalkboard-teacher"></i> ${c.teacherName}</p>
-                    <p class="card-class"><i class="fas fa-school"></i> ${c.class}</p>
-                    <div class="card-deadline">
-                        <i class="fas fa-clock"></i>
-                        <span>${deadline.toLocaleDateString()} ${deadline.toLocaleTimeString()}</span>
-                    </div>
-                    <div class="card-time ${cardClass}">${timeLeft}</div>
-                    <div class="card-footer">
-                        <span class="card-score">Max: ${c.maxScore} marks</span>
-                        ${isSubmitted ?
-                            `<span class="card-status-badge submitted">Submitted ${sub.score !== undefined ? '- Score: ' + sub.score : ''}</span>` :
-                            isExpired && !c.allowLate ?
-                                '<span class="card-status-badge expired">Deadline Passed</span>' :
-                                `<button class="btn btn-primary btn-sm" onclick="openSubmit('${c.id}')">Submit Now</button>`
-                        }
-                    </div>
-                </div>`;
-            }).join('');
-        }
+    // ===== BUS TRACKING =====
+    function renderBusRoutes() { const routes=getData('bus_routes'), el=document.getElementById('busRoutesContent'); if(!routes.length){el.innerHTML='<div class="prediction-card"><h3>School Bus Routes</h3><div class="route-card"><h4><i class="fas fa-bus" style="color:var(--primary)"></i> Route 1: Town Center</h4><p><strong>Stops:</strong> Town Stage - Market Road - School Gate</p><p><strong>Time:</strong> 6:30 AM (Morning) / 4:30 PM (Afternoon)</p><p><strong>Driver:</strong> Mr. Odhiambo | <a href="tel:0798394035">0798394035</a></p></div><div class="route-card"><h4><i class="fas fa-bus" style="color:var(--primary)"></i> Route 2: Lakeside</h4><p><strong>Stops:</strong> Lakeside Stage - Beach Road - School Gate</p><p><strong>Time:</strong> 6:45 AM (Morning) / 4:45 PM (Afternoon)</p><p><strong>Driver:</strong> Mr. Otieno | <a href="tel:0798394035">0798394035</a></p></div></div>';return;} el.innerHTML=routes.map(r=>`<div class="route-card"><h4><i class="fas fa-bus" style="color:var(--primary)"></i> ${r.name}</h4><p><strong>Stops:</strong> ${r.stops}</p><p><strong>Time:</strong> ${r.morningTime||'6:30 AM'} (Morning) / ${r.afternoonTime||'4:30 PM'} (Afternoon)</p><p><strong>Driver:</strong> ${r.driver||'TBD'} | ${r.phone||''}</p></div>`).join(''); }
 
-        // ===== SUBMIT CARD =====
-        let currentCardId = '';
-        function openSubmit(cardId) {
-            currentCardId = cardId;
-            const card = getCards().find(c => c.id === cardId);
-            if (!card) return;
+    // ===== HEALTH =====
+    function renderHealth() { const h=getData('health_records').find(r=>r.studentId===student.id), el=document.getElementById('healthContent'); if(!h){el.innerHTML='<div class="prediction-card"><h3><i class="fas fa-heartbeat" style="color:#e74c3c"></i> Health Information</h3><p>No health records on file. Your parent/guardian can update this during admission.</p><div class="health-form" style="margin-top:15px"><div class="form-group"><label>Blood Group</label><input type="text" id="healthBlood" placeholder="e.g. O+" value="'+(h?h.bloodGroup:'')+'"></div><div class="form-group"><label>Allergies</label><input type="text" id="healthAllergies" placeholder="e.g. Peanuts, Dust" value="'+(h?h.allergies:'')+'"></div><div class="form-group"><label>Medical Conditions</label><input type="text" id="healthConditions" placeholder="e.g. Asthma" value="'+(h?h.conditions:'')+'"></div><div class="form-group"><label>Emergency Contact</label><input type="text" id="healthEmergency" placeholder="Name & Phone" value="'+(h?h.emergencyContact:'')+'"></div><button class="btn btn-primary" onclick="saveHealth()"><i class="fas fa-save"></i> Save</button></div></div>';return;} el.innerHTML='<div class="prediction-card"><h3><i class="fas fa-heartbeat" style="color:#e74c3c"></i> Health Information</h3><div class="health-info"><p><strong>Blood Group:</strong> '+h.bloodGroup+'</p><p><strong>Allergies:</strong> '+h.allergies+'</p><p><strong>Conditions:</strong> '+h.conditions+'</p><p><strong>Emergency Contact:</strong> '+h.emergencyContact+'</p></div></div>'; }
+    function saveHealth() { const records=getData('health_records'); const existing=records.findIndex(r=>r.studentId===student.id); const data={studentId:student.id,bloodGroup:document.getElementById('healthBlood').value,allergies:document.getElementById('healthAllergies').value,conditions:document.getElementById('healthConditions').value,emergencyContact:document.getElementById('healthEmergency').value}; if(existing>=0)records[existing]={...records[existing],...data}; else records.push(data); setData('health_records',records); alert('Health records saved!'); renderHealth(); }
 
-            document.getElementById('submitModalTitle').textContent = 'Submit: ' + card.title;
-            document.getElementById('cardDetails').innerHTML = `
-                <div class="card-detail-box">
-                    <p><strong>Subject:</strong> ${card.subject}</p>
-                    <p><strong>Type:</strong> ${card.type}</p>
-                    <p><strong>Max Score:</strong> ${card.maxScore} marks</p>
-                    <div class="card-description"><strong>Instructions:</strong><br>${card.description.replace(/\n/g, '<br>')}</div>
-                    ${card.attachment ? `<p><strong>Attachment:</strong> ${card.attachment}</p>` : ''}
-                </div>
-            `;
-            document.getElementById('submissionAnswer').value = '';
-            document.getElementById('submissionLink').value = '';
-            openModal('submitCard');
-        }
+    // ===== ANNOUNCEMENTS =====
+    function renderStudentAnnouncements() { const ann=getData('announcements').filter(a=>a.audience==='all'||a.audience==='students'); const el=document.getElementById('studentAnnouncementsContainer'); if(!ann.length){el.innerHTML='<p class="no-data">No announcements</p>';return;} el.innerHTML=ann.map(a=>`<div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)"><i class="fas fa-bullhorn" style="color:var(--secondary);font-size:20px;margin-right:12px"></i><div><strong style="font-size:15px">${a.title}</strong><p style="margin:5px 0 0;color:var(--text)">${a.message}</p><small style="color:var(--text-light)">${a.date} - ${a.author||'Admin'}</small></div></div>`).join(''); }
 
-        function submitCard() {
-            const answer = document.getElementById('submissionAnswer').value;
-            if (!answer.trim()) { alert('Please write your answer'); return; }
+    // ===== GALLERY =====
+    function renderGallery() { const photos=getData('gallery_photos'), el=document.getElementById('galleryContent'); if(!photos.length){el.innerHTML='<p class="no-data">No photos uploaded yet. Ask admin to add school event photos.</p>';return;} el.innerHTML='<div class="gallery-grid">'+photos.map(p=>`<div class="gallery-item"><img src="${p.url}" alt="${p.caption||''}" onclick="window.open('${p.url}','_blank')"><p>${p.caption||''}</p></div>`).join('')+'</div>'; }
 
-            const subs = getSubmissions();
-            const card = getCards().find(c => c.id === currentCardId);
+    // ===== LIVE CHAT =====
+    function renderChat() { const messages=getData('chat_messages').filter(m=>m.class===student.class||m.class==='all'), el=document.getElementById('chatMessages'); const sel=document.getElementById('chatRecipient'); const teachers=getData('teachers'); if(sel.options.length<=1){teachers.forEach(t=>{sel.innerHTML+='<option value="'+t.id+'">Teacher: '+t.name+'</option>';});} if(!messages.length){el.innerHTML='<p class="no-data">No messages yet</p>';return;} el.innerHTML=messages.map(m=>`<div class="chat-msg ${m.senderId===student.id?'own':'other'}"><div class="chat-bubble"><strong>${m.senderName}</strong><p>${m.text}</p><small>${new Date(m.sentAt).toLocaleTimeString()}</small></div></div>`).join(''); el.scrollTop=el.scrollHeight; }
+    function sendChat() { const input=document.getElementById('chatInput'), text=input.value.trim(); if(!text)return; const recipient=document.getElementById('chatRecipient').value; const msgs=getData('chat_messages'); msgs.push({id:'MSG'+Date.now(),senderId:student.id,senderName:student.name,recipient,text,class:student.class,sentAt:new Date().toISOString()}); setData('chat_messages',msgs); input.value=''; renderChat(); }
 
-            subs.push({
-                id: 'SUB' + Date.now().toString().slice(-8),
-                cardId: currentCardId,
-                studentId: student.id,
-                studentName: student.name,
-                studentClass: student.class,
-                answer: answer,
-                link: document.getElementById('submissionLink').value || '',
-                submittedAt: new Date().toISOString(),
-                status: 'Submitted',
-                score: undefined,
-                gradedAt: undefined
-            });
+    // ===== STUDENT OF THE MONTH =====
+    function renderStudentOfMonth() { const sotm=getData('student_of_month'), el=document.getElementById('studentOfMonthContent'); if(!sotm.length){el.innerHTML='<p class="no-data">No student of the month yet. Ask admin to select!</p>';return;} el.innerHTML=sotm.map(s=>`<div class="sotm-card"><div class="sotm-avatar"><i class="fas fa-trophy" style="font-size:40px;color:var(--secondary)"></i></div><h3>${s.studentName}</h3><p><strong>Class:</strong> ${s.class}</p><p><strong>Reason:</strong> ${s.reason}</p><p><strong>Month:</strong> ${s.month}</p><p style="font-size:12px;color:var(--text-light)">Selected by ${s.selectedBy||'Admin'} on ${s.date}</p></div>`).join(''); }
 
-            setSubmissions(subs);
+    // ===== BIRTHDAYS =====
+    function renderBirthdays() { const el=document.getElementById('birthdayContent'); const allStudents=getData('students').filter(s=>s.status!=='expelled'); const allTeachers=getData('teachers'); const month=new Date().getMonth(); const bdays=[...allStudents.map(s=>({...s,type:'Student',dob:s.dob})),...allTeachers.map(t=>({...t,type:'Teacher',dob:t.dob}))].filter(p=>{if(!p.dob)return false; const d=new Date(p.dob); return d.getMonth()===month; }).sort((a,b)=>new Date(a.dob).getDate()-new Date(b.dob).getDate()); if(!bdays.length){el.innerHTML='<p class="no-data">No birthdays this month!</p>';return;} el.innerHTML='<p style="margin-bottom:15px">🎂 Birthdays in '+new Date().toLocaleString('default',{month:'long'})+'</p>'+bdays.map(b=>{const d=new Date(b.dob), today=new Date().getDate()===d.getDate(); return`<div class="activity-item" style="padding:12px;margin-bottom:8px;background:${today?'linear-gradient(135deg,#d4ac0d,#f1c40f)':'var(--white)'};border-radius:8px;box-shadow:var(--shadow)"><i class="fas fa-birthday-cake" style="color:${today?'white':'var(--secondary)'};font-size:20px;margin-right:12px"></i><div><strong>${b.name}</strong> (${b.type})<br><small>${d.toLocaleDateString('en-US',{month:'long',day:'numeric'})}${today?' - TODAY! 🎉':''}</small></div></div>`; }).join(''); }
 
-            // Log activity
-            const records = JSON.parse(localStorage.getItem('wanganga_admin_center') || '[]');
-            records.unshift({ id: records.length + 1, timestamp: new Date().toISOString(), category: 'student', action: 'create', details: student.name + ' submitted card: ' + (card ? card.title : currentCardId), user: student.name, ip: 'Local Network' });
-            localStorage.setItem('wanganga_admin_center', JSON.stringify(records));
+    // ===== DIGITAL ID =====
+    function renderDigitalID() { const el=document.getElementById('digitalIdContent'); el.innerHTML=`<div class="id-card" id="idCard"><div class="id-card-header"><h3>WANG'ANGA SENIOR SCHOOL</h3><p>Student Identity Card</p></div><div class="id-card-body"><div class="id-photo">${(()=>{const p=localStorage.getItem('wanganga_student_photo_'+student.id); return p?'<img src="'+p+'">':'<i class="fas fa-user" style="font-size:50px;color:#ccc"></i>';})()}</div><div class="id-info"><p><strong>${student.name}</strong></p><p>Adm No: ${student.id}</p><p>Class: ${student.class}</p><p>Gender: ${student.gender||'-'}</p></div></div><div class="id-card-footer"><div id="studentQR"></div><p style="font-size:10px">Scan to verify</p></div></div><button class="btn btn-primary" onclick="window.print()" style="margin-top:15px"><i class="fas fa-print"></i> Print ID Card</button><a href="https://wa.me/254798394035?text=Hello, I am ${student.name} (Adm: ${student.id}), class ${student.class}" target="_blank" class="btn btn-primary" style="margin-top:15px;background:#25d366"><i class="fab fa-whatsapp"></i> Verify via WhatsApp</a>`; if(typeof QRCode!=='undefined'){QRCode.toCanvas(document.createElement('canvas'),student.id+':'+student.name+':'+student.class,function(err,canvas){if(!err){document.getElementById('studentQR').innerHTML='';document.getElementById('studentQR').appendChild(canvas);}});} }
 
-            closeModal('submitCard');
-            alert('Card submitted successfully!');
-            renderAssignedCards();
-        }
+    // ===== PROFILE =====
+    function renderProfile() { const p=localStorage.getItem('wanganga_student_photo_'+student.id); if(p){document.getElementById('myProfilePreview').innerHTML='<img src="'+p+'">';document.getElementById('myProfilePreview').classList.add('has-photo');} document.getElementById('profileInfo').innerHTML=`<div class="applicant-info"><p><strong>Adm No:</strong> ${student.id}</p><p><strong>Name:</strong> ${student.name}</p><p><strong>Class:</strong> ${student.class}</p><p><strong>Gender:</strong> ${student.gender||'-'}</p><p><strong>Parent:</strong> ${student.parent||'-'}</p><p><strong>Parent Phone:</strong> ${student.parentPhone||'-'}</p><p><strong>WhatsApp:</strong> <a href="https://wa.me/254${(student.parentPhone||'').replace(/^0/,'')}" target="_blank">Chat with Parent</a></p></div>`; }
+    function updateMyProfilePhoto(input) { if(input.files&&input.files[0]){const r=new FileReader();r.onload=function(e){localStorage.setItem('wanganga_student_photo_'+student.id,e.target.result);document.getElementById('myProfilePreview').innerHTML='<img src="'+e.target.result+'">';document.getElementById('myProfilePreview').classList.add('has-photo');};r.readAsDataURL(input.files[0]);} }
 
-        // ===== RENDER SUBMITTED =====
-        function renderSubmitted() {
-            const subs = getSubmissions().filter(s => s.studentId === student.id);
-            const cards = getCards();
-            const tbody = document.getElementById('submittedBody');
+    // ===== GRADES =====
+    function loadStudentGrades() { const grades=getData('grades').filter(g=>g.studentId===student.id), sf=document.getElementById('studentSubjectFilter').value, ef=document.getElementById('studentExamFilter').value; let mg=grades; if(sf)mg=mg.filter(g=>g.subject===sf); if(ef)mg=mg.filter(g=>g.exam===ef); mg.sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt)); const tb=document.getElementById('studentGradesBody'); if(!mg.length){tb.innerHTML='<tr class="no-data"><td colspan="7">No grades yet</td></tr>';}else{tb.innerHTML=mg.map(g=>`<tr><td><strong>${g.subject}</strong></td><td>${g.exam}</td><td><strong>${g.mark}/${g.maxMarks||100}</strong></td><td><span class="status-badge approved" style="font-weight:700">${g.grade}</span></td><td>${g.points}</td><td>${g.remark||'-'}</td><td>${g.teacherName||'-'}</td></tr>`).join('');} const ag=grades.filter(g=>g.studentId===student.id); if(ag.length){const tp=ag.reduce((s,g)=>s+(g.points||0),0),ap=(tp/ag.length).toFixed(1),subs=[...new Set(ag.map(g=>g.subject))],best=ag.reduce((a,b)=>(a.points>b.points)?a:b); document.getElementById('gradesSummaryCards').innerHTML=`<div class="grade-summary-card"><h4>${ag.length}</h4><p>Entries</p></div><div class="grade-summary-card"><h4>${ap}</h4><p>Avg Points</p></div><div class="grade-summary-card"><h4>${subs.length}</h4><p>Subjects</p></div><div class="grade-summary-card"><h4>${best.grade} (${best.points})</h4><p>Best</p></div>`; document.getElementById('gradesSummaryCards').style.display='grid';}else{document.getElementById('gradesSummaryCards').style.display='none';} }
+    function populateStudentGradeFilters() { const grades=getData('grades').filter(g=>g.studentId===student.id), subs=[...new Set(grades.map(g=>g.subject))], sel=document.getElementById('studentSubjectFilter'); subs.forEach(s=>{sel.innerHTML+='<option value="'+s+'">'+s+'</option>';}); }
 
-            if (!subs.length) { tbody.innerHTML = '<tr class="no-data"><td colspan="6">No submissions yet</td></tr>'; return; }
+    // ===== REPORT CARD =====
+    function renderStudentReportCard() { const grades=getData('grades').filter(g=>g.studentId===student.id), fees=getData('fees').filter(f=>f.studentId===student.id), att=getData('attendance').filter(a=>a.studentId===student.id), tp=fees.reduce((s,f)=>s+(Number(f.amount)||0),0), p=att.filter(a=>a.status==='Present').length; const eg={}; grades.forEach(g=>{if(!eg[g.exam])eg[g.exam]=[];eg[g.exam].push(g);}); let es=''; Object.keys(eg).forEach(ex=>{const eg2=eg[ex],ap=(eg2.reduce((s,g)=>s+(g.points||0),0)/eg2.length).toFixed(1);es+=`<h3 style="margin-top:20px;color:var(--primary)">${ex}</h3><table><thead><tr><th>Subject</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th></tr></thead><tbody>${eg2.map(g=>`<tr><td>${g.subject}</td><td>${g.mark}/${g.maxMarks||100}</td><td><strong>${g.grade}</strong></td><td>${g.points}</td><td>${g.remark||'-'}</td></tr>`).join('')}<tr style="font-weight:700;background:#f0f7fb"><td>Average</td><td></td><td></td><td>${ap}</td><td></td></tr></tbody></table>`;}); document.getElementById('studentReportCardContent').innerHTML=`<div class="report-card" id="printableStudentReport"><div style="text-align:center;margin-bottom:20px"><h2 style="color:var(--primary)">WANG'ANGA SENIOR SCHOOL</h2><p>Phone: 0798394035</p><h3 style="margin-top:10px">REPORT CARD</h3></div><div class="form-row" style="margin-bottom:15px"><div><strong>Name:</strong> ${student.name}</div><div><strong>Adm:</strong> ${student.id}</div><div><strong>Class:</strong> ${student.class}</div></div><div class="form-row" style="margin-bottom:20px"><div><strong>Fees:</strong> KES ${tp.toLocaleString()}</div><div><strong>Attendance:</strong> ${att.length?Math.round(p/att.length*100)+'%':'N/A'}</div></div>${es||'<p>No grades yet</p>'}</div>`; }
+    function printStudentReportCard() { const c=document.getElementById('printableStudentReport').innerHTML; const w=window.open('','','height=800,width=900'); w.document.write('<html><head><title>Report Card</title><style>body{font-family:Poppins,sans-serif;padding:30px;color:#333}table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid #ddd;padding:8px}th{background:#1a5276;color:white}.form-row{display:flex;gap:30px}h2{color:#1a5276}@media print{body{padding:15px}}</style></head><body>'+c+'</body></html>'); w.document.close(); w.print(); }
 
-            tbody.innerHTML = subs.map(s => {
-                const card = cards.find(c => c.id === s.cardId);
-                return `<tr>
-                    <td>${card ? card.title : s.cardId}</td>
-                    <td>${card ? card.subject : '-'}</td>
-                    <td>${card ? card.teacherName : '-'}</td>
-                    <td><small>${new Date(s.submittedAt).toLocaleString()}</small></td>
-                    <td>${s.score !== undefined ? s.score + '/' + (card ? card.maxScore : '-') : 'Pending'}</td>
-                    <td><span class="status-badge ${s.status === 'Graded' ? 'active' : ''}">${s.status}</span></td>
-                </tr>`;
-            }).join('');
-        }
+    // ===== DASHBOARD BIRTHDAY =====
+    function checkDashboardBirthday() { const all=getData('students'); const today=new Date(); const bday=all.find(s=>{if(!s.dob)return false;const d=new Date(s.dob);return d.getDate()===today.getDate()&&d.getMonth()===today.getMonth();}); if(bday){const el=document.getElementById('dashboardBirthday');el.style.display='block';el.innerHTML=`<div class="activity-item" style="padding:15px;background:linear-gradient(135deg,#d4ac0d,#f1c40f);border-radius:10px;color:white"><i class="fas fa-birthday-cake" style="font-size:24px;margin-right:12px"></i><div><strong>🎂 Happy Birthday, ${bday.name}!</strong><p>Wishing you a wonderful year ahead!</p></div></div>`;} }
 
-        // ===== UPCOMING DEADLINES =====
-        function renderUpcoming() {
-            const myCards = getMyCards();
-            const subs = getSubmissions().filter(s => s.studentId === student.id);
-            const submittedCardIds = subs.map(s => s.cardId);
-            const pending = myCards.filter(c => !submittedCardIds.includes(c.id) && new Date(c.deadline) > new Date());
-            pending.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-
-            const el = document.getElementById('upcomingDeadlines');
-            if (!pending.length) { el.innerHTML = '<p class="no-activity">All caught up! No pending cards.</p>'; return; }
-
-            el.innerHTML = pending.slice(0, 5).map(c => {
-                const deadline = new Date(c.deadline);
-                const diff = deadline - new Date();
-                const days = Math.floor(diff / 86400000);
-                const hours = Math.floor((diff % 86400000) / 3600000);
-                let urgency = days < 1 ? 'color:#e74c3c' : days < 3 ? 'color:#e67e22' : '';
-                return `<div class="activity-item">
-                    <i class="fas fa-circle"></i>
-                    <span><strong>${c.title}</strong> - ${c.subject}</span>
-                    <small style="${urgency}">${days > 0 ? days + 'd ' : ''}${hours}h left</small>
-                </div>`;
-            }).join('');
-        }
-
-        // ===== PROFILE =====
-        function renderProfile() {
-            const photo = localStorage.getItem('wanganga_student_photo_' + student.id);
-            if (photo) {
-                document.getElementById('myProfilePreview').innerHTML = '<img src="' + photo + '">';
-                document.getElementById('myProfilePreview').classList.add('has-photo');
-            }
-            document.getElementById('profileInfo').innerHTML = `
-                <div class="applicant-info">
-                    <p><strong>Admission No:</strong> ${student.id}</p>
-                    <p><strong>Name:</strong> ${student.name}</p>
-                    <p><strong>Class:</strong> ${student.class}</p>
-                    <p><strong>Gender:</strong> ${student.gender || '-'}</p>
-                    <p><strong>Parent:</strong> ${student.parent || '-'}</p>
-                    <p><strong>Parent Phone:</strong> ${student.parentPhone || '-'}</p>
-                    <p><strong>Status:</strong> ${student.status || 'Active'}</p>
-                </div>
-            `;
-        }
-
-        function updateMyProfilePhoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    localStorage.setItem('wanganga_student_photo_' + student.id, e.target.result);
-                    document.getElementById('myProfilePreview').innerHTML = '<img src="' + e.target.result + '">';
-                    document.getElementById('myProfilePreview').classList.add('has-photo');
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // ===== STUDENT GRADES =====
-        function loadStudentGrades() {
-            const grades = JSON.parse(localStorage.getItem('wanganga_grades') || '[]');
-            const subjectFilter = document.getElementById('studentSubjectFilter').value;
-            const examFilter = document.getElementById('studentExamFilter').value;
-
-            let myGrades = grades.filter(g => g.studentId === student.id);
-            if (subjectFilter) myGrades = myGrades.filter(g => g.subject === subjectFilter);
-            if (examFilter) myGrades = myGrades.filter(g => g.exam === examFilter);
-
-            myGrades.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
-            const tb = document.getElementById('studentGradesBody');
-            if (!myGrades.length) {
-                tb.innerHTML = '<tr class="no-data"><td colspan="7">No grades available yet</td></tr>';
-            } else {
-                tb.innerHTML = myGrades.map(g => `<tr>
-                    <td><strong>${g.subject}</strong></td>
-                    <td>${g.exam}</td>
-                    <td><strong>${g.mark}/${g.maxMarks || 100}</strong></td>
-                    <td><span class="status-badge approved" style="font-weight:700">${g.grade}</span></td>
-                    <td>${g.points}</td>
-                    <td>${g.remark || '-'}</td>
-                    <td>${g.teacherName || '-'}</td>
-                </tr>`).join('');
-            }
-
-            // Summary cards
-            const allMyGrades = grades.filter(g => g.studentId === student.id);
-            if (allMyGrades.length) {
-                const totalPoints = allMyGrades.reduce((s, g) => s + (g.points || 0), 0);
-                const avgPoints = (totalPoints / allMyGrades.length).toFixed(1);
-                const subjects = [...new Set(allMyGrades.map(g => g.subject))];
-                const best = allMyGrades.reduce((a, b) => (a.points > b.points) ? a : b);
-
-                document.getElementById('gradesSummaryCards').innerHTML = `
-                    <div class="grade-summary-card"><h4>${allMyGrades.length}</h4><p>Total Entries</p></div>
-                    <div class="grade-summary-card"><h4>${avgPoints}</h4><p>Average Points</p></div>
-                    <div class="grade-summary-card"><h4>${subjects.length}</h4><p>Subjects Graded</p></div>
-                    <div class="grade-summary-card"><h4>${best.grade} (${best.points})</h4><p>Best Performance</p></div>
-                `;
-                document.getElementById('gradesSummaryCards').style.display = 'grid';
-            } else {
-                document.getElementById('gradesSummaryCards').style.display = 'none';
-            }
-        }
-
-        function populateStudentGradeFilters() {
-            const grades = JSON.parse(localStorage.getItem('wanganga_grades') || '[]');
-            const myGrades = grades.filter(g => g.studentId === student.id);
-            const subjects = [...new Set(myGrades.map(g => g.subject))];
-            const sel = document.getElementById('studentSubjectFilter');
-            subjects.forEach(s => {
-                sel.innerHTML += '<option value="' + s + '">' + s + '</option>';
-            });
-        }
-
-        // ===== STUDENT ATTENDANCE =====
-        function renderStudentAttendance() {
-            const attendance = JSON.parse(localStorage.getItem('wanganga_attendance') || '[]').filter(a => a.studentId === student.id);
-            const present = attendance.filter(a => a.status === 'Present').length;
-            const absent = attendance.filter(a => a.status === 'Absent').length;
-            const late = attendance.filter(a => a.status === 'Late').length;
-            const total = attendance.length;
-            const rate = total ? Math.round(present / total * 100) : 0;
-
-            document.getElementById('attendanceSummaryCards').innerHTML = `
-                <div class="grade-summary-card"><h4>${present}</h4><p>Days Present</p></div>
-                <div class="grade-summary-card"><h4>${absent}</h4><p>Days Absent</p></div>
-                <div class="grade-summary-card"><h4>${late}</h4><p>Times Late</p></div>
-                <div class="grade-summary-card"><h4>${rate}%</h4><p>Attendance Rate</p></div>
-            `;
-            document.getElementById('attendanceSummaryCards').style.display = 'grid';
-
-            const tb = document.getElementById('studentAttendanceBody');
-            if (!attendance.length) { tb.innerHTML = '<tr class="no-data"><td colspan="4">No attendance records</td></tr>'; return; }
-            tb.innerHTML = attendance.sort((a, b) => new Date(b.date) - new Date(a.date)).map(a => `<tr>
-                <td>${a.date}</td>
-                <td><span class="status-badge ${a.status === 'Present' ? 'approved' : a.status === 'Absent' ? 'rejected' : 'pending'}">${a.status}</span></td>
-                <td>${a.markedBy || '-'}</td><td>${a.remarks || '-'}</td>
-            </tr>`).join('');
-        }
-
-        // ===== STUDENT TIMETABLE =====
-        function renderStudentTimetable() {
-            const timetable = JSON.parse(localStorage.getItem('wanganga_timetable') || '[]').filter(t => t.class === student.class);
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-            const periods = [1,2,3,4,6,7,8,9,10,11,12];
-            const timeMap = {1:'7:30-8:00',2:'8:00-8:40',3:'8:40-9:20',4:'9:20-10:00',6:'10:20-11:00',7:'11:00-11:40',8:'11:40-12:20',9:'12:20-1:00',10:'1:00-1:40',11:'1:40-2:20',12:'2:20-3:00'};
-            const tb = document.getElementById('studentTimetableBody');
-            if (!timetable.length) { tb.innerHTML = '<tr class="no-data"><td colspan="6">No timetable set for ' + student.class + '</td></tr>'; return; }
-            tb.innerHTML = periods.map(p => {
-                if (p === 4) return `<tr style="background:#f0f7fb"><td><strong>${timeMap[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">MORNING BREAK</td></tr>`;
-                if (p === 12) return `<tr style="background:#f0f7fb"><td><strong>${timeMap[p]}</strong></td><td colspan="5" style="text-align:center;font-weight:600;color:var(--primary)">AFTERNOON BREAK</td></tr>`;
-                return `<tr><td><strong>${timeMap[p]}</strong></td>${days.map(d => {
-                    const e = timetable.find(t => t.day === d && t.period === p);
-                    return `<td>${e ? '<strong>'+e.subject+'</strong>'+(e.teacher?'<br><small>'+e.teacher+'</small>':'') : '-'}</td>`;
-                }).join('')}</tr>`;
-            }).join('');
-        }
-
-        // ===== STUDENT ANNOUNCEMENTS =====
-        function renderStudentAnnouncements() {
-            const announcements = JSON.parse(localStorage.getItem('wanganga_announcements') || '[]').filter(a => a.audience === 'all' || a.audience === 'students');
-            const container = document.getElementById('studentAnnouncementsContainer');
-            if (!announcements.length) { container.innerHTML = '<p class="no-data">No announcements</p>'; return; }
-            container.innerHTML = announcements.map(a => `
-                <div class="activity-item" style="padding:15px;margin-bottom:10px;background:var(--white);border-radius:8px;box-shadow:var(--shadow)">
-                    <i class="fas fa-bullhorn" style="color:var(--secondary);font-size:20px;margin-right:12px"></i>
-                    <div><strong style="font-size:15px">${a.title}</strong><p style="margin:5px 0 0;color:var(--text)">${a.message}</p><small style="color:var(--text-light)">${a.date} - Posted by ${a.author || 'Admin'}</small></div>
-                </div>
-            `).join('');
-        }
-
-        // ===== STUDENT REPORT CARD =====
-        function renderStudentReportCard() {
-            const grades = JSON.parse(localStorage.getItem('wanganga_grades') || '[]').filter(g => g.studentId === student.id);
-            const fees = JSON.parse(localStorage.getItem('wanganga_fees') || '[]').filter(f => f.studentId === student.id);
-            const attendance = JSON.parse(localStorage.getItem('wanganga_attendance') || '[]').filter(a => a.studentId === student.id);
-            const totalPaid = fees.reduce((s, f) => s + (Number(f.amount) || 0), 0);
-            const present = attendance.filter(a => a.status === 'Present').length;
-
-            const examGroups = {};
-            grades.forEach(g => { if (!examGroups[g.exam]) examGroups[g.exam] = []; examGroups[g.exam].push(g); });
-
-            let examSections = '';
-            Object.keys(examGroups).forEach(exam => {
-                const exGrades = examGroups[exam];
-                const avgPts = (exGrades.reduce((s, g) => s + (g.points || 0), 0) / exGrades.length).toFixed(1);
-                examSections += `<h3 style="margin-top:20px;color:var(--primary)">${exam}</h3>
-                <table><thead><tr><th>Subject</th><th>Mark</th><th>Grade</th><th>Points</th><th>Remarks</th></tr></thead>
-                <tbody>${exGrades.map(g => `<tr><td>${g.subject}</td><td>${g.mark}/${g.maxMarks||100}</td><td><strong>${g.grade}</strong></td><td>${g.points}</td><td>${g.remark||'-'}</td></tr>`).join('')}
-                <tr style="font-weight:700;background:#f0f7fb"><td>Average</td><td></td><td></td><td>${avgPts}</td><td></td></tr></tbody></table>`;
-            });
-
-            document.getElementById('studentReportCardContent').innerHTML = `
-                <div class="report-card" id="printableStudentReport">
-                    <div style="text-align:center;margin-bottom:20px">
-                        <h2 style="color:var(--primary)">WANG'ANGA SENIOR SCHOOL</h2>
-                        <p>Phone: 0798394035 | Email: bencarsonodhiambo6@gmail.com</p>
-                        <h3 style="margin-top:10px">STUDENT REPORT CARD</h3>
-                    </div>
-                    <div class="form-row" style="margin-bottom:15px">
-                        <div><strong>Name:</strong> ${student.name}</div>
-                        <div><strong>Adm No:</strong> ${student.id}</div>
-                        <div><strong>Class:</strong> ${student.class}</div>
-                    </div>
-                    <div class="form-row" style="margin-bottom:20px">
-                        <div><strong>Fees Paid:</strong> KES ${totalPaid.toLocaleString()}</div>
-                        <div><strong>Attendance:</strong> ${attendance.length ? Math.round(present / attendance.length * 100) + '%' : 'N/A'}</div>
-                    </div>
-                    ${examSections || '<p>No grades available yet</p>'}
-                </div>`;
-        }
-
-        function printStudentReportCard() {
-            const content = document.getElementById('printableStudentReport').innerHTML;
-            const win = window.open('', '', 'height=800,width=900');
-            win.document.write('<html><head><title>Report Card</title>');
-            win.document.write('<style>body{font-family:Poppins,sans-serif;padding:30px;color:#333}table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#1a5276;color:white}tr:nth-child(even){background:#f9f9f9}.form-row{display:flex;gap:30px}h2{color:#1a5276}@media print{body{padding:15px}}</style>');
-            win.document.write('</head><body>' + content + '</body></html>');
-            win.document.close();
-            win.print();
-        }
-
-        // ===== INIT =====
-        function init() {
-            document.getElementById('studentDisplayName').textContent = student.name;
-            document.getElementById('welcomeName').textContent = student.name;
-            renderAssignedCards();
-            renderUpcoming();
-            populateStudentGradeFilters();
-        }
-        init();
-        // Dark mode
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('wanganga_dark_mode', isDark);
-            document.getElementById('dmIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-        }
-        if (localStorage.getItem('wanganga_dark_mode') === 'true') {
-            document.body.classList.add('dark-mode');
-            const icon = document.getElementById('dmIcon');
-            if (icon) icon.className = 'fas fa-sun';
-        }
+    // ===== INIT =====
+    function init() { document.getElementById('studentDisplayName').textContent=student.name; document.getElementById('welcomeName').textContent=student.name; renderAssignedCards(); renderUpcoming(); populateStudentGradeFilters(); checkDashboardBirthday(); }
+    init();
+    function toggleDarkMode() { document.body.classList.toggle('dark-mode'); const d=document.body.classList.contains('dark-mode'); localStorage.setItem('wanganga_dark_mode',d); document.getElementById('dmIcon').className=d?'fas fa-sun':'fas fa-moon'; }
+    if(localStorage.getItem('wanganga_dark_mode')==='true'){document.body.classList.add('dark-mode');const i=document.getElementById('dmIcon');if(i)i.className='fas fa-sun';}
     </script>
-
 </body>
 </html>

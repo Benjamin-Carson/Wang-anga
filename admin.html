@@ -35,6 +35,15 @@
                 <li><a href="#" onclick="showSection('announcements', this)"><i class="fas fa-bullhorn"></i> Announcements</a></li>
                 <li><a href="#" onclick="showSection('calendar', this)"><i class="fas fa-calendar"></i> Calendar</a></li>
                 <li><a href="#" onclick="showSection('bulk-import', this)"><i class="fas fa-file-csv"></i> Bulk Import</a></li>
+                <li class="nav-divider">Resources</li>
+                <li><a href="#" onclick="showSection('library-mgmt', this)"><i class="fas fa-book"></i> Library</a></li>
+                <li><a href="#" onclick="showSection('clubs-mgmt', this)"><i class="fas fa-futbol"></i> Sports & Clubs</a></li>
+                <li><a href="#" onclick="showSection('lunch-mgmt', this)"><i class="fas fa-utensils"></i> Lunch Menu</a></li>
+                <li><a href="#" onclick="showSection('bus-mgmt', this)"><i class="fas fa-bus"></i> Bus Routes</a></li>
+                <li><a href="#" onclick="showSection('exam-tt-mgmt', this)"><i class="fas fa-pen-fancy"></i> Exam Timetable</a></li>
+                <li><a href="#" onclick="showSection('gallery-mgmt', this)"><i class="fas fa-images"></i> Photo Gallery</a></li>
+                <li><a href="#" onclick="showSection('sotm-mgmt', this)"><i class="fas fa-trophy"></i> Student of Month</a></li>
+                <li><a href="#" onclick="showSection('health-mgmt', this)"><i class="fas fa-heartbeat"></i> Health Records</a></li>
                 <li><a href="admin-center.html"><i class="fas fa-clipboard-list"></i> Admin Center</a></li>
                 <li><a href="#" onclick="showSection('settings', this)"><i class="fas fa-cog"></i> Settings</a></li>
             </ul>
@@ -464,6 +473,30 @@
             </div>
         </div>
 
+        <!-- Library Management -->
+        <div class="content-section" id="library-mgmt"><h2>Library Management</h2><div class="create-card-form"><div class="form-row"><div class="form-group"><label>Title <span class="required">*</span></label><input type="text" id="libBookTitle" placeholder="Book title"></div><div class="form-group"><label>Author <span class="required">*</span></label><input type="text" id="libBookAuthor" placeholder="Author name"></div></div><div class="form-row"><div class="form-group"><label>Category</label><select id="libBookCategory"><option value="Textbook">Textbook</option><option value="Novel">Novel</option><option value="Reference">Reference</option><option value="Magazine">Magazine</option></select></div><div class="form-group"><label>Copies</label><input type="number" id="libBookCopies" value="1" min="1"></div></div><button class="btn btn-primary" onclick="addLibraryBook()"><i class="fas fa-plus"></i> Add Book</button></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Copies</th><th>Borrowed</th><th>Actions</th></tr></thead><tbody id="libMgmtBody"><tr class="no-data"><td colspan="6">No books</td></tr></tbody></table></div></div>
+
+        <!-- Clubs Management -->
+        <div class="content-section" id="clubs-mgmt"><h2>Sports & Clubs Management</h2><div class="create-card-form"><div class="form-row"><div class="form-group"><label>Name <span class="required">*</span></label><input type="text" id="clubName" placeholder="e.g Football Club"></div><div class="form-group"><label>Icon</label><select id="clubIcon"><option value="fas fa-futbol">Football</option><option value="fas fa-basketball-ball">Basketball</option><option value="fas fa-running">Athletics</option><option value="fas fa-music">Music</option><option value="fas fa-palette">Art</option><option value="fas fa-book-reader">Debate</option><option value="fas fa-microscope">Science</option><option value="fas fa-laptop-code">ICT</option><option value="fas fa-users">General</option></select></div></div><div class="form-row"><div class="form-group"><label>Description</label><input type="text" id="clubDesc" placeholder="Brief description"></div><div class="form-group"><label>Meeting Day</label><input type="text" id="clubDay" placeholder="e.g Wednesday"></div></div><div class="form-group"><label>Meeting Time</label><input type="text" id="clubTime" placeholder="e.g 4:00 PM"></div><button class="btn btn-primary" onclick="addClub()"><i class="fas fa-plus"></i> Add Club</button></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Name</th><th>Description</th><th>Day</th><th>Time</th><th>Members</th><th>Actions</th></tr></thead><tbody id="clubsMgmtBody"><tr class="no-data"><td colspan="6">No clubs</td></tr></tbody></table></div></div>
+
+        <!-- Lunch Menu Management -->
+        <div class="content-section" id="lunch-mgmt"><h2>Lunch Menu Management</h2><div class="create-card-form"><div class="form-row"><div class="form-group"><label>Day</label><select id="lunchDay"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option></select></div><div class="form-group"><label>Main Dish</label><input type="text" id="lunchMain" placeholder="e.g Ugali & Chicken"></div></div><div class="form-row"><div class="form-group"><label>Side Dish</label><input type="text" id="lunchSide" placeholder="e.g Sukuma Wiki"></div><div class="form-group"><label>Drink/Dessert</label><input type="text" id="lunchDrink" placeholder="e.g Fruit Salad"></div></div><button class="btn btn-primary" onclick="saveLunchMenu()"><i class="fas fa-save"></i> Save Menu</button></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Day</th><th>Main</th><th>Side</th><th>Drink</th><th>Actions</th></tr></thead><tbody id="lunchMgmtBody"><tr class="no-data"><td colspan="5">No menu set</td></tr></tbody></table></div></div>
+
+        <!-- Bus Routes Management -->
+        <div class="content-section" id="bus-mgmt"><h2>Bus Routes Management</h2><div class="create-card-form"><div class="form-row"><div class="form-group"><label>Route Name <span class="required">*</span></label><input type="text" id="busName" placeholder="e.g Route 1: Town Center"></div><div class="form-group"><label>Driver</label><input type="text" id="busDriver" placeholder="Driver name"></div></div><div class="form-group"><label>Stops (comma-separated)</label><input type="text" id="busStops" placeholder="Stop 1 - Stop 2 - Stop 3"></div><div class="form-row"><div class="form-group"><label>Morning Time</label><input type="text" id="busMorning" placeholder="6:30 AM"></div><div class="form-group"><label>Afternoon Time</label><input type="text" id="busAfternoon" placeholder="4:30 PM"></div></div><div class="form-group"><label>Phone</label><input type="text" id="busPhone" placeholder="Driver phone"></div><button class="btn btn-primary" onclick="addBusRoute()"><i class="fas fa-plus"></i> Add Route</button></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Route</th><th>Stops</th><th>Morning</th><th>Afternoon</th><th>Driver</th><th>Actions</th></tr></thead><tbody id="busMgmtBody"><tr class="no-data"><td colspan="6">No routes</td></tr></tbody></table></div></div>
+
+        <!-- Exam Timetable Management -->
+        <div class="content-section" id="exam-tt-mgmt"><h2>Exam Timetable Management</h2><div class="create-card-form"><div class="form-row"><div class="form-group"><label>Date <span class="required">*</span></label><input type="date" id="examDate"></div><div class="form-group"><label>Time</label><input type="text" id="examTime" placeholder="8:00 AM - 10:00 AM"></div></div><div class="form-row"><div class="form-group"><label>Subject <span class="required">*</span></label><input type="text" id="examSubject" placeholder="e.g Mathematics"></div><div class="form-group"><label>Duration</label><input type="text" id="examDuration" placeholder="2 hours"></div></div><div class="form-group"><label>Venue</label><input type="text" id="examVenue" placeholder="e.g Main Hall"></div><button class="btn btn-primary" onclick="addExamEntry()"><i class="fas fa-plus"></i> Add Entry</button></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Date</th><th>Time</th><th>Subject</th><th>Duration</th><th>Venue</th><th>Actions</th></tr></thead><tbody id="examMgmtBody"><tr class="no-data"><td colspan="6">No exam timetable</td></tr></tbody></table></div></div>
+
+        <!-- Gallery Management -->
+        <div class="content-section" id="gallery-mgmt"><h2>Photo Gallery Management</h2><div class="create-card-form"><div class="form-group"><label>Photo Caption</label><input type="text" id="galleryCaption" placeholder="e.g Sports Day 2024"></div><div class="form-group"><label>Photo URL (or paste base64)</label><input type="text" id="galleryUrl" placeholder="Paste image URL or base64 data"></div><div class="form-group"><label>Or Upload Photo</label><input type="file" id="galleryFile" accept="image/*" onchange="handleGalleryUpload(this)"></div><button class="btn btn-primary" onclick="addGalleryPhoto()"><i class="fas fa-plus"></i> Add Photo</button></div><div class="gallery-grid" id="galleryMgmtGrid" style="margin-top:20px"></div></div>
+
+        <!-- Student of the Month Management -->
+        <div class="content-section" id="sotm-mgmt"><h2>Student of the Month</h2><div class="create-card-form"><div class="form-row"><div class="form-group"><label>Student</label><select id="sotmStudent"></select></div><div class="form-group"><label>Month</label><select id="sotmMonth"><option value="January">January</option><option value="February">February</option><option value="March">March</option><option value="April">April</option><option value="May">May</option><option value="June">June</option><option value="July">July</option><option value="August">August</option><option value="September">September</option><option value="October">October</option><option value="November">November</option><option value="December">December</option></select></div></div><div class="form-group"><label>Reason</label><input type="text" id="sotmReason" placeholder="e.g Outstanding academic performance"></div><button class="btn btn-primary" onclick="addStudentOfMonth()"><i class="fas fa-trophy"></i> Select Student</button></div><div class="table-container" style="margin-top:20px"><table><thead><tr><th>Month</th><th>Student</th><th>Class</th><th>Reason</th><th>Date</th><th>Actions</th></tr></thead><tbody id="sotmMgmtBody"><tr class="no-data"><td colspan="6">No selections yet</td></tr></tbody></table></div></div>
+
+        <!-- Health Records Management -->
+        <div class="content-section" id="health-mgmt"><h2>Health Records</h2><div class="table-container"><table><thead><tr><th>Student</th><th>Class</th><th>Blood Group</th><th>Allergies</th><th>Conditions</th><th>Emergency Contact</th></tr></thead><tbody id="healthMgmtBody"><tr class="no-data"><td colspan="6">No health records</td></tr></tbody></table></div></div>
+
         <!-- Settings -->
         <div class="content-section" id="settings">
             <h2>System Settings</h2>
@@ -844,6 +877,14 @@
             if (id === 'attendance') renderAttendanceRecords();
             if (id === 'announcements') renderAnnouncements();
             if (id === 'calendar') renderEvents();
+            if (id === 'library-mgmt') renderLibraryMgmt();
+            if (id === 'clubs-mgmt') renderClubsMgmt();
+            if (id === 'lunch-mgmt') renderLunchMgmt();
+            if (id === 'bus-mgmt') renderBusMgmt();
+            if (id === 'exam-tt-mgmt') renderExamTimetableMgmt();
+            if (id === 'gallery-mgmt') renderGalleryMgmt();
+            if (id === 'sotm-mgmt') { renderSOTMMgmt(); populateSOTMStudent(); }
+            if (id === 'health-mgmt') renderHealthMgmt();
         }
         function openModal(name) { document.getElementById(name + 'Modal').classList.add('active'); }
         function closeModal(name) { document.getElementById(name + 'Modal').classList.remove('active'); }
@@ -1786,7 +1827,58 @@
             renderEvents();
             populateTimetableDropdowns();
             populateAttendanceDropdowns();
+            renderLibraryMgmt();
+            renderClubsMgmt();
+            renderLunchMgmt();
+            renderBusMgmt();
+            renderExamTimetableMgmt();
+            renderGalleryMgmt();
+            renderSOTMMgmt();
+            renderHealthMgmt();
+            populateSOTMStudent();
         }
+
+        // ===== LIBRARY MGMT =====
+        function addLibraryBook() { const t=document.getElementById('libBookTitle').value.trim(),a=document.getElementById('libBookAuthor').value.trim(),c=document.getElementById('libBookCategory').value,n=Number(document.getElementById('libBookCopies').value)||1; if(!t||!a){alert('Enter title and author');return;} const books=getData('library_books'); books.push({id:'BOOK'+Date.now(),title:t,author:a,category:c,copies:n}); setData('library_books',books); document.getElementById('libBookTitle').value='';document.getElementById('libBookAuthor').value=''; renderLibraryMgmt(); }
+        function renderLibraryMgmt() { const books=getData('library_books'), borrowed=getData('library_borrowed'), tb=document.getElementById('libMgmtBody'); if(!books.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No books</td></tr>';return;} tb.innerHTML=books.map(b=>{const br=borrowed.filter(x=>x.bookId===b.id&&x.status==='Borrowed').length;return`<tr><td><strong>${b.title}</strong></td><td>${b.author}</td><td>${b.category}</td><td>${b.copies}</td><td>${br}</td><td><button class="action-btn delete" onclick="deleteBook('${b.id}')" title="Delete"><i class="fas fa-trash"></i></button></td></tr>`;}).join(''); }
+        function deleteBook(id){if(!confirm('Delete?'))return;let b=getData('library_books');b=b.filter(x=>x.id!==id);setData('library_books',b);renderLibraryMgmt();}
+
+        // ===== CLUBS MGMT =====
+        function addClub() { const n=document.getElementById('clubName').value.trim(),i=document.getElementById('clubIcon').value,d=document.getElementById('clubDesc').value.trim(),day=document.getElementById('clubDay').value.trim(),time=document.getElementById('clubTime').value.trim(); if(!n){alert('Enter club name');return;} const clubs=getData('clubs'); clubs.push({id:'CLUB'+Date.now(),name:n,icon:i,description:d,meetingDay:day,meetingTime:time}); setData('clubs',clubs); document.getElementById('clubName').value=''; renderClubsMgmt(); }
+        function renderClubsMgmt() { const clubs=getData('clubs'), members=getData('student_clubs'), tb=document.getElementById('clubsMgmtBody'); if(!clubs.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No clubs</td></tr>';return;} tb.innerHTML=clubs.map(c=>{const m=members.filter(x=>x.clubId===c.id).length;return`<tr><td><i class="${c.icon}" style="color:var(--primary);margin-right:8px"></i><strong>${c.name}</strong></td><td>${c.description||'-'}</td><td>${c.meetingDay||'-'}</td><td>${c.meetingTime||'-'}</td><td>${m}</td><td><button class="action-btn delete" onclick="deleteClub('${c.id}')" title="Delete"><i class="fas fa-trash"></i></button></td></tr>`;}).join(''); }
+        function deleteClub(id){if(!confirm('Delete?'))return;let c=getData('clubs');c=c.filter(x=>x.id!==id);setData('clubs',c);renderClubsMgmt();}
+
+        // ===== LUNCH MGMT =====
+        function saveLunchMenu() { const day=document.getElementById('lunchDay').value,main=document.getElementById('lunchMain').value.trim(),side=document.getElementById('lunchSide').value.trim(),drink=document.getElementById('lunchDrink').value.trim(); if(!main){alert('Enter main dish');return;} const menu=getData('lunch_menu'); const idx=menu.findIndex(m=>m.day===day); if(idx>=0){menu[idx]={day,main,side,drink};}else{menu.push({day,main,side,drink});} setData('lunch_menu',menu); renderLunchMgmt(); }
+        function renderLunchMgmt() { const menu=getData('lunch_menu'), tb=document.getElementById('lunchMgmtBody'); if(!menu.length){tb.innerHTML='<tr class="no-data"><td colspan="5">No menu set</td></tr>';return;} tb.innerHTML=menu.map(m=>`<tr><td><strong>${m.day}</strong></td><td>${m.main}</td><td>${m.side||'-'}</td><td>${m.drink||'-'}</td><td><button class="action-btn delete" onclick="deleteLunch('${m.day}')" title="Delete"><i class="fas fa-trash"></i></button></td></tr>`).join(''); }
+        function deleteLunch(day){if(!confirm('Delete?'))return;let m=getData('lunch_menu');m=m.filter(x=>x.day!==day);setData('lunch_menu',m);renderLunchMgmt();}
+
+        // ===== BUS MGMT =====
+        function addBusRoute() { const n=document.getElementById('busName').value.trim(),d=document.getElementById('busDriver').value.trim(),s=document.getElementById('busStops').value.trim(),mt=document.getElementById('busMorning').value.trim(),at=document.getElementById('busAfternoon').value.trim(),p=document.getElementById('busPhone').value.trim(); if(!n){alert('Enter route name');return;} const routes=getData('bus_routes'); routes.push({id:'BUS'+Date.now(),name:n,driver:d,stops:s,morningTime:mt,afternoonTime:at,phone:p}); setData('bus_routes',routes); document.getElementById('busName').value=''; renderBusMgmt(); }
+        function renderBusMgmt() { const routes=getData('bus_routes'), tb=document.getElementById('busMgmtBody'); if(!routes.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No routes</td></tr>';return;} tb.innerHTML=routes.map(r=>`<tr><td><strong>${r.name}</strong></td><td>${r.stops}</td><td>${r.morningTime||'-'}</td><td>${r.afternoonTime||'-'}</td><td>${r.driver||'-'} ${r.phone?'('+r.phone+')':''}</td><td><button class="action-btn delete" onclick="deleteBus('${r.id}')" title="Delete"><i class="fas fa-trash"></i></button></td></tr>`).join(''); }
+        function deleteBus(id){if(!confirm('Delete?'))return;let r=getData('bus_routes');r=r.filter(x=>x.id!==id);setData('bus_routes',r);renderBusMgmt();}
+
+        // ===== EXAM TIMETABLE MGMT =====
+        function addExamEntry() { const date=document.getElementById('examDate').value,time=document.getElementById('examTime').value.trim(),sub=document.getElementById('examSubject').value.trim(),dur=document.getElementById('examDuration').value.trim(),ven=document.getElementById('examVenue').value.trim(); if(!date||!sub){alert('Enter date and subject');return;} const exams=getData('exam_timetable'); exams.push({id:'EXAM'+Date.now(),date,time:time||'8:00 AM',subject:sub,duration:dur||'2 hours',venue:ven||'Main Hall'}); exams.sort((a,b)=>new Date(a.date)-new Date(b.date)); setData('exam_timetable',exams); document.getElementById('examSubject').value=''; renderExamTimetableMgmt(); }
+        function renderExamTimetableMgmt() { const exams=getData('exam_timetable'), tb=document.getElementById('examMgmtBody'); if(!exams.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No exam timetable</td></tr>';return;} tb.innerHTML=exams.map(e=>`<tr><td>${e.date}</td><td>${e.time}</td><td><strong>${e.subject}</strong></td><td>${e.duration}</td><td>${e.venue}</td><td><button class="action-btn delete" onclick="deleteExamEntry('${e.id}')" title="Delete"><i class="fas fa-trash"></i></button></td></tr>`).join(''); }
+        function deleteExamEntry(id){if(!confirm('Delete?'))return;let e=getData('exam_timetable');e=e.filter(x=>x.id!==id);setData('exam_timetable',e);renderExamTimetableMgmt();}
+
+        // ===== GALLERY MGMT =====
+        let galleryUploadData = '';
+        function handleGalleryUpload(input) { if(input.files&&input.files[0]){const r=new FileReader();r.onload=function(e){galleryUploadData=e.target.result;};r.readAsDataURL(input.files[0]);} }
+        function addGalleryPhoto() { const caption=document.getElementById('galleryCaption').value.trim(), url=document.getElementById('galleryUrl').value.trim()||galleryUploadData; if(!url){alert('Provide a photo URL or upload a file');return;} const photos=getData('gallery_photos'); photos.push({id:'PHOTO'+Date.now(),url,caption:caption||'Photo',date:new Date().toLocaleDateString()}); setData('gallery_photos',photos); document.getElementById('galleryCaption').value='';document.getElementById('galleryUrl').value='';galleryUploadData=''; renderGalleryMgmt(); }
+        function renderGalleryMgmt() { const photos=getData('gallery_photos'), grid=document.getElementById('galleryMgmtGrid'); if(!photos.length){grid.innerHTML='<p class="no-data">No photos</p>';return;} grid.innerHTML=photos.map(p=>`<div class="gallery-item"><img src="${p.url}" alt="${p.caption}"><p>${p.caption} <button class="action-btn delete" onclick="deletePhoto('${p.id}')" title="Delete" style="float:right"><i class="fas fa-trash"></i></button></p></div>`).join(''); }
+        function deletePhoto(id){if(!confirm('Delete?'))return;let p=getData('gallery_photos');p=p.filter(x=>x.id!==id);setData('gallery_photos',p);renderGalleryMgmt();}
+
+        // ===== STUDENT OF MONTH MGMT =====
+        function populateSOTMStudent() { const sel=document.getElementById('sotmStudent'); if(!sel)return; const students=getData('students').filter(s=>s.status!=='expelled'); sel.innerHTML='<option value="">Select Student</option>'; students.forEach(s=>{sel.innerHTML+='<option value="'+s.id+'">'+s.name+' ('+s.class+')</option>';}); }
+        function addStudentOfMonth() { const sid=document.getElementById('sotmStudent').value,month=document.getElementById('sotmMonth').value,reason=document.getElementById('sotmReason').value.trim(); if(!sid||!reason){alert('Select student and enter reason');return;} const student=getData('students').find(s=>s.id===sid); const sotm=getData('student_of_month'); sotm.unshift({id:'SOTM'+Date.now(),studentId:sid,studentName:student?student.name:'',class:student?student.class:'',reason,month,date:new Date().toLocaleDateString(),selectedBy:'Admin'}); setData('student_of_month',sotm); document.getElementById('sotmReason').value=''; renderSOTMMgmt(); }
+        function renderSOTMMgmt() { const sotm=getData('student_of_month'), tb=document.getElementById('sotmMgmtBody'); if(!sotm.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No selections</td></tr>';return;} tb.innerHTML=sotm.map(s=>`<tr><td>${s.month}</td><td><strong>${s.studentName}</strong></td><td>${s.class}</td><td>${s.reason}</td><td>${s.date}</td><td><button class="action-btn delete" onclick="deleteSOTM('${s.id}')" title="Delete"><i class="fas fa-trash"></i></button></td></tr>`).join(''); }
+        function deleteSOTM(id){if(!confirm('Delete?'))return;let s=getData('student_of_month');s=s.filter(x=>x.id!==id);setData('student_of_month',s);renderSOTMMgmt();}
+
+        // ===== HEALTH MGMT =====
+        function renderHealthMgmt() { const records=getData('health_records'), tb=document.getElementById('healthMgmtBody'); if(!records.length){tb.innerHTML='<tr class="no-data"><td colspan="6">No health records</td></tr>';return;} tb.innerHTML=records.map(r=>{const s=getData('students').find(x=>x.id===r.studentId);return`<tr><td><strong>${s?s.name:r.studentId}</strong></td><td>${s?s.class:'-'}</td><td>${r.bloodGroup||'-'}</td><td>${r.allergies||'None'}</td><td>${r.conditions||'None'}</td><td>${r.emergencyContact||'-'}</td></tr>`;}).join(''); }
+
         init();
         // Dark mode
         function toggleDarkMode() {
